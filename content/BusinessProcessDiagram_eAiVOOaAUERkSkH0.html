@@ -1,0 +1,372 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Business Process Diagram - Startprosess 2</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		Arkitekturopplæring i Arkivverket	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Business Process Diagram - Startprosess 2		</span>
+<a onclick="javascript: showVpLink('Arkitekturopplæring i Arkivverket.vpp://diagram/eAiVOOaAUERkSkH0', 'Startprosess 2\nArkitekturoppl&#xe6;ring i Arkivverket.vpp://diagram/eAiVOOaAUERkSkH0', 'Startprosess 2', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|2.0|2.0|1139.0|300.0|BPPool_fgyVOOaAUERkSkIE.html|BPPool_fgyVOOaAUERkSkIE.html|PgyVOOaAUERkSkID" id="optionPgyVOOaAUERkSkID">Behandle søknader : Pool</option>
+<option value="shape|17.0|2.0|1124.0|150.0|BPLane_PkyVOOaAUERkSkIJ.html|BPLane_PkyVOOaAUERkSkIJ.html|7kyVOOaAUERkSkII" id="option7kyVOOaAUERkSkII">Saksbehandler 1 : Lane</option>
+<option value="shape|72.0|76.0|20.0|20.0|BPStartEvent_DQxVOOaAUERkSkIv.html|BPStartEvent_DQxVOOaAUERkSkIv.html|lQxVOOaAUERkSkIu" id="optionlQxVOOaAUERkSkIu">Unnamed Start Event : Start Event</option>
+<option value="shape|196.0|66.0|109.0|40.0|BPTask_ZHpVOOaAUERkSkI1.html|BPTask_ZHpVOOaAUERkSkI1.html|pHpVOOaAUERkSkI0" id="optionpHpVOOaAUERkSkI0">Behandle søknad : Task</option>
+<option value="shape|750.0|66.0|125.0|40.0|BPTask_r6rVOOaAUERkSkJM.html|BPTask_r6rVOOaAUERkSkJM.html|L6rVOOaAUERkSkJL" id="optionL6rVOOaAUERkSkJL">Oppdatere ePhorte : Task</option>
+<option value="shape|981.0|76.0|20.0|20.0|BPEndEvent_c43VOOaAUERkSkJY.html|BPEndEvent_c43VOOaAUERkSkJY.html|c43VOOaAUERkSkJX" id="optionc43VOOaAUERkSkJX">Søknad behandlet : End Event</option>
+<option value="shape|17.0|152.0|1124.0|150.0|BPLane_M2KVOOaAUERkSkIP.html|BPLane_M2KVOOaAUERkSkIP.html|M2KVOOaAUERkSkIO" id="optionM2KVOOaAUERkSkIO">Saksbehandler 2 : Lane</option>
+<option value="shape|435.0|207.0|135.0|40.0|BPTask_PctVOOaAUERkSkJC.html|BPTask_PctVOOaAUERkSkJC.html|3ctVOOaAUERkSkJB" id="option3ctVOOaAUERkSkJB">Behandle grunnlag fra sksbehandler 1 : Task</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/Startprosess_2.png" usemap="#diagram_map" class="Image" width="1145" height="306"/>
+					<map name="diagram_map">
+<area imageId="diagram" coords="92.0, 78.0, 92.0, 92.0, 196.0, 92.0, 196.0, 78.0" coords2="92.0, 78.0, 92.0, 92.0, 196.0, 92.0, 196.0, 78.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_mVA1OOaAUERkSkJs_default" href="BPSequenceFlow_MVA1OOaAUERkSkJr.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="335.0, 76.0, 335.0, 79.0, 305.0, 79.0, 305.0, 93.0, 335.0, 93.0, 335.0, 220.0, 332.0, 220.0, 332.0, 234.0, 335.0, 234.0, 335.0, 237.0, 349.0, 237.0, 349.0, 234.0, 435.0, 234.0, 435.0, 220.0, 349.0, 220.0, 349.0, 93.0, 352.0, 93.0, 352.0, 79.0, 349.0, 79.0, 349.0, 76.0" coords2="335.0, 76.0, 335.0, 79.0, 305.0, 79.0, 305.0, 93.0, 335.0, 93.0, 335.0, 220.0, 332.0, 220.0, 332.0, 234.0, 335.0, 234.0, 335.0, 237.0, 349.0, 237.0, 349.0, 234.0, 435.0, 234.0, 435.0, 220.0, 349.0, 220.0, 349.0, 93.0, 352.0, 93.0, 352.0, 79.0, 349.0, 79.0, 349.0, 76.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_I5g1OOaAUERkSkJw_default" href="BPSequenceFlow_rZg1OOaAUERkSkJv.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="608.0, 78.0, 608.0, 81.0, 605.0, 81.0, 605.0, 95.0, 608.0, 95.0, 608.0, 220.0, 570.0, 220.0, 570.0, 234.0, 608.0, 234.0, 608.0, 237.0, 622.0, 237.0, 622.0, 234.0, 625.0, 234.0, 625.0, 220.0, 622.0, 220.0, 622.0, 95.0, 750.0, 95.0, 750.0, 81.0, 622.0, 81.0, 622.0, 78.0" coords2="608.0, 78.0, 608.0, 81.0, 605.0, 81.0, 605.0, 95.0, 608.0, 95.0, 608.0, 220.0, 570.0, 220.0, 570.0, 234.0, 608.0, 234.0, 608.0, 237.0, 622.0, 237.0, 622.0, 234.0, 625.0, 234.0, 625.0, 220.0, 622.0, 220.0, 622.0, 95.0, 750.0, 95.0, 750.0, 81.0, 622.0, 81.0, 622.0, 78.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_BjQ1OOaAUERkSkJ0_default" href="BPSequenceFlow_6jQ1OOaAUERkSkJz.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="875.0, 81.0, 875.0, 95.0, 981.0, 95.0, 981.0, 81.0" coords2="875.0, 81.0, 875.0, 95.0, 981.0, 95.0, 981.0, 81.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_4FI1OOaAUERkSkJ4_default" href="BPSequenceFlow_r5I1OOaAUERkSkJ3.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="981, 76, 1001, 96" coords2="981, 76, 1001, 96" shape="rect" alt="Søknad behandlet:End Event" id="areadiagram_map_c43VOOaAUERkSkJX_default" href="BPEndEvent_c43VOOaAUERkSkJY.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="750, 66, 875, 106" coords2="750, 66, 875, 106" shape="rect" alt="Oppdatere ePhorte:Task" id="areadiagram_map_L6rVOOaAUERkSkJL_default" href="BPTask_r6rVOOaAUERkSkJM.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="435, 207, 570, 247" coords2="435, 207, 570, 247" shape="rect" alt="Behandle grunnlag fra sksbehandler 1:Task" id="areadiagram_map_3ctVOOaAUERkSkJB_default" href="BPTask_PctVOOaAUERkSkJC.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="196, 66, 305, 106" coords2="196, 66, 305, 106" shape="rect" alt="Behandle søknad:Task" id="areadiagram_map_pHpVOOaAUERkSkI0_default" href="BPTask_ZHpVOOaAUERkSkI1.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="72, 76, 92, 96" coords2="72, 76, 92, 96" shape="rect" alt=":Start Event" id="areadiagram_map_lQxVOOaAUERkSkIu_default" href="BPStartEvent_DQxVOOaAUERkSkIv.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="17, 152, 1141, 302" coords2="17, 152, 1141, 302" shape="rect" alt="Saksbehandler 2:Lane" id="areadiagram_map_M2KVOOaAUERkSkIO_default" href="BPLane_M2KVOOaAUERkSkIP.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="17, 2, 1141, 152" coords2="17, 2, 1141, 152" shape="rect" alt="Saksbehandler 1:Lane" id="areadiagram_map_7kyVOOaAUERkSkII_default" href="BPLane_PkyVOOaAUERkSkIJ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 2, 1141, 302" coords2="2, 2, 1141, 302" shape="rect" alt="Behandle søknader:Pool" id="areadiagram_map_PgyVOOaAUERkSkID_default" href="BPPool_fgyVOOaAUERkSkIE.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="6" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="10%">
+<span class="TableHeaderText">ID</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP209</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/SwimlanePool.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/SwimlanePool.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPPool_fgyVOOaAUERkSkIE.html" class="ItemLink">Behandle søknader : Pool</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP209.BP01</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/SwimlaneLane.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/SwimlaneLane.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPLane_PkyVOOaAUERkSkIJ.html" class="ItemLink">Saksbehandler 1 : Lane</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP209.BP01.BP01</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsStart.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsStart.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPStartEvent_DQxVOOaAUERkSkIv.html" class="ItemLink">N/A : Start Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP209.BP01.BP02</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_ZHpVOOaAUERkSkI1.html" class="ItemLink">Behandle søknad : Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP209.BP01.BP03</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_r6rVOOaAUERkSkJM.html" class="ItemLink">Oppdatere ePhorte : Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP209.BP01.BP04</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_c43VOOaAUERkSkJY.html" class="ItemLink">Søknad behandlet : End Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP209.BP02</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/SwimlaneLane.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/SwimlaneLane.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPLane_M2KVOOaAUERkSkIP.html" class="ItemLink">Saksbehandler 2 : Lane</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP209.BP02.BP01</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_PctVOOaAUERkSkJC.html" class="ItemLink">Behandle grunnlag fra sksbehandler 1 : Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		Arkitekturopplæring i Arkivverket	</div>
+</body>
+</html>

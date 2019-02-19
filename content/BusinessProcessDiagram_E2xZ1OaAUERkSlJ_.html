@@ -1,0 +1,666 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Business Process Diagram - Subprocess end state</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		Arkitekturopplæring i Arkivverket	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Business Process Diagram - Subprocess end state		</span>
+<a onclick="javascript: showVpLink('Arkitekturopplæring i Arkivverket.vpp://diagram/E2xZ1OaAUERkSlJ_', 'Subprocess end state\nArkitekturoppl&#xe6;ring i Arkivverket.vpp://diagram/E2xZ1OaAUERkSlJ_', 'Subprocess end state', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|2.0|83.0|20.0|20.0|BPStartEvent_RmpZ1OaAUERkSlKJ.html|BPStartEvent_RmpZ1OaAUERkSlKJ.html|BmpZ1OaAUERkSlKI" id="optionBmpZ1OaAUERkSlKI">Unnamed Start Event : Start Event</option>
+<option value="shape|2.0|288.0|20.0|20.0|BPStartEvent_zG5Z1OaAUERkSlKX.html|BPStartEvent_zG5Z1OaAUERkSlKX.html|TG5Z1OaAUERkSlKW" id="optionTG5Z1OaAUERkSlKW">Unnamed Start Event : Start Event</option>
+<option value="shape|99.0|12.0|398.0|163.0|BPSubProcess_v_nZ1OaAUERkSlLe.html|BPSubProcess_v_nZ1OaAUERkSlLe.html|3.nZ1OaAUERkSlLd" id="option3.nZ1OaAUERkSlLd">Kontroll : Sub-Process</option>
+<option value="shape|114.0|83.0|20.0|20.0|BPStartEvent_4mw51OaAUERkSlMO.html|BPStartEvent_4mw51OaAUERkSlMO.html|Ymw51OaAUERkSlMN" id="optionYmw51OaAUERkSlMN">Unnamed Start Event : Start Event</option>
+<option value="shape|150.0|76.0|71.0|40.0|BPTask_1Lk51OaAUERkSlMk.html|BPTask_1Lk51OaAUERkSlMk.html|1Lk51OaAUERkSlMj" id="option1Lk51OaAUERkSlMj">Sjekk dokument : Task</option>
+<option value="shape|244.0|76.0|40.0|40.0|BPGateway_6Es51OaAUERkSlNE.html|BPGateway_6Es51OaAUERkSlNE.html|aEs51OaAUERkSlND" id="optionaEs51OaAUERkSlND">Dokument ok? : Gateway</option>
+<option value="shape|295.0|32.0|67.0|40.0|BPTask_k_u51OaAUERkSlN4.html|BPTask_k_u51OaAUERkSlN4.html|k.u51OaAUERkSlN3" id="optionk.u51OaAUERkSlN3">Oppdater ePhorte : Task</option>
+<option value="shape|421.0|42.0|20.0|20.0|BPEndEvent_71T51OaAUERkSlPA.html|BPEndEvent_71T51OaAUERkSlPA.html|L1T51OaAUERkSlO_" id="optionL1T51OaAUERkSlO_">Dokumnet ikke ok : End Event</option>
+<option value="shape|421.0|86.0|20.0|20.0|BPEndEvent_xn751OaAUERkSlPM.html|BPEndEvent_xn751OaAUERkSlPM.html|xn751OaAUERkSlPL" id="optionxn751OaAUERkSlPL">Dokument ok : End Event</option>
+<option value="shape|99.0|227.0|398.0|163.0|BPSubProcess_GU3Z1OaAUERkSlL4.html|BPSubProcess_GU3Z1OaAUERkSlL4.html|KU3Z1OaAUERkSlL3" id="optionKU3Z1OaAUERkSlL3">Kontroll : Sub-Process</option>
+<option value="shape|114.0|298.0|20.0|20.0|BPStartEvent_gpo51OaAUERkSlMc.html|BPStartEvent_gpo51OaAUERkSlMc.html|gpo51OaAUERkSlMb" id="optiongpo51OaAUERkSlMb">Unnamed Start Event : Start Event</option>
+<option value="shape|150.0|288.0|71.0|40.0|BPTask_7EM51OaAUERkSlM8.html|BPTask_7EM51OaAUERkSlM8.html|7EM51OaAUERkSlM7" id="option7EM51OaAUERkSlM7">Sjekk dokument : Task</option>
+<option value="shape|244.0|288.0|40.0|40.0|BPGateway_wuc51OaAUERkSlNY.html|BPGateway_wuc51OaAUERkSlNY.html|wuc51OaAUERkSlNX" id="optionwuc51OaAUERkSlNX">Dokument ok? : Gateway</option>
+<option value="shape|322.0|238.0|67.0|40.0|BPTask_lYB51OaAUERkSlOI.html|BPTask_lYB51OaAUERkSlOI.html|FYB51OaAUERkSlOH" id="optionFYB51OaAUERkSlOH">Oppdater ePhorte : Task</option>
+<option value="shape|421.0|248.0|20.0|20.0|BPEndEvent_YUQ11OaAUERkSlSz.html|BPEndEvent_YUQ11OaAUERkSlSz.html|oUQ11OaAUERkSlSy" id="optionoUQ11OaAUERkSlSy">Dokument ikke ok : End Event</option>
+<option value="shape|421.0|298.0|20.0|20.0|BPEndEvent_BYI11OaAUERkSlS7.html|BPEndEvent_BYI11OaAUERkSlS7.html|.YI11OaAUERkSlS6" id="option.YI11OaAUERkSlS6">Dokument ok : End Event</option>
+<option value="shape|558.0|66.0|40.0|40.0|BPGateway_Jxu11OaAUERkSlTT.html|BPGateway_Jxu11OaAUERkSlTT.html|Rxu11OaAUERkSlTS" id="optionRxu11OaAUERkSlTS">Dokument ok? : Gateway</option>
+<option value="shape|796.0|5.0|20.0|20.0|BPEndEvent_TA511OaAUERkSlTl.html|BPEndEvent_TA511OaAUERkSlTl.html|jA511OaAUERkSlTk" id="optionjA511OaAUERkSlTk">Unnamed End Event : End Event</option>
+<option value="shape|796.0|72.0|20.0|20.0|BPEndEvent_JUF11OaAUERkSlTr.html|BPEndEvent_JUF11OaAUERkSlTr.html|hUF11OaAUERkSlTq" id="optionhUF11OaAUERkSlTq">Unnamed End Event : End Event</option>
+<option value="shape|558.0|288.0|40.0|40.0|BPGateway_Dzvv1OaAUERkSlXm.html|BPGateway_Dzvv1OaAUERkSlXm.html|azvv1OaAUERkSlXl" id="optionazvv1OaAUERkSlXl">Unnamed Gateway : Gateway</option>
+<option value="shape|796.0|207.0|20.0|20.0|BPEndEvent_0wAf1OaAUERkSlXu.html|BPEndEvent_0wAf1OaAUERkSlXu.html|0wAf1OaAUERkSlXt" id="option0wAf1OaAUERkSlXt">Unnamed End Event : End Event</option>
+<option value="shape|796.0|298.0|20.0|20.0|BPEndEvent_WSgf1OaAUERkSlX2.html|BPEndEvent_WSgf1OaAUERkSlX2.html|WSgf1OaAUERkSlX1" id="optionWSgf1OaAUERkSlX1">Unnamed End Event : End Event</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/Subprocess_end_state.png" usemap="#diagram_map" class="Image" width="823" height="394"/>
+					<map name="diagram_map">
+<area imageId="diagram" coords="22.0, 86.0, 22.0, 100.0, 99.0, 100.0, 99.0, 86.0" coords2="22.0, 86.0, 22.0, 100.0, 99.0, 100.0, 99.0, 86.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_DvP51OaAUERkSlPY_default" href="BPSequenceFlow_ZvP51OaAUERkSlPX.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="134.0, 89.0, 134.0, 103.0, 150.0, 103.0, 150.0, 89.0" coords2="134.0, 89.0, 134.0, 103.0, 150.0, 103.0, 150.0, 89.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_pkf51OaAUERkSlPc_default" href="BPSequenceFlow_6kf51OaAUERkSlPb.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="221.0, 91.0, 221.0, 105.0, 244.0, 105.0, 244.0, 91.0" coords2="221.0, 91.0, 221.0, 105.0, 244.0, 105.0, 244.0, 91.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_xo_51OaAUERkSlPg_default" href="BPSequenceFlow_Ko_51OaAUERkSlPf.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="257.0, 42.0, 257.0, 45.0, 254.0, 45.0, 254.0, 59.0, 257.0, 59.0, 257.0, 76.0, 271.0, 76.0, 271.0, 59.0, 295.0, 59.0, 295.0, 45.0, 271.0, 45.0, 271.0, 42.0" coords2="257.0, 42.0, 257.0, 45.0, 254.0, 45.0, 254.0, 59.0, 257.0, 59.0, 257.0, 76.0, 271.0, 76.0, 271.0, 59.0, 295.0, 59.0, 295.0, 45.0, 271.0, 45.0, 271.0, 42.0" shape="poly" alt="Nei:Sequence Flow" id="areadiagram_map_Cf_51OaAUERkSlPk_default" href="BPSequenceFlow_Ef_51OaAUERkSlPj.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="362.0, 45.0, 362.0, 59.0, 421.0, 59.0, 421.0, 45.0" coords2="362.0, 45.0, 362.0, 59.0, 421.0, 59.0, 421.0, 45.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_TfAF1OaAUERkSlPo_default" href="BPSequenceFlow_1fAF1OaAUERkSlPn.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="284.0, 89.0, 284.0, 103.0, 421.0, 103.0, 421.0, 89.0" coords2="284.0, 89.0, 284.0, 103.0, 421.0, 103.0, 421.0, 89.0" shape="poly" alt="Ja:Sequence Flow" id="areadiagram_map_WoQF1OaAUERkSlPs_default" href="BPSequenceFlow_CoQF1OaAUERkSlPr.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="22.0, 291.0, 22.0, 305.0, 99.0, 305.0, 99.0, 291.0" coords2="22.0, 291.0, 22.0, 305.0, 99.0, 305.0, 99.0, 291.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_9bIF1OaAUERkSlP0_default" href="BPSequenceFlow_ebIF1OaAUERkSlPz.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="134.0, 305.0, 134.0, 318.0, 124.0, 318.0, 124.0, 319.0, 150.0, 319.0, 150.0, 305.0" coords2="134.0, 305.0, 134.0, 318.0, 124.0, 318.0, 124.0, 319.0, 150.0, 319.0, 150.0, 305.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_MnlF1OaAUERkSlQU_default" href="BPSequenceFlow_THlF1OaAUERkSlQT.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="221.0, 307.0, 221.0, 321.0, 244.0, 321.0, 244.0, 307.0" coords2="221.0, 307.0, 221.0, 321.0, 244.0, 321.0, 244.0, 307.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_w71F1OaAUERkSlQY_default" href="BPSequenceFlow_Xb1F1OaAUERkSlQX.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="257.0, 248.0, 257.0, 251.0, 254.0, 251.0, 254.0, 265.0, 257.0, 265.0, 257.0, 288.0, 271.0, 288.0, 271.0, 265.0, 322.0, 265.0, 322.0, 251.0, 271.0, 251.0, 271.0, 248.0" coords2="257.0, 248.0, 257.0, 251.0, 254.0, 251.0, 254.0, 265.0, 257.0, 265.0, 257.0, 288.0, 271.0, 288.0, 271.0, 265.0, 322.0, 265.0, 322.0, 251.0, 271.0, 251.0, 271.0, 248.0" shape="poly" alt="Nei:Sequence Flow" id="areadiagram_map_783V1OaAUERkSlSl_default" href="BPSequenceFlow_183V1OaAUERkSlSk.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="497.0, 79.0, 497.0, 93.0, 558.0, 93.0, 558.0, 79.0" coords2="497.0, 79.0, 497.0, 93.0, 558.0, 93.0, 558.0, 79.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_KTx11OaAUERkSlTf_default" href="BPSequenceFlow_oTx11OaAUERkSlTe.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="598.0, 77.0, 598.0, 91.0, 796.0, 91.0, 796.0, 77.0" coords2="598.0, 77.0, 598.0, 91.0, 796.0, 91.0, 796.0, 77.0" shape="poly" alt="Ja:Sequence Flow" id="areadiagram_map_6MV11OaAUERkSlTz_default" href="BPSequenceFlow_EMV11OaAUERkSlTy.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="571.0, 5.0, 571.0, 8.0, 568.0, 8.0, 568.0, 22.0, 571.0, 22.0, 571.0, 66.0, 585.0, 66.0, 585.0, 22.0, 796.0, 22.0, 796.0, 8.0, 585.0, 8.0, 585.0, 5.0" coords2="571.0, 5.0, 571.0, 8.0, 568.0, 8.0, 568.0, 22.0, 571.0, 22.0, 571.0, 66.0, 585.0, 66.0, 585.0, 22.0, 796.0, 22.0, 796.0, 8.0, 585.0, 8.0, 585.0, 5.0" shape="poly" alt="Nei:Sequence Flow" id="areadiagram_map_OED11OaAUERkSlUR_default" href="BPSequenceFlow_yED11OaAUERkSlUQ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="389.0, 251.0, 389.0, 265.0, 421.0, 265.0, 421.0, 251.0" coords2="389.0, 251.0, 389.0, 265.0, 421.0, 265.0, 421.0, 251.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_onwN1OaAUERkSlUd_default" href="BPSequenceFlow_zHwN1OaAUERkSlUc.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="284.0, 300.0, 284.0, 314.0, 421.0, 314.0, 421.0, 300.0" coords2="284.0, 300.0, 284.0, 314.0, 421.0, 314.0, 421.0, 300.0" shape="poly" alt="Ja:Sequence Flow" id="areadiagram_map_iBYN1OaAUERkSlUj_default" href="BPSequenceFlow_IBYN1OaAUERkSlUi.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="497.0, 303.0, 497.0, 317.0, 558.0, 317.0, 558.0, 303.0" coords2="497.0, 303.0, 497.0, 317.0, 558.0, 317.0, 558.0, 303.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_ZOkf1OaAUERkSlYU_default" href="BPSequenceFlow_6Okf1OaAUERkSlYT.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="571.0, 207.0, 571.0, 210.0, 568.0, 210.0, 568.0, 224.0, 571.0, 224.0, 571.0, 288.0, 585.0, 288.0, 585.0, 224.0, 796.0, 224.0, 796.0, 210.0, 585.0, 210.0, 585.0, 207.0" coords2="571.0, 207.0, 571.0, 210.0, 568.0, 210.0, 568.0, 224.0, 571.0, 224.0, 571.0, 288.0, 585.0, 288.0, 585.0, 224.0, 796.0, 224.0, 796.0, 210.0, 585.0, 210.0, 585.0, 207.0" shape="poly" alt="Dokument ikke ok:Sequence Flow" id="areadiagram_map_EK0f1OaAUERkSlYY_default" href="BPSequenceFlow_Hy0f1OaAUERkSlYX.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="598.0, 303.0, 598.0, 317.0, 796.0, 317.0, 796.0, 303.0" coords2="598.0, 303.0, 598.0, 317.0, 796.0, 317.0, 796.0, 303.0" shape="poly" alt="Dokument ok:Sequence Flow" id="areadiagram_map_W6if1OaAUERkSlYm_default" href="BPSequenceFlow_U6if1OaAUERkSlYl.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="796, 298, 816, 318" coords2="796, 298, 816, 318" shape="rect" alt=":End Event" id="areadiagram_map_WSgf1OaAUERkSlX1_default" href="BPEndEvent_WSgf1OaAUERkSlX2.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="796, 207, 816, 227" coords2="796, 207, 816, 227" shape="rect" alt=":End Event" id="areadiagram_map_0wAf1OaAUERkSlXt_default" href="BPEndEvent_0wAf1OaAUERkSlXu.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="558, 288, 598, 328" coords2="558, 288, 598, 328" shape="rect" alt=":Gateway" id="areadiagram_map_azvv1OaAUERkSlXl_default" href="BPGateway_Dzvv1OaAUERkSlXm.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="796, 72, 816, 92" coords2="796, 72, 816, 92" shape="rect" alt=":End Event" id="areadiagram_map_hUF11OaAUERkSlTq_default" href="BPEndEvent_JUF11OaAUERkSlTr.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="796, 5, 816, 25" coords2="796, 5, 816, 25" shape="rect" alt=":End Event" id="areadiagram_map_jA511OaAUERkSlTk_default" href="BPEndEvent_TA511OaAUERkSlTl.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="558, 66, 598, 106" coords2="558, 66, 598, 106" shape="rect" alt="Dokument ok?:Gateway" id="areadiagram_map_Rxu11OaAUERkSlTS_default" href="BPGateway_Jxu11OaAUERkSlTT.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="421, 298, 441, 318" coords2="421, 298, 441, 318" shape="rect" alt="Dokument ok:End Event" id="areadiagram_map_.YI11OaAUERkSlS6_default" href="BPEndEvent_BYI11OaAUERkSlS7.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="421, 248, 441, 268" coords2="421, 248, 441, 268" shape="rect" alt="Dokument ikke ok:End Event" id="areadiagram_map_oUQ11OaAUERkSlSy_default" href="BPEndEvent_YUQ11OaAUERkSlSz.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="421, 86, 441, 106" coords2="421, 86, 441, 106" shape="rect" alt="Dokument ok:End Event" id="areadiagram_map_xn751OaAUERkSlPL_default" href="BPEndEvent_xn751OaAUERkSlPM.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="421, 42, 441, 62" coords2="421, 42, 441, 62" shape="rect" alt="Dokumnet ikke ok:End Event" id="areadiagram_map_L1T51OaAUERkSlO__default" href="BPEndEvent_71T51OaAUERkSlPA.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="322, 238, 389, 278" coords2="322, 238, 389, 278" shape="rect" alt="Oppdater ePhorte:Task" id="areadiagram_map_FYB51OaAUERkSlOH_default" href="BPTask_lYB51OaAUERkSlOI.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="295, 32, 362, 72" coords2="295, 32, 362, 72" shape="rect" alt="Oppdater ePhorte:Task" id="areadiagram_map_k.u51OaAUERkSlN3_default" href="BPTask_k_u51OaAUERkSlN4.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="244, 288, 284, 328" coords2="244, 288, 284, 328" shape="rect" alt="Dokument ok?:Gateway" id="areadiagram_map_wuc51OaAUERkSlNX_default" href="BPGateway_wuc51OaAUERkSlNY.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="244, 76, 284, 116" coords2="244, 76, 284, 116" shape="rect" alt="Dokument ok?:Gateway" id="areadiagram_map_aEs51OaAUERkSlND_default" href="BPGateway_6Es51OaAUERkSlNE.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="150, 288, 221, 328" coords2="150, 288, 221, 328" shape="rect" alt="Sjekk dokument:Task" id="areadiagram_map_7EM51OaAUERkSlM7_default" href="BPTask_7EM51OaAUERkSlM8.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="150, 76, 221, 116" coords2="150, 76, 221, 116" shape="rect" alt="Sjekk dokument:Task" id="areadiagram_map_1Lk51OaAUERkSlMj_default" href="BPTask_1Lk51OaAUERkSlMk.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="114, 298, 134, 318" coords2="114, 298, 134, 318" shape="rect" alt=":Start Event" id="areadiagram_map_gpo51OaAUERkSlMb_default" href="BPStartEvent_gpo51OaAUERkSlMc.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="114, 83, 134, 103" coords2="114, 83, 134, 103" shape="rect" alt=":Start Event" id="areadiagram_map_Ymw51OaAUERkSlMN_default" href="BPStartEvent_4mw51OaAUERkSlMO.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="99, 227, 497, 390" coords2="99, 227, 497, 390" shape="rect" alt="Kontroll:Sub-Process" id="areadiagram_map_KU3Z1OaAUERkSlL3_default" href="BPSubProcess_GU3Z1OaAUERkSlL4.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 288, 22, 308" coords2="2, 288, 22, 308" shape="rect" alt=":Start Event" id="areadiagram_map_TG5Z1OaAUERkSlKW_default" href="BPStartEvent_zG5Z1OaAUERkSlKX.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="99, 12, 497, 175" coords2="99, 12, 497, 175" shape="rect" alt="Kontroll:Sub-Process" id="areadiagram_map_3.nZ1OaAUERkSlLd_default" href="BPSubProcess_v_nZ1OaAUERkSlLe.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 83, 22, 103" coords2="2, 83, 22, 103" shape="rect" alt=":Start Event" id="areadiagram_map_BmpZ1OaAUERkSlKI_default" href="BPStartEvent_RmpZ1OaAUERkSlKJ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="6" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="10%">
+<span class="TableHeaderText">ID</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP332</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsStart.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsStart.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPStartEvent_RmpZ1OaAUERkSlKJ.html" class="ItemLink">N/A : Message Trigger</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP334</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsStart.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsStart.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPStartEvent_zG5Z1OaAUERkSlKX.html" class="ItemLink">N/A : Message Trigger</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP338</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitySubProcessColl.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitySubProcessColl.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPSubProcess_v_nZ1OaAUERkSlLe.html" class="ItemLink">Kontroll : Embedded Sub-Process</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP338.BP336</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsStart.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsStart.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPStartEvent_4mw51OaAUERkSlMO.html" class="ItemLink">N/A : Start Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP338.BP337</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_1Lk51OaAUERkSlMk.html" class="ItemLink">Sjekk dokument : Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP338.BP338</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/GatewayExDescMergeDataBased.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/GatewayExDescMergeDataBased.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPGateway_6Es51OaAUERkSlNE.html" class="ItemLink">Dokument ok? : Data-Based Exclusive Decision/Merge (XOR)</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP338.BP341</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_k_u51OaAUERkSlN4.html" class="ItemLink">Oppdater ePhorte : Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP338.BP342</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_71T51OaAUERkSlPA.html" class="ItemLink">Dokumnet ikke ok : End Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP338.BP343</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_xn751OaAUERkSlPM.html" class="ItemLink">Dokument ok : End Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP340</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitySubProcessColl.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitySubProcessColl.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPSubProcess_GU3Z1OaAUERkSlL4.html" class="ItemLink">Kontroll : Embedded Sub-Process</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP340.BP338</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsStart.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsStart.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPStartEvent_gpo51OaAUERkSlMc.html" class="ItemLink">N/A : Start Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP340.BP339</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_7EM51OaAUERkSlM8.html" class="ItemLink">Sjekk dokument : Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP340.BP340</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/GatewayExDescMergeDataBased.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/GatewayExDescMergeDataBased.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPGateway_wuc51OaAUERkSlNY.html" class="ItemLink">Dokument ok? : Data-Based Exclusive Decision/Merge (XOR)</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP340.BP341</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_lYB51OaAUERkSlOI.html" class="ItemLink">Oppdater ePhorte : Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP340.BP346</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_YUQ11OaAUERkSlSz.html" class="ItemLink">Dokument ikke ok : End Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP340.BP347</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_BYI11OaAUERkSlS7.html" class="ItemLink">Dokument ok : End Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP345</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/GatewayExDescMergeDataBased.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/GatewayExDescMergeDataBased.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPGateway_Jxu11OaAUERkSlTT.html" class="ItemLink">Dokument ok? : Data-Based Exclusive Decision/Merge (XOR)</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP347</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_TA511OaAUERkSlTl.html" class="ItemLink">N/A : End Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP348</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_JUF11OaAUERkSlTr.html" class="ItemLink">N/A : End Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP359</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/GatewayExDescMergeDataBased.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/GatewayExDescMergeDataBased.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPGateway_Dzvv1OaAUERkSlXm.html" class="ItemLink">N/A : Data-Based Exclusive Decision/Merge (XOR)</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP360</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_0wAf1OaAUERkSlXu.html" class="ItemLink">N/A : End Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP361</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_WSgf1OaAUERkSlX2.html" class="ItemLink">N/A : End Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		Arkitekturopplæring i Arkivverket	</div>
+</body>
+</html>

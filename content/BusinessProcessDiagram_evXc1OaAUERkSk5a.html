@@ -1,0 +1,373 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Business Process Diagram - Blackboks 1</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		Arkitekturopplæring i Arkivverket	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Business Process Diagram - Blackboks 1		</span>
+<a onclick="javascript: showVpLink('Arkitekturopplæring i Arkivverket.vpp://diagram/evXc1OaAUERkSk5a', 'Blackboks 1\nArkitekturoppl&#xe6;ring i Arkivverket.vpp://diagram/evXc1OaAUERkSk5a', 'Blackboks 1', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|2.0|2.0|1270.0|150.0|BPPool_pwj81OaAUERkSk7O.html|BPPool_pwj81OaAUERkSk7O.html|Rwj81OaAUERkSk7N" id="optionRwj81OaAUERkSk7N">Kulturdepartementet : Pool</option>
+<option value="shape|93.0|82.0|20.0|20.0|BPStartEvent_tnM81OaAUERkSk6E.html|BPStartEvent_tnM81OaAUERkSk6E.html|lnM81OaAUERkSk6D" id="optionlnM81OaAUERkSk6D">Unnamed Start Event : Start Event</option>
+<option value="shape|176.0|72.0|86.0|40.0|BPTask_8cc81OaAUERkSk6K.html|BPTask_8cc81OaAUERkSk6K.html|ccc81OaAUERkSk6J" id="optionccc81OaAUERkSk6J">Klargjøre tippemidler : Task</option>
+<option value="shape|340.0|82.0|20.0|20.0|BPEndEvent_QnkC1OaAUERkSk9I.html|BPEndEvent_QnkC1OaAUERkSk9I.html|_HkC1OaAUERkSk9H" id="option_HkC1OaAUERkSk9H">Unnamed End Event : End Event</option>
+<option value="shape|2.0|238.0|1270.0|150.0|BPPool_Q5b81OaAUERkSk7y.html|BPPool_Q5b81OaAUERkSk7y.html|Q5b81OaAUERkSk7x" id="optionQ5b81OaAUERkSk7x">Arkivverket : Pool</option>
+<option value="shape|147.0|293.0|129.0|40.0|BPSubProcess_TPq81OaAUERkSk6c.html|BPSubProcess_TPq81OaAUERkSk6c.html|9Pq81OaAUERkSk6b" id="option9Pq81OaAUERkSk6b">Start tildelingsprosess : Sub-Process</option>
+<option value="shape|340.0|313.0|20.0|20.0|BPEndEvent_oJm81OaAUERkSk6m.html|BPEndEvent_oJm81OaAUERkSk6m.html|wJm81OaAUERkSk6l" id="optionwJm81OaAUERkSk6l">Unnamed End Event : End Event</option>
+<option value="shape|93.0|303.0|20.0|20.0|BPStartEvent_YK0C1OaAUERkSk9Q.html|BPStartEvent_YK0C1OaAUERkSk9Q.html|YK0C1OaAUERkSk9P" id="optionYK0C1OaAUERkSk9P">Unnamed Start Event : Start Event</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/Blackboks_1.png" usemap="#diagram_map" class="Image" width="1276" height="392"/>
+					<map name="diagram_map">
+<area imageId="diagram" coords="113.0, 87.0, 113.0, 101.0, 176.0, 101.0, 176.0, 87.0" coords2="113.0, 87.0, 113.0, 101.0, 176.0, 101.0, 176.0, 87.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_DI6C1OaAUERkSk92_default" href="BPSequenceFlow_hI6C1OaAUERkSk91.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="262.0, 88.0, 262.0, 102.0, 340.0, 102.0, 340.0, 88.0" coords2="262.0, 88.0, 262.0, 102.0, 340.0, 102.0, 340.0, 88.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_kL6C1OaAUERkSk96_default" href="BPSequenceFlow_fz6C1OaAUERkSk95.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="113.0, 310.0, 113.0, 323.0, 103.0, 323.0, 103.0, 324.0, 147.0, 324.0, 147.0, 310.0" coords2="113.0, 310.0, 113.0, 323.0, 103.0, 323.0, 103.0, 324.0, 147.0, 324.0, 147.0, 310.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_flGC1OaAUERkSk9._default" href="BPSequenceFlow_9lGC1OaAUERkSk99.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="276.0, 316.0, 276.0, 330.0, 340.0, 330.0, 340.0, 316.0" coords2="276.0, 316.0, 276.0, 330.0, 340.0, 330.0, 340.0, 316.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_8hmC1OaAUERkSk.C_default" href="BPSequenceFlow_4hmC1OaAUERkSk_B.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="343.0, 102.0, 343.0, 197.0, 110.0, 197.0, 110.0, 194.0, 96.0, 194.0, 96.0, 197.0, 93.0, 197.0, 93.0, 211.0, 96.0, 211.0, 96.0, 303.0, 110.0, 303.0, 110.0, 211.0, 343.0, 211.0, 343.0, 214.0, 357.0, 214.0, 357.0, 211.0, 360.0, 211.0, 360.0, 197.0, 357.0, 197.0, 357.0, 102.0" coords2="343.0, 102.0, 343.0, 197.0, 110.0, 197.0, 110.0, 194.0, 96.0, 194.0, 96.0, 197.0, 93.0, 197.0, 93.0, 211.0, 96.0, 211.0, 96.0, 303.0, 110.0, 303.0, 110.0, 211.0, 343.0, 211.0, 343.0, 214.0, 357.0, 214.0, 357.0, 211.0, 360.0, 211.0, 360.0, 197.0, 357.0, 197.0, 357.0, 102.0" shape="poly" alt="Tildelig tippemidler:Message Flow" id="areadiagram_map_VTxC1OaAUERkSk.Z_default" href="BPMessageFlow_hTxC1OaAUERkSk_Y.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="93, 303, 113, 323" coords2="93, 303, 113, 323" shape="rect" alt=":Start Event" id="areadiagram_map_YK0C1OaAUERkSk9P_default" href="BPStartEvent_YK0C1OaAUERkSk9Q.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="340, 82, 360, 102" coords2="340, 82, 360, 102" shape="rect" alt=":End Event" id="areadiagram_map__HkC1OaAUERkSk9H_default" href="BPEndEvent_QnkC1OaAUERkSk9I.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="147, 293, 276, 333" coords2="147, 293, 276, 333" shape="rect" alt="Start tildelingsprosess:Sub-Process" id="areadiagram_map_9Pq81OaAUERkSk6b_default" href="BPSubProcess_TPq81OaAUERkSk6c.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="340, 313, 360, 333" coords2="340, 313, 360, 333" shape="rect" alt=":End Event" id="areadiagram_map_wJm81OaAUERkSk6l_default" href="BPEndEvent_oJm81OaAUERkSk6m.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 238, 1272, 388" coords2="2, 238, 1272, 388" shape="rect" alt="Arkivverket:Pool" id="areadiagram_map_Q5b81OaAUERkSk7x_default" href="BPPool_Q5b81OaAUERkSk7y.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="93, 82, 113, 102" coords2="93, 82, 113, 102" shape="rect" alt=":Start Event" id="areadiagram_map_lnM81OaAUERkSk6D_default" href="BPStartEvent_tnM81OaAUERkSk6E.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="176, 72, 262, 112" coords2="176, 72, 262, 112" shape="rect" alt="Klargjøre tippemidler:Task" id="areadiagram_map_ccc81OaAUERkSk6J_default" href="BPTask_8cc81OaAUERkSk6K.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 2, 1272, 152" coords2="2, 2, 1272, 152" shape="rect" alt="Kulturdepartementet:Pool" id="areadiagram_map_Rwj81OaAUERkSk7N_default" href="BPPool_pwj81OaAUERkSk7O.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="6" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="10%">
+<span class="TableHeaderText">ID</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP304</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/SwimlanePool.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/SwimlanePool.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPPool_pwj81OaAUERkSk7O.html" class="ItemLink">Kulturdepartementet : Pool</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP304.BP01</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsStart.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsStart.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPStartEvent_tnM81OaAUERkSk6E.html" class="ItemLink">N/A : Start Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP304.BP02</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_8cc81OaAUERkSk6K.html" class="ItemLink">Klargjøre tippemidler : Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP304.BP05</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_QnkC1OaAUERkSk9I.html" class="ItemLink">N/A : Message Result</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP305</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/SwimlanePool.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/SwimlanePool.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPPool_Q5b81OaAUERkSk7y.html" class="ItemLink">Arkivverket : Pool</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP305.BP01</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitySubProcessColl.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitySubProcessColl.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPSubProcess_TPq81OaAUERkSk6c.html" class="ItemLink">Start tildelingsprosess : Sub-Process</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP305.BP02</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_oJm81OaAUERkSk6m.html" class="ItemLink">N/A : End Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP305.BP04</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsStart.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsStart.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPStartEvent_YK0C1OaAUERkSk9Q.html" class="ItemLink">N/A : Message Trigger</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		Arkitekturopplæring i Arkivverket	</div>
+</body>
+</html>
