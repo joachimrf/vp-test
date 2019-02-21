@@ -27,20 +27,16 @@
   <!-- 5 include the minified jstree source -->
   <script src="dist/jstree.min.js"></script>
   <script>
-  $(function () {
-    // 6 create an instance when the DOM is ready
-    $('#jstree').jstree();
-    // 7 bind to events triggered on the tree
-    $('#jstree').on("changed.jstree", function (e, data) {
-      console.log(data.selected);
-    });
-    // 8 interact with the tree - either way is OK
-    $('button').on('click', function () {
-      $('#jstree').jstree(true).select_node('child_node_1');
-      $('#jstree').jstree('select_node', 'child_node_1');
-      $.jstree.reference('#jstree').select_node('child_node_1');
-    });
-  });
+//get list of all children of current parent node. returns an array of ids. 
+    var childrens = $("#js-tree").jstree("get_node", parent).children_d;
+    //check if childrens exist
+    if (childrens) {
+        //loop through the children list to find the existing child node with same name
+        for (var j = 0; j < childrens.length; j++) {
+            if ($("#js-tree").jstree("get_node", childrens[j]).text == folderList[i]) {
+                existingNodeID = childrens[j];
+            }
+        }
   </script>
 </body>
 </html>
