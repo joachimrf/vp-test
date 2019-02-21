@@ -2,41 +2,10 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>jsTree test</title>
-  <!-- 2 load the theme CSS file -->
-  <link rel="stylesheet" href="dist/themes/default/style.min.css" />
+  <title>Prosjekter</title>
+
 </head>
 <body>
-  <!-- 3 setup a container element -->
-  <div id="jstree">
-    <!-- in this example the tree is populated from inline HTML -->
-    <ul>
-      <li>Root node 1
-        <ul>
-          <li id="child_node_1">Child node 1</li>
-          <li>Child node 2</li>
-        </ul>
-      </li>
-      <li>Root node 2</li>
-    </ul>
-  </div>
-  <button>demo button</button>
 
-  <!-- 4 include the jQuery library -->
-  <script src="dist/libs/jquery.js"></script>
-  <!-- 5 include the minified jstree source -->
-  <script src="dist/jstree.min.js"></script>
-  <script>
-//get list of all children of current parent node. returns an array of ids. 
-    var childrens = $("#js-tree").jstree("get_node", parent).children_d;
-    //check if childrens exist
-    if (childrens) {
-        //loop through the children list to find the existing child node with same name
-        for (var j = 0; j < childrens.length; j++) {
-            if ($("#js-tree").jstree("get_node", childrens[j]).text == folderList[i]) {
-                existingNodeID = childrens[j];
-            }
-        }
-  </script>
 </body>
 </html>
