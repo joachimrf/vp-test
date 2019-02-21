@@ -1,0 +1,1392 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>ArchiMate Diagram - Behov og krav</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		Digitalarkivet som løsning	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+<a href="Model_dp7V6OaAUERkSh5g.html" class="PageParentTitle">ArchiMate - System Software : Model</a>	</p>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			ArchiMate Diagram - Behov og krav		</span>
+<a onclick="javascript: showVpLink('Digitalarkivet som løsning.vpp://diagram/H8Ngg.aAUERkSgiN', 'Behov og krav\nDigitalarkivet som l&#xf8;sning.vpp://diagram/H8Ngg.aAUERkSgiN', 'Behov og krav', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|3523.0|151.0|76.0|43.0|ArchiMateRequirement_4njqU_aAUERkShSB.html|ArchiMateRequirement_4njqU_aAUERkShSB.html|onjqU.aAUERkShSA" id="optiononjqU.aAUERkShSA">Kunne maskere deler av materiale : Requirement</option>
+<option value="shape|4019.0|237.0|67.0|28.0|ArchiMateRequirement_fOORY_aAUERkShOj.html|ArchiMateRequirement_fOORY_aAUERkShOj.html|fOORY.aAUERkShOi" id="optionfOORY.aAUERkShOi">Video/lyd : Requirement</option>
+<option value="shape|3919.0|237.0|67.0|28.0|ArchiMateRequirement_gO6RY_aAUERkShOQ.html|ArchiMateRequirement_gO6RY_aAUERkShOQ.html|AO6RY.aAUERkShOP" id="optionAO6RY.aAUERkShOP">Foto : Requirement</option>
+<option value="shape|1759.0|215.0|67.0|43.0|ArchiMateRequirement_JduBY_aAUERkShMu.html|ArchiMateRequirement_JduBY_aAUERkShMu.html|JduBY.aAUERkShMt" id="optionJduBY.aAUERkShMt">Elektroniske dokument : Requirement</option>
+<option value="shape|1615.0|215.0|67.0|43.0|ArchiMateRequirement_BpGBY_aAUERkShMk.html|ArchiMateRequirement_BpGBY_aAUERkShMk.html|.pGBY.aAUERkShMj" id="option.pGBY.aAUERkShMj">Digitaliserte dokument : Requirement</option>
+<option value="shape|1966.0|113.0|85.0|43.0|ArchiMateRequirement_Rif_Y_aAUERkShMG.html|ArchiMateRequirement_Rif_Y_aAUERkShMG.html|Bif.Y.aAUERkShMF" id="optionBif.Y.aAUERkShMF">Automatisering av arbeidsoppgaver : Requirement</option>
+<option value="shape|1836.0|113.0|67.0|43.0|ArchiMateRequirement_ISL_Y_aAUERkShL8.html|ArchiMateRequirement_ISL_Y_aAUERkShL8.html|ISL.Y.aAUERkShL7" id="optionISL.Y.aAUERkShL7">Ny statistikk av bruk : Requirement</option>
+<option value="shape|1695.0|113.0|67.0|43.0|ArchiMateRequirement_Fc9_Y_aAUERkShLw.html|ArchiMateRequirement_Fc9_Y_aAUERkShLw.html|5c9.Y.aAUERkShLv" id="option5c9.Y.aAUERkShLv">OCR lesing : Requirement</option>
+<option value="shape|1366.0|215.0|67.0|43.0|ArchiMateRequirement_Qs6eY_aAUERkShJZ.html|ArchiMateRequirement_Qs6eY_aAUERkShJZ.html|gs6eY.aAUERkShJY" id="optiongs6eY.aAUERkShJY">Se hvor materiale kommer fra : Requirement</option>
+<option value="shape|1240.0|215.0|80.0|43.0|ArchiMateRequirement_5tieY_aAUERkShJN.html|ArchiMateRequirement_5tieY_aAUERkShJN.html|5tieY.aAUERkShJM" id="option5tieY.aAUERkShJM">For forskere : Requirement</option>
+<option value="shape|1123.0|217.0|79.0|41.0|ArchiMateRequirement_d0MeY_aAUERkShJD.html|ArchiMateRequirement_d0MeY_aAUERkShJD.html|d0MeY.aAUERkShJC" id="optiond0MeY.aAUERkShJC">For lekmann : Requirement</option>
+<option value="shape|1007.0|215.0|78.0|43.0|ArchiMateRequirement__14eY_aAUERkShI5.html|ArchiMateRequirement__14eY_aAUERkShI5.html|_14eY.aAUERkShI4" id="option_14eY.aAUERkShI4">For arkivarer : Requirement</option>
+<option value="shape|1364.0|113.0|72.0|43.0|ArchiMateRequirement_hP3uY_aAUERkShIl.html|ArchiMateRequirement_hP3uY_aAUERkShIl.html|hP3uY.aAUERkShIk" id="optionhP3uY.aAUERkShIk">Opphav for matriale : Requirement</option>
+<option value="shape|1111.0|113.0|92.0|43.0|ArchiMateRequirement_IOHuY_aAUERkShIf.html|ArchiMateRequirement_IOHuY_aAUERkShIf.html|IOHuY.aAUERkShIe" id="optionIOHuY.aAUERkShIe">Søkefunksjonalitet : Requirement</option>
+<option value="shape|315.0|215.0|84.0|43.0|ArchiMateRequirement_jHzOY_aAUERkShGn.html|ArchiMateRequirement_jHzOY_aAUERkShGn.html|DHzOY.aAUERkShGm" id="optionDHzOY.aAUERkShGm">Brukerveiledning : Requirement</option>
+<option value="shape|205.0|215.0|67.0|43.0|ArchiMateRequirement_pBtOY_aAUERkShGh.html|ArchiMateRequirement_pBtOY_aAUERkShGh.html|pBtOY.aAUERkShGg" id="optionpBtOY.aAUERkShGg">Opplæring : Requirement</option>
+<option value="shape|254.0|113.0|81.0|43.0|ArchiMateRequirement_RtZOY_aAUERkShGN.html|ArchiMateRequirement_RtZOY_aAUERkShGN.html|RtZOY.aAUERkShGM" id="optionRtZOY.aAUERkShGM">Avtale : Requirement</option>
+<option value="shape|95.0|215.0|98.0|43.0|ArchiMateRequirement_OzuOY_aAUERkShF_.html|ArchiMateRequirement_OzuOY_aAUERkShF_.html|2zuOY.aAUERkShF." id="option2zuOY.aAUERkShF.">Enkelt og intuativt : Requirement</option>
+<option value="shape|122.0|113.0|67.0|43.0|ArchiMateRequirement_yNyOY_aAUERkShFt.html|ArchiMateRequirement_yNyOY_aAUERkShFt.html|SNyOY.aAUERkShFs" id="optionSNyOY.aAUERkShFs">Grensesnitt opplasting av materiale : Requirement</option>
+<option value="shape|1.0|113.0|79.0|43.0|ArchiMateRequirement_K0EOY_aAUERkShFh.html|ArchiMateRequirement_K0EOY_aAUERkShFh.html|y0EOY.aAUERkShFg" id="optiony0EOY.aAUERkShFg">Emneknagger : Requirement</option>
+<option value="shape|3836.0|266.0|67.0|43.0|ArchiMateRequirement_VBmKY_aAUERkShDr.html|ArchiMateRequirement_VBmKY_aAUERkShDr.html|lBmKY.aAUERkShDq" id="optionlBmKY.aAUERkShDq">Alt type av materiale : Requirement</option>
+<option value="shape|2641.0|216.0|67.0|43.0|ArchiMateRequirement_FzPyY_aAUERkShCz.html|ArchiMateRequirement_FzPyY_aAUERkShCz.html|FzPyY.aAUERkShCy" id="optionFzPyY.aAUERkShCy">Fra kamra til tilgjengeliggjøring : Requirement</option>
+<option value="shape|2507.0|216.0|67.0|43.0|ArchiMateRequirement__ZbyY_aAUERkShCn.html|ArchiMateRequirement__ZbyY_aAUERkShCn.html|.ZbyY.aAUERkShCm" id="option.ZbyY.aAUERkShCm">Digitaliser on demand : Requirement</option>
+<option value="shape|3088.0|317.0|97.0|53.0|ArchiMateRequirement_ADIyY_aAUERkShCJ.html|ArchiMateRequirement_ADIyY_aAUERkShCJ.html|ADIyY.aAUERkShCI" id="optionADIyY.aAUERkShCI">Delta i nasjonale eller inetnasjonale nettverk : Requirement</option>
+<option value="shape|2714.0|317.0|89.0|33.0|ArchiMateRequirement_AMBiY_aAUERkShBY.html|ArchiMateRequirement_AMBiY_aAUERkShBY.html|_0BiY.aAUERkShBX" id="option_0BiY.aAUERkShBX">Tilgjengliggjør private arkiver : Requirement</option>
+<option value="shape|3964.0|151.0|67.0|43.0|ArchiMateRequirement_S1dCY_aAUERkShBO.html|ArchiMateRequirement_S1dCY_aAUERkShBO.html|i1dCY.aAUERkShBN" id="optioni1dCY.aAUERkShBN">Digitalt skapt : Requirement</option>
+<option value="shape|3701.0|266.0|67.0|43.0|ArchiMateRequirement_EdksY_aAUERkShAo.html|ArchiMateRequirement_EdksY_aAUERkShAo.html|4dksY.aAUERkShAn" id="option4dksY.aAUERkShAn">Sluttbruker skal finne alt i en inngang : Requirement</option>
+<option value="shape|3768.0|146.0|67.0|43.0|ArchiMateRequirement_07gsY_aAUERkShAa.html|ArchiMateRequirement_07gsY_aAUERkShAa.html|k7gsY.aAUERkShAZ" id="optionk7gsY.aAUERkShAZ">En inngang til arkivene : Requirement</option>
+<option value="shape|569.0|307.0|87.0|43.0|ArchiMateRequirement_DdTUY_aAUERkSg_F.html|ArchiMateRequirement_DdTUY_aAUERkSg_F.html|DdTUY.aAUERkSg_E" id="optionDdTUY.aAUERkSg_E">Parkeringsplass digitaliserte enkeltdokument : Requirement</option>
+<option value="shape|579.0|217.0|69.0|41.0|ArchiMateRequirement_A_FUY_aAUERkSg__.html|ArchiMateRequirement_A_FUY_aAUERkSg__.html|_fFUY.aAUERkSg.." id="option_fFUY.aAUERkSg..">Håndtere henvendelser : Requirement</option>
+<option value="shape|422.0|217.0|110.0|41.0|ArchiMateRequirement_6l_UY_aAUERkSg_1.html|ArchiMateRequirement_6l_UY_aAUERkSg_1.html|Kl.UY.aAUERkSg.0" id="optionKl.UY.aAUERkSg.0">Veiledning arkivskapere : Requirement</option>
+<option value="shape|3301.0|241.0|78.0|43.0|ArchiMateRequirement_SBjVo_aAUERkSg94.html|ArchiMateRequirement_SBjVo_aAUERkSg94.html|iBjVo.aAUERkSg93" id="optioniBjVo.aAUERkSg93">Tilgang brukergrupper : Requirement</option>
+<option value="shape|3487.0|241.0|79.0|43.0|ArchiMateRequirement_1SXlo_aAUERkSg9c.html|ArchiMateRequirement_1SXlo_aAUERkSg9c.html|1SXlo.aAUERkSg9b" id="option1SXlo.aAUERkSg9b">Tilgjengelighet for klausulert matereiale : Requirement</option>
+<option value="shape|3399.0|241.0|71.0|43.0|ArchiMateRequirement_EqFFo_aAUERkSg82.html|ArchiMateRequirement_EqFFo_aAUERkSg82.html|4qFFo.aAUERkSg81" id="option4qFFo.aAUERkSg81">Arkivskaper gir brukernavn og passord : Requirement</option>
+<option value="shape|3389.0|151.0|80.0|43.0|ArchiMateRequirement_Q_6Fo_aAUERkSg8s.html|ArchiMateRequirement_Q_6Fo_aAUERkSg8s.html|A.6Fo.aAUERkSg8r" id="optionA.6Fo.aAUERkSg8r">Tilgangsløsning : Requirement</option>
+<option value="shape|2160.0|340.0|67.0|35.0|ArchiMateRequirement_T2w_o_aAUERkSg6g.html|ArchiMateRequirement_T2w_o_aAUERkSg6g.html|D2w.o.aAUERkSg6f" id="optionD2w.o.aAUERkSg6f">Adobe Lightroom (exif) : Requirement</option>
+<option value="shape|2301.0|340.0|86.0|35.0|ArchiMateRequirement_agMeo_aAUERkSg6K.html|ArchiMateRequirement_agMeo_aAUERkSg6K.html|agMeo.aAUERkSg6J" id="optionagMeo.aAUERkSg6J">Masseredigering metadata : Requirement</option>
+<option value="shape|1937.0|340.0|75.0|35.0|ArchiMateRequirement_go9uo_aAUERkSg5s.html|ArchiMateRequirement_go9uo_aAUERkSg5s.html|Ao9uo.aAUERkSg5r" id="optionAo9uo.aAUERkSg5r">Sikker lagring klausulert materiale : Requirement</option>
+<option value="shape|1941.0|215.0|71.0|43.0|ArchiMateRequirement_ghKmo_aAUERkSg3_.html|ArchiMateRequirement_ghKmo_aAUERkSg3_.html|ghKmo.aAUERkSg39" id="optionghKmo.aAUERkSg39">Lagring : Requirement</option>
+<option value="shape|3010.0|317.0|67.0|28.0|ArchiMateRequirement_cBA6o_aAUERkSg1A.html|ArchiMateRequirement_cBA6o_aAUERkSg1A.html|cBA6o.aAUERkSg0_" id="optioncBA6o.aAUERkSg0_">Crowdsourcing : Requirement</option>
+<option value="shape|3017.0|215.0|71.0|43.0|ArchiMateRequirement_VTFao_aAUERkSg02.html|ArchiMateRequirement_VTFao_aAUERkSg02.html|VTFao.aAUERkSg01" id="optionVTFao.aAUERkSg01">Deling av kunnskap : Requirement</option>
+<option value="shape|750.0|364.0|94.0|47.0|ArchiMateRequirement_T_Sqo_aAUERkSgzW.html|ArchiMateRequirement_T_Sqo_aAUERkSgzW.html|T_Sqo.aAUERkSgzV" id="optionT_Sqo.aAUERkSgzV">Link for lokal veiledningstjeneste : Requirement</option>
+<option value="shape|265.0|648.0|74.0|35.0|ArchiMateRequirement_3kiKo_aAUERkSgyE.html|ArchiMateRequirement_3kiKo_aAUERkSgyE.html|3kiKo.aAUERkSgyD" id="option3kiKo.aAUERkSgyD">Bedre bruk av Arkivportalen : Requirement</option>
+<option value="shape|139.0|648.0|74.0|35.0|ArchiMateRequirement_27gKo_aAUERkSgxy.html|ArchiMateRequirement_27gKo_aAUERkSgxy.html|27gKo.aAUERkSgxx" id="option27gKo.aAUERkSgxx">Bedre bruk av ASTA : Requirement</option>
+<option value="shape|201.0|545.0|71.0|40.0|ArchiMateRequirement_U3tyo_aAUERkSgxK.html|ArchiMateRequirement_U3tyo_aAUERkSgxK.html|k3tyo.aAUERkSgxJ" id="optionk3tyo.aAUERkSgxJ">Tilknyttede portaler : Requirement</option>
+<option value="shape|297.0|546.0|71.0|40.0|ArchiMateRequirement_96Fyo_aAUERkSgw_.html|ArchiMateRequirement_96Fyo_aAUERkSgw_.html|96Fyo.aAUERkSgw9" id="option96Fyo.aAUERkSgw9">Stabilelenker : Requirement</option>
+<option value="shape|95.0|548.0|71.0|43.0|ArchiMateRequirement_Pk_So_aAUERkSgw4.html|ArchiMateRequirement_Pk_So_aAUERkSgw4.html|Xk_So.aAUERkSgw3" id="optionXk_So.aAUERkSgw3">Kontinuitet i satsning på Digitalarkivet : Requirement</option>
+<option value="shape|827.0|307.0|74.0|43.0|ArchiMateRequirement_yS5sg_aAUERkSgud.html|ArchiMateRequirement_yS5sg_aAUERkSgud.html|yS5sg.aAUERkSguc" id="optionyS5sg.aAUERkSguc">Merking av opphav : Requirement</option>
+<option value="shape|677.0|307.0|73.0|43.0|ArchiMateRequirement_qyysg_aAUERkSgtf.html|ArchiMateRequirement_qyysg_aAUERkSgtf.html|qyysg.aAUERkSgte" id="optionqyysg.aAUERkSgte">Rute bruker til rett kontaktpunkt : Requirement</option>
+<option value="shape|756.0|217.0|71.0|41.0|ArchiMateRequirement_hr0sg_aAUERkSgtP.html|ArchiMateRequirement_hr0sg_aAUERkSgtP.html|Br0sg.aAUERkSgtO" id="optionBr0sg.aAUERkSgtO">Kontaktpunkt : Requirement</option>
+<option value="shape|2450.0|340.0|67.0|35.0|ArchiMateRequirement_oQyMg_aAUERkSgsY.html|ArchiMateRequirement_oQyMg_aAUERkSgsY.html|oQyMg.aAUERkSgsX" id="optionoQyMg.aAUERkSgsX">Geodata : Requirement</option>
+<option value="shape|2370.0|215.0|71.0|43.0|ArchiMateRequirement_oo4Mg_aAUERkSgsA.html|ArchiMateRequirement_oo4Mg_aAUERkSgsA.html|oo4Mg.aAUERkSgr_" id="optionoo4Mg.aAUERkSgr_">Tagging : Requirement</option>
+<option value="shape|2046.0|340.0|67.0|35.0|ArchiMateRequirement_LUG0g_aAUERkSgrY.html|ArchiMateRequirement_LUG0g_aAUERkSgrY.html|LUG0g.aAUERkSgrX" id="optionLUG0g.aAUERkSgrX">Enkelt å håndtere metadata : Requirement</option>
+<option value="shape|2097.0|216.0|71.0|43.0|ArchiMateRequirement_d5E0g_aAUERkSgrS.html|ArchiMateRequirement_d5E0g_aAUERkSgrS.html|t5E0g.aAUERkSgrR" id="optiont5E0g.aAUERkSgrR">Metadata : Requirement</option>
+<option value="shape|2249.0|216.0|71.0|43.0|ArchiMateRequirement_YUA0g_aAUERkSgrC.html|ArchiMateRequirement_YUA0g_aAUERkSgrC.html|YUA0g.aAUERkSgrB" id="optionYUA0g.aAUERkSgrB">Bevaring : Requirement</option>
+<option value="shape|2909.0|317.0|91.0|28.0|ArchiMateRequirement_L3uUg_aAUERkSgpv.html|ArchiMateRequirement_L3uUg_aAUERkSgpv.html|L3uUg.aAUERkSgpu" id="optionL3uUg.aAUERkSgpu">Tilgjengeliggjøring : Requirement</option>
+<option value="shape|2818.0|317.0|77.0|28.0|ArchiMateRequirement_g82Ug_aAUERkSgpj.html|ArchiMateRequirement_g82Ug_aAUERkSgpj.html|A82Ug.aAUERkSgpi" id="optionA82Ug.aAUERkSgpi">Skanning : Requirement</option>
+<option value="shape|2862.0|215.0|79.0|43.0|ArchiMateRequirement_whEUg_aAUERkSgoz.html|ArchiMateRequirement_whEUg_aAUERkSgoz.html|whEUg.aAUERkSgoy" id="optionwhEUg.aAUERkSgoy">Felles kvalitetsrutiner  : Requirement</option>
+<option value="shape|2742.0|216.0|71.0|43.0|ArchiMateRequirement_qiAUg_aAUERkSgoj.html|ArchiMateRequirement_qiAUg_aAUERkSgoj.html|qiAUg.aAUERkSgoi" id="optionqiAUg.aAUERkSgoi">Arkivskaper står selv for kvalitet : Requirement</option>
+<option value="shape|177.0|449.0|109.0|28.0|ArchiMateRequirement_mwr4g_aAUERkSgoW.html|ArchiMateRequirement_mwr4g_aAUERkSgoW.html|Gwr4g.aAUERkSgoV" id="optionGwr4g.aAUERkSgoV">Krav ikke knyttet til Digitalarkivet : Requirement</option>
+<option value="shape|736.0|113.0|109.0|43.0|ArchiMateRequirement_vcd4g_aAUERkSgoJ.html|ArchiMateRequirement_vcd4g_aAUERkSgoJ.html|vcd4g.aAUERkSgoI" id="optionvcd4g.aAUERkSgoI">Synlighet : Requirement</option>
+<option value="shape|2850.0|113.0|109.0|28.0|ArchiMateRequirement_osV4g_aAUERkSgn9.html|ArchiMateRequirement_osV4g_aAUERkSgn9.html|IsV4g.aAUERkSgn8" id="optionIsV4g.aAUERkSgn8">Kvalitet : Requirement</option>
+<option value="shape|2164.0|113.0|84.0|43.0|ArchiMateRequirement_oop4g_aAUERkSgn1.html|ArchiMateRequirement_oop4g_aAUERkSgn1.html|Iop4g.aAUERkSgn0" id="optionIop4g.aAUERkSgn0">Data : Requirement</option>
+<option value="shape|2551.0|113.0|109.0|43.0|ArchiMateRequirement_MzB4g_aAUERkSgnv.html|ArchiMateRequirement_MzB4g_aAUERkSgnv.html|MzB4g.aAUERkSgnu" id="optionMzB4g.aAUERkSgnu">Muligheter : Requirement</option>
+<option value="shape|3861.0|48.0|109.0|28.0|ArchiMateRequirement_FsK4g_aAUERkSgnj.html|ArchiMateRequirement_FsK4g_aAUERkSgnj.html|5sK4g.aAUERkSgni" id="option5sK4g.aAUERkSgni">5 Ett Digitalarkiv : Requirement</option>
+<option value="shape|3449.0|48.0|109.0|28.0|ArchiMateRequirement_Db84g_aAUERkSgnd.html|ArchiMateRequirement_Db84g_aAUERkSgnd.html|Db84g.aAUERkSgnc" id="optionDb84g.aAUERkSgnc">4 Tilgangskontroll : Requirement</option>
+<option value="shape|495.0|113.0|109.0|43.0|ArchiMateRequirement_ZSk4g_aAUERkSgnQ.html|ArchiMateRequirement_ZSk4g_aAUERkSgnQ.html|ZSk4g.aAUERkSgnP" id="optionZSk4g.aAUERkSgnP">Veiledning : Requirement</option>
+<option value="shape|2097.0|2.0|109.0|28.0|ArchiMateRequirement_ubw4g_aAUERkSgnC.html|ArchiMateRequirement_ubw4g_aAUERkSgnC.html|ubw4g.aAUERkSgnB" id="optionubw4g.aAUERkSgnB">3 Prosess : Requirement</option>
+<option value="shape|1255.0|8.0|109.0|28.0|ArchiMateRequirement_dBPYg_aAUERkSgm2.html|ArchiMateRequirement_dBPYg_aAUERkSgm2.html|tBPYg.aAUERkSgm1" id="optiontBPYg.aAUERkSgm1">2 Publikum : Requirement</option>
+<option value="shape|343.0|8.0|109.0|28.0|ArchiMateRequirement_4o7Yg_aAUERkSgmi.html|ArchiMateRequirement_4o7Yg_aAUERkSgmi.html|4o7Yg.aAUERkSgmh" id="option4o7Yg.aAUERkSgmh">1 Arkivskapere : Requirement</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/Behov_og_krav.png" usemap="#diagram_map" class="Image" width="4090" height="686"/>
+					<map name="diagram_map">
+<area coords="3220,531,3301,546" coords2="3220,531,3301,546" shape="rect" alt="masseredigering" href="GridDiagram_fD0feRaAUEQYtpd5.html#1RaLeRaAUEQYtlvP" onclick="javascript: highlightGridModelSelection('1RaLeRaAUEQYtlvP');"/>
+<area imageId="diagram" coords="2858.0, 141.0, 2858.0, 187.0, 2784.0, 187.0, 2784.0, 184.0, 2770.0, 184.0, 2770.0, 187.0, 2767.0, 187.0, 2767.0, 201.0, 2770.0, 201.0, 2770.0, 216.0, 2784.0, 216.0, 2784.0, 201.0, 2858.0, 201.0, 2858.0, 204.0, 2872.0, 204.0, 2872.0, 201.0, 2875.0, 201.0, 2875.0, 187.0, 2872.0, 187.0, 2872.0, 141.0" coords2="2858.0, 141.0, 2858.0, 187.0, 2784.0, 187.0, 2784.0, 184.0, 2770.0, 184.0, 2770.0, 187.0, 2767.0, 187.0, 2767.0, 201.0, 2770.0, 201.0, 2770.0, 216.0, 2784.0, 216.0, 2784.0, 201.0, 2858.0, 201.0, 2858.0, 204.0, 2872.0, 204.0, 2872.0, 201.0, 2875.0, 201.0, 2875.0, 187.0, 2872.0, 187.0, 2872.0, 141.0" shape="poly" alt=":Aggregation" id="areadiagram_map_cYaUg.aAUERkSgpJ_default" href="ArchiMateAggregation_YYaUg_aAUERkSgpI.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2895.0, 141.0, 2895.0, 215.0, 2909.0, 215.0, 2909.0, 141.0" coords2="2895.0, 141.0, 2895.0, 215.0, 2909.0, 215.0, 2909.0, 141.0" shape="poly" alt=":Aggregation" id="areadiagram_map_4SGUg.aAUERkSgpV_default" href="ArchiMateAggregation__iGUg_aAUERkSgpU.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2876.0, 258.0, 2876.0, 297.0, 2860.0, 297.0, 2860.0, 294.0, 2846.0, 294.0, 2846.0, 297.0, 2843.0, 297.0, 2843.0, 311.0, 2846.0, 311.0, 2846.0, 317.0, 2860.0, 317.0, 2860.0, 311.0, 2876.0, 311.0, 2876.0, 314.0, 2890.0, 314.0, 2890.0, 311.0, 2893.0, 311.0, 2893.0, 297.0, 2890.0, 297.0, 2890.0, 258.0" coords2="2876.0, 258.0, 2876.0, 297.0, 2860.0, 297.0, 2860.0, 294.0, 2846.0, 294.0, 2846.0, 297.0, 2843.0, 297.0, 2843.0, 311.0, 2846.0, 311.0, 2846.0, 317.0, 2860.0, 317.0, 2860.0, 311.0, 2876.0, 311.0, 2876.0, 314.0, 2890.0, 314.0, 2890.0, 311.0, 2893.0, 311.0, 2893.0, 297.0, 2890.0, 297.0, 2890.0, 258.0" shape="poly" alt=":Aggregation" id="areadiagram_map_AhJUg.aAUERkSgqF_default" href="ArchiMateAggregation_jBJUg_aAUERkSgqE.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2918.0, 258.0, 2918.0, 297.0, 2915.0, 297.0, 2915.0, 311.0, 2918.0, 311.0, 2918.0, 314.0, 2932.0, 314.0, 2932.0, 311.0, 2936.0, 311.0, 2936.0, 317.0, 2950.0, 317.0, 2950.0, 311.0, 2953.0, 311.0, 2953.0, 297.0, 2950.0, 297.0, 2950.0, 294.0, 2936.0, 294.0, 2936.0, 297.0, 2932.0, 297.0, 2932.0, 258.0" coords2="2918.0, 258.0, 2918.0, 297.0, 2915.0, 297.0, 2915.0, 311.0, 2918.0, 311.0, 2918.0, 314.0, 2932.0, 314.0, 2932.0, 311.0, 2936.0, 311.0, 2936.0, 317.0, 2950.0, 317.0, 2950.0, 311.0, 2953.0, 311.0, 2953.0, 297.0, 2950.0, 297.0, 2950.0, 294.0, 2936.0, 294.0, 2936.0, 297.0, 2932.0, 297.0, 2932.0, 258.0" shape="poly" alt=":Aggregation" id="areadiagram_map_ontUg.aAUERkSgq6_default" href="ArchiMateAggregation_nHtUg_aAUERkSgq5.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2120.0, 259.0, 2120.0, 350.0, 2113.0, 350.0, 2113.0, 364.0, 2120.0, 364.0, 2120.0, 367.0, 2134.0, 367.0, 2134.0, 364.0, 2137.0, 364.0, 2137.0, 350.0, 2134.0, 350.0, 2134.0, 259.0" coords2="2120.0, 259.0, 2120.0, 350.0, 2113.0, 350.0, 2113.0, 364.0, 2120.0, 364.0, 2120.0, 367.0, 2134.0, 367.0, 2134.0, 364.0, 2137.0, 364.0, 2137.0, 350.0, 2134.0, 350.0, 2134.0, 259.0" shape="poly" alt=":Aggregation" id="areadiagram_map_ilR0g.aAUERkSgrs_default" href="ArchiMateAggregation_ElR0g_aAUERkSgrr.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2179.0, 156.0, 2179.0, 197.0, 2140.0, 197.0, 2140.0, 194.0, 2126.0, 194.0, 2126.0, 197.0, 2123.0, 197.0, 2123.0, 211.0, 2126.0, 211.0, 2126.0, 216.0, 2140.0, 216.0, 2140.0, 211.0, 2179.0, 211.0, 2179.0, 214.0, 2193.0, 214.0, 2193.0, 211.0, 2196.0, 211.0, 2196.0, 197.0, 2193.0, 197.0, 2193.0, 156.0" coords2="2179.0, 156.0, 2179.0, 197.0, 2140.0, 197.0, 2140.0, 194.0, 2126.0, 194.0, 2126.0, 197.0, 2123.0, 197.0, 2123.0, 211.0, 2126.0, 211.0, 2126.0, 216.0, 2140.0, 216.0, 2140.0, 211.0, 2179.0, 211.0, 2179.0, 214.0, 2193.0, 214.0, 2193.0, 211.0, 2196.0, 211.0, 2196.0, 197.0, 2193.0, 197.0, 2193.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_my50g.aAUERkSgr0_default" href="ArchiMateAggregation_My50g_aAUERkSgrz.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2212.0, 156.0, 2212.0, 198.0, 2209.0, 198.0, 2209.0, 212.0, 2212.0, 212.0, 2212.0, 215.0, 2226.0, 215.0, 2226.0, 212.0, 2277.0, 212.0, 2277.0, 216.0, 2291.0, 216.0, 2291.0, 212.0, 2294.0, 212.0, 2294.0, 198.0, 2291.0, 198.0, 2291.0, 195.0, 2277.0, 195.0, 2277.0, 198.0, 2226.0, 198.0, 2226.0, 156.0" coords2="2212.0, 156.0, 2212.0, 198.0, 2209.0, 198.0, 2209.0, 212.0, 2212.0, 212.0, 2212.0, 215.0, 2226.0, 215.0, 2226.0, 212.0, 2277.0, 212.0, 2277.0, 216.0, 2291.0, 216.0, 2291.0, 212.0, 2294.0, 212.0, 2294.0, 198.0, 2291.0, 198.0, 2291.0, 195.0, 2277.0, 195.0, 2277.0, 198.0, 2226.0, 198.0, 2226.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_Gml0g.aAUERkSgr8_default" href="ArchiMateAggregation_iml0g_aAUERkSgr7.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2225.0, 156.0, 2225.0, 187.0, 2222.0, 187.0, 2222.0, 201.0, 2225.0, 201.0, 2225.0, 204.0, 2239.0, 204.0, 2239.0, 201.0, 2398.0, 201.0, 2398.0, 215.0, 2412.0, 215.0, 2412.0, 201.0, 2415.0, 201.0, 2415.0, 187.0, 2412.0, 187.0, 2412.0, 184.0, 2398.0, 184.0, 2398.0, 187.0, 2239.0, 187.0, 2239.0, 156.0" coords2="2225.0, 156.0, 2225.0, 187.0, 2222.0, 187.0, 2222.0, 201.0, 2225.0, 201.0, 2225.0, 204.0, 2239.0, 204.0, 2239.0, 201.0, 2398.0, 201.0, 2398.0, 215.0, 2412.0, 215.0, 2412.0, 201.0, 2415.0, 201.0, 2415.0, 187.0, 2412.0, 187.0, 2412.0, 184.0, 2398.0, 184.0, 2398.0, 187.0, 2239.0, 187.0, 2239.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_6vCMg.aAUERkSgsS_default" href="ArchiMateAggregation_MvCMg_aAUERkSgsR.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2414.0, 258.0, 2414.0, 350.0, 2411.0, 350.0, 2411.0, 364.0, 2414.0, 364.0, 2414.0, 367.0, 2428.0, 367.0, 2428.0, 364.0, 2450.0, 364.0, 2450.0, 350.0, 2428.0, 350.0, 2428.0, 258.0" coords2="2414.0, 258.0, 2414.0, 350.0, 2411.0, 350.0, 2411.0, 364.0, 2414.0, 364.0, 2414.0, 367.0, 2428.0, 367.0, 2428.0, 364.0, 2450.0, 364.0, 2450.0, 350.0, 2428.0, 350.0, 2428.0, 258.0" shape="poly" alt=":Aggregation" id="areadiagram_map_iQBMg.aAUERkSgtD_default" href="ArchiMateAggregation_kQBMg_aAUERkSgtC.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="784.0, 156.0, 784.0, 217.0, 798.0, 217.0, 798.0, 156.0" coords2="784.0, 156.0, 784.0, 217.0, 798.0, 217.0, 798.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_Fiesg.aAUERkSguH_default" href="ArchiMateAggregation_Riesg_aAUERkSguG.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="765.0, 258.0, 765.0, 318.0, 750.0, 318.0, 750.0, 332.0, 765.0, 332.0, 765.0, 335.0, 779.0, 335.0, 779.0, 332.0, 782.0, 332.0, 782.0, 318.0, 779.0, 318.0, 779.0, 258.0" coords2="765.0, 258.0, 765.0, 318.0, 750.0, 318.0, 750.0, 332.0, 765.0, 332.0, 765.0, 335.0, 779.0, 335.0, 779.0, 332.0, 782.0, 332.0, 782.0, 318.0, 779.0, 318.0, 779.0, 258.0" shape="poly" alt=":Aggregation" id="areadiagram_map_OmBsg.aAUERkSguP_default" href="ArchiMateAggregation_6mBsg_aAUERkSguO.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="800.0, 258.0, 800.0, 318.0, 797.0, 318.0, 797.0, 332.0, 800.0, 332.0, 800.0, 335.0, 814.0, 335.0, 814.0, 332.0, 827.0, 332.0, 827.0, 318.0, 814.0, 318.0, 814.0, 258.0" coords2="800.0, 258.0, 800.0, 318.0, 797.0, 318.0, 797.0, 332.0, 800.0, 332.0, 800.0, 335.0, 814.0, 335.0, 814.0, 332.0, 827.0, 332.0, 827.0, 318.0, 814.0, 318.0, 814.0, 258.0" shape="poly" alt=":Aggregation" id="areadiagram_map_Eu3sg.aAUERkSgvB_default" href="ArchiMateAggregation__O3sg_aAUERkSgvA.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="180.0, 477.0, 180.0, 560.0, 166.0, 560.0, 166.0, 574.0, 180.0, 574.0, 180.0, 577.0, 194.0, 577.0, 194.0, 574.0, 197.0, 574.0, 197.0, 560.0, 194.0, 560.0, 194.0, 477.0" coords2="180.0, 477.0, 180.0, 560.0, 166.0, 560.0, 166.0, 574.0, 180.0, 574.0, 180.0, 577.0, 194.0, 577.0, 194.0, 574.0, 197.0, 574.0, 197.0, 560.0, 194.0, 560.0, 194.0, 477.0" shape="poly" alt=":Aggregation" id="areadiagram_map_3IuKo.aAUERkSgyS_default" href="ArchiMateAggregation_DIuKo_aAUERkSgyR.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="229.0, 477.0, 229.0, 545.0, 243.0, 545.0, 243.0, 477.0" coords2="229.0, 477.0, 229.0, 545.0, 243.0, 545.0, 243.0, 477.0" shape="poly" alt=":Aggregation" id="areadiagram_map_qX.Ko.aAUERkSgya_default" href="ArchiMateAggregation_sX_Ko_aAUERkSgyZ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="286.0, 468.0, 286.0, 477.0, 273.0, 477.0, 273.0, 561.0, 270.0, 561.0, 270.0, 575.0, 273.0, 575.0, 273.0, 578.0, 287.0, 578.0, 287.0, 575.0, 297.0, 575.0, 297.0, 561.0, 287.0, 561.0, 287.0, 468.0" coords2="286.0, 468.0, 286.0, 477.0, 273.0, 477.0, 273.0, 561.0, 270.0, 561.0, 270.0, 575.0, 273.0, 575.0, 273.0, 578.0, 287.0, 578.0, 287.0, 575.0, 297.0, 575.0, 297.0, 561.0, 287.0, 561.0, 287.0, 468.0" shape="poly" alt=":Aggregation" id="areadiagram_map_B1RKo.aAUERkSgyi_default" href="ArchiMateAggregation_m1RKo_aAUERkSgyh.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="224.0, 585.0, 224.0, 658.0, 213.0, 658.0, 213.0, 672.0, 224.0, 672.0, 224.0, 675.0, 238.0, 675.0, 238.0, 672.0, 241.0, 672.0, 241.0, 658.0, 238.0, 658.0, 238.0, 585.0" coords2="224.0, 585.0, 224.0, 658.0, 213.0, 658.0, 213.0, 672.0, 224.0, 672.0, 224.0, 675.0, 238.0, 675.0, 238.0, 672.0, 241.0, 672.0, 241.0, 658.0, 238.0, 658.0, 238.0, 585.0" shape="poly" alt=":Aggregation" id="areadiagram_map_ZuFKo.aAUERkSgyu_default" href="ArchiMateAggregation__uFKo_aAUERkSgyt.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="244.0, 585.0, 244.0, 658.0, 241.0, 658.0, 241.0, 672.0, 244.0, 672.0, 244.0, 675.0, 258.0, 675.0, 258.0, 672.0, 265.0, 672.0, 265.0, 658.0, 258.0, 658.0, 258.0, 585.0" coords2="244.0, 585.0, 244.0, 658.0, 241.0, 658.0, 241.0, 672.0, 244.0, 672.0, 244.0, 675.0, 258.0, 675.0, 258.0, 672.0, 265.0, 672.0, 265.0, 658.0, 258.0, 658.0, 258.0, 585.0" shape="poly" alt=":Aggregation" id="areadiagram_map_kFVKo.aAUERkSgy2_default" href="ArchiMateAggregation_n5VKo_aAUERkSgy1.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="784.0, 258.0, 784.0, 364.0, 798.0, 364.0, 798.0, 258.0" coords2="784.0, 258.0, 784.0, 364.0, 798.0, 364.0, 798.0, 258.0" shape="poly" alt=":Aggregation" id="areadiagram_map_WEZqo.aAUERkSgzi_default" href="ArchiMateAggregation_8EZqo_aAUERkSgzh.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2942.0, 141.0, 2942.0, 187.0, 2939.0, 187.0, 2939.0, 201.0, 2942.0, 201.0, 2942.0, 204.0, 2956.0, 204.0, 2956.0, 201.0, 3045.0, 201.0, 3045.0, 215.0, 3059.0, 215.0, 3059.0, 201.0, 3062.0, 201.0, 3062.0, 187.0, 3059.0, 187.0, 3059.0, 184.0, 3045.0, 184.0, 3045.0, 187.0, 2956.0, 187.0, 2956.0, 141.0" coords2="2942.0, 141.0, 2942.0, 187.0, 2939.0, 187.0, 2939.0, 201.0, 2942.0, 201.0, 2942.0, 204.0, 2956.0, 204.0, 2956.0, 201.0, 3045.0, 201.0, 3045.0, 215.0, 3059.0, 215.0, 3059.0, 201.0, 3062.0, 201.0, 3062.0, 187.0, 3059.0, 187.0, 3059.0, 184.0, 3045.0, 184.0, 3045.0, 187.0, 2956.0, 187.0, 2956.0, 141.0" shape="poly" alt=":Aggregation" id="areadiagram_map_AiE6o.aAUERkSg1S_default" href="ArchiMateAggregation_rCE6o_aAUERkSg1R.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3029.0, 258.0, 3029.0, 317.0, 3043.0, 317.0, 3043.0, 258.0" coords2="3029.0, 258.0, 3029.0, 317.0, 3043.0, 317.0, 3043.0, 258.0" shape="poly" alt=":Aggregation" id="areadiagram_map_WAM6o.aAUERkSg1e_default" href="ArchiMateAggregation_iAM6o_aAUERkSg1d.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2387.0, 258.0, 2387.0, 350.0, 2387.0, 367.0, 2401.0, 367.0, 2401.0, 364.0, 2404.0, 364.0, 2404.0, 350.0, 2401.0, 350.0, 2401.0, 258.0" coords2="2387.0, 258.0, 2387.0, 350.0, 2387.0, 367.0, 2401.0, 367.0, 2401.0, 364.0, 2404.0, 364.0, 2404.0, 350.0, 2401.0, 350.0, 2401.0, 258.0" shape="poly" alt=":Aggregation" id="areadiagram_map_G8qeo.aAUERkSg6a_default" href="ArchiMateAggregation_c8qeo_aAUERkSg6Z.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2134.0, 259.0, 2134.0, 350.0, 2131.0, 350.0, 2131.0, 364.0, 2134.0, 364.0, 2134.0, 367.0, 2148.0, 367.0, 2148.0, 364.0, 2160.0, 364.0, 2160.0, 350.0, 2148.0, 350.0, 2148.0, 259.0" coords2="2134.0, 259.0, 2134.0, 350.0, 2131.0, 350.0, 2131.0, 364.0, 2134.0, 364.0, 2134.0, 367.0, 2148.0, 367.0, 2148.0, 364.0, 2160.0, 364.0, 2160.0, 350.0, 2148.0, 350.0, 2148.0, 259.0" shape="poly" alt=":Aggregation" id="areadiagram_map_Muk.o.aAUERkSg6u_default" href="ArchiMateAggregation_guk_o_aAUERkSg6t.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1964.0, 258.0, 1964.0, 340.0, 1978.0, 340.0, 1978.0, 258.0" coords2="1964.0, 258.0, 1964.0, 340.0, 1978.0, 340.0, 1978.0, 258.0" shape="poly" alt=":Aggregation" id="areadiagram_map_hbs.o.aAUERkSg68_default" href="ArchiMateAggregation_cbs_o_aAUERkSg67.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3478.0, 76.0, 3478.0, 168.0, 3469.0, 168.0, 3469.0, 182.0, 3478.0, 182.0, 3478.0, 185.0, 3492.0, 185.0, 3492.0, 182.0, 3495.0, 182.0, 3495.0, 168.0, 3492.0, 168.0, 3492.0, 76.0" coords2="3478.0, 76.0, 3478.0, 168.0, 3469.0, 168.0, 3469.0, 182.0, 3478.0, 182.0, 3478.0, 185.0, 3492.0, 185.0, 3492.0, 182.0, 3495.0, 182.0, 3495.0, 168.0, 3492.0, 168.0, 3492.0, 76.0" shape="poly" alt=":Aggregation" id="areadiagram_map_AaYlo.aAUERkSg9O_default" href="ArchiMateAggregation_rqYlo_aAUERkSg9N.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3418.0, 194.0, 3418.0, 241.0, 3432.0, 241.0, 3432.0, 194.0" coords2="3418.0, 194.0, 3418.0, 241.0, 3432.0, 241.0, 3432.0, 194.0" shape="poly" alt=":Aggregation" id="areadiagram_map_5wklo.aAUERkSg9W_default" href="ArchiMateAggregation_uwklo_aAUERkSg9V.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3438.0, 194.0, 3438.0, 218.0, 3435.0, 218.0, 3435.0, 232.0, 3438.0, 232.0, 3438.0, 235.0, 3452.0, 235.0, 3452.0, 232.0, 3515.0, 232.0, 3515.0, 241.0, 3529.0, 241.0, 3529.0, 232.0, 3532.0, 232.0, 3532.0, 218.0, 3529.0, 218.0, 3529.0, 215.0, 3515.0, 215.0, 3515.0, 218.0, 3452.0, 218.0, 3452.0, 194.0" coords2="3438.0, 194.0, 3438.0, 218.0, 3435.0, 218.0, 3435.0, 232.0, 3438.0, 232.0, 3438.0, 235.0, 3452.0, 235.0, 3452.0, 232.0, 3515.0, 232.0, 3515.0, 241.0, 3529.0, 241.0, 3529.0, 232.0, 3532.0, 232.0, 3532.0, 218.0, 3529.0, 218.0, 3529.0, 215.0, 3515.0, 215.0, 3515.0, 218.0, 3452.0, 218.0, 3452.0, 194.0" shape="poly" alt=":Aggregation" id="areadiagram_map_VrCVo.aAUERkSg9s_default" href="ArchiMateAggregation__rCVo_aAUERkSg9r.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3401.0, 194.0, 3401.0, 218.0, 3342.0, 218.0, 3342.0, 215.0, 3328.0, 215.0, 3328.0, 218.0, 3325.0, 218.0, 3325.0, 232.0, 3328.0, 232.0, 3328.0, 241.0, 3342.0, 241.0, 3342.0, 232.0, 3401.0, 232.0, 3401.0, 235.0, 3415.0, 235.0, 3415.0, 232.0, 3418.0, 232.0, 3418.0, 218.0, 3415.0, 218.0, 3415.0, 194.0" coords2="3401.0, 194.0, 3401.0, 218.0, 3342.0, 218.0, 3342.0, 215.0, 3328.0, 215.0, 3328.0, 218.0, 3325.0, 218.0, 3325.0, 232.0, 3328.0, 232.0, 3328.0, 241.0, 3342.0, 241.0, 3342.0, 232.0, 3401.0, 232.0, 3401.0, 235.0, 3415.0, 235.0, 3415.0, 232.0, 3418.0, 232.0, 3418.0, 218.0, 3415.0, 218.0, 3415.0, 194.0" shape="poly" alt=":Aggregation" id="areadiagram_map_.L41o.aAUERkSg.I_default" href="ArchiMateAggregation_SL41o_aAUERkSg_H.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="542.0, 156.0, 542.0, 224.0, 532.0, 224.0, 532.0, 238.0, 542.0, 238.0, 542.0, 241.0, 556.0, 241.0, 556.0, 238.0, 559.0, 238.0, 559.0, 224.0, 556.0, 224.0, 556.0, 156.0" coords2="542.0, 156.0, 542.0, 224.0, 532.0, 224.0, 532.0, 238.0, 542.0, 238.0, 542.0, 241.0, 556.0, 241.0, 556.0, 238.0, 559.0, 238.0, 559.0, 224.0, 556.0, 224.0, 556.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_Ijo0Y.aAUERkSg_b_default" href="ArchiMateAggregation_LDo0Y_aAUERkSg_a.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="561.0, 156.0, 561.0, 231.0, 558.0, 231.0, 558.0, 245.0, 561.0, 245.0, 561.0, 248.0, 575.0, 248.0, 575.0, 245.0, 579.0, 245.0, 579.0, 231.0, 575.0, 231.0, 575.0, 156.0" coords2="561.0, 156.0, 561.0, 231.0, 558.0, 231.0, 558.0, 245.0, 561.0, 245.0, 561.0, 248.0, 575.0, 248.0, 575.0, 245.0, 579.0, 245.0, 579.0, 231.0, 575.0, 231.0, 575.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_2j40Y.aAUERkSg_l_default" href="ArchiMateAggregation_0j40Y_aAUERkSg_k.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="602.0, 258.0, 602.0, 307.0, 616.0, 307.0, 616.0, 258.0" coords2="602.0, 258.0, 602.0, 307.0, 616.0, 307.0, 616.0, 258.0" shape="poly" alt=":Aggregation" id="areadiagram_map_1vk0Y.aAUERkSg_t_default" href="ArchiMateAggregation_Bvk0Y_aAUERkSg_s.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3879.0, 76.0, 3879.0, 168.0, 3835.0, 168.0, 3835.0, 182.0, 3879.0, 182.0, 3879.0, 185.0, 3893.0, 185.0, 3893.0, 182.0, 3896.0, 182.0, 3896.0, 168.0, 3893.0, 168.0, 3893.0, 76.0" coords2="3879.0, 76.0, 3879.0, 168.0, 3835.0, 168.0, 3835.0, 182.0, 3879.0, 182.0, 3879.0, 185.0, 3893.0, 185.0, 3893.0, 182.0, 3896.0, 182.0, 3896.0, 168.0, 3893.0, 168.0, 3893.0, 76.0" shape="poly" alt=":Aggregation" id="areadiagram_map_haSsY.aAUERkShA4_default" href="ArchiMateAggregation_yaSsY_aAUERkShA3.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3782.0, 189.0, 3782.0, 280.0, 3768.0, 280.0, 3768.0, 294.0, 3782.0, 294.0, 3782.0, 297.0, 3796.0, 297.0, 3796.0, 294.0, 3799.0, 294.0, 3799.0, 280.0, 3796.0, 280.0, 3796.0, 189.0" coords2="3782.0, 189.0, 3782.0, 280.0, 3768.0, 280.0, 3768.0, 294.0, 3782.0, 294.0, 3782.0, 297.0, 3796.0, 297.0, 3796.0, 294.0, 3799.0, 294.0, 3799.0, 280.0, 3796.0, 280.0, 3796.0, 189.0" shape="poly" alt=":Aggregation" id="areadiagram_map_OwKsY.aAUERkShBA_default" href="ArchiMateAggregation_SwKsY_aAUERkShA_.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2755.0, 259.0, 2755.0, 317.0, 2769.0, 317.0, 2769.0, 259.0" coords2="2755.0, 259.0, 2755.0, 317.0, 2769.0, 317.0, 2769.0, 259.0" shape="poly" alt=":Aggregation" id="areadiagram_map_BWliY.aAUERkShBm_default" href="ArchiMateAggregation_yWliY_aAUERkShBl.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3058.0, 258.0, 3058.0, 282.0, 3055.0, 282.0, 3055.0, 296.0, 3058.0, 296.0, 3058.0, 299.0, 3072.0, 299.0, 3072.0, 296.0, 3102.0, 296.0, 3102.0, 317.0, 3116.0, 317.0, 3116.0, 296.0, 3119.0, 296.0, 3119.0, 282.0, 3116.0, 282.0, 3116.0, 279.0, 3102.0, 279.0, 3102.0, 282.0, 3072.0, 282.0, 3072.0, 258.0" coords2="3058.0, 258.0, 3058.0, 282.0, 3055.0, 282.0, 3055.0, 296.0, 3058.0, 296.0, 3058.0, 299.0, 3072.0, 299.0, 3072.0, 296.0, 3102.0, 296.0, 3102.0, 317.0, 3116.0, 317.0, 3116.0, 296.0, 3119.0, 296.0, 3119.0, 282.0, 3116.0, 282.0, 3116.0, 279.0, 3102.0, 279.0, 3102.0, 282.0, 3072.0, 282.0, 3072.0, 258.0" shape="poly" alt=":Aggregation" id="areadiagram_map_Q0GyY.aAUERkShCd_default" href="ArchiMateAggregation_XUGyY_aAUERkShCc.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2584.0, 156.0, 2584.0, 231.0, 2574.0, 231.0, 2574.0, 245.0, 2584.0, 245.0, 2584.0, 248.0, 2598.0, 248.0, 2598.0, 245.0, 2601.0, 245.0, 2601.0, 231.0, 2598.0, 231.0, 2598.0, 156.0" coords2="2584.0, 156.0, 2584.0, 231.0, 2574.0, 231.0, 2574.0, 245.0, 2584.0, 245.0, 2584.0, 248.0, 2598.0, 248.0, 2598.0, 245.0, 2601.0, 245.0, 2601.0, 231.0, 2598.0, 231.0, 2598.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_mE4KY.aAUERkShDD_default" href="ArchiMateAggregation_CE4KY_aAUERkShDC.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3935.0, 76.0, 3935.0, 165.0, 3932.0, 165.0, 3932.0, 179.0, 3935.0, 179.0, 3935.0, 182.0, 3949.0, 182.0, 3949.0, 179.0, 3964.0, 179.0, 3964.0, 165.0, 3949.0, 165.0, 3949.0, 76.0" coords2="3935.0, 76.0, 3935.0, 165.0, 3932.0, 165.0, 3932.0, 179.0, 3935.0, 179.0, 3935.0, 182.0, 3949.0, 182.0, 3949.0, 179.0, 3964.0, 179.0, 3964.0, 165.0, 3949.0, 165.0, 3949.0, 76.0" shape="poly" alt=":Aggregation" id="areadiagram_map_jTkKY.aAUERkShDN_default" href="ArchiMateAggregation_lTkKY_aAUERkShDM.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2620.0, 156.0, 2620.0, 231.0, 2617.0, 231.0, 2617.0, 245.0, 2620.0, 245.0, 2620.0, 248.0, 2634.0, 248.0, 2634.0, 245.0, 2641.0, 245.0, 2641.0, 231.0, 2634.0, 231.0, 2634.0, 156.0" coords2="2620.0, 156.0, 2620.0, 231.0, 2617.0, 231.0, 2617.0, 245.0, 2620.0, 245.0, 2620.0, 248.0, 2634.0, 248.0, 2634.0, 245.0, 2641.0, 245.0, 2641.0, 231.0, 2634.0, 231.0, 2634.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_WwCKY.aAUERkShDd_default" href="ArchiMateAggregation_iwCKY_aAUERkShDc.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3791.0, 189.0, 3791.0, 278.0, 3788.0, 278.0, 3788.0, 292.0, 3791.0, 292.0, 3791.0, 295.0, 3805.0, 295.0, 3805.0, 292.0, 3836.0, 292.0, 3836.0, 278.0, 3805.0, 278.0, 3805.0, 189.0" coords2="3791.0, 189.0, 3791.0, 278.0, 3788.0, 278.0, 3788.0, 292.0, 3791.0, 292.0, 3791.0, 295.0, 3805.0, 295.0, 3805.0, 292.0, 3836.0, 292.0, 3836.0, 278.0, 3805.0, 278.0, 3805.0, 189.0" shape="poly" alt=":Aggregation" id="areadiagram_map_nWxKY.aAUERkShEB_default" href="ArchiMateAggregation_dWxKY_aAUERkShEA.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="344.0, 36.0, 344.0, 67.0, 42.0, 67.0, 42.0, 64.0, 28.0, 64.0, 28.0, 67.0, 25.0, 67.0, 25.0, 81.0, 28.0, 81.0, 28.0, 113.0, 42.0, 113.0, 42.0, 81.0, 344.0, 81.0, 344.0, 84.0, 358.0, 84.0, 358.0, 81.0, 361.0, 81.0, 361.0, 67.0, 358.0, 67.0, 358.0, 36.0" coords2="344.0, 36.0, 344.0, 67.0, 42.0, 67.0, 42.0, 64.0, 28.0, 64.0, 28.0, 67.0, 25.0, 67.0, 25.0, 81.0, 28.0, 81.0, 28.0, 113.0, 42.0, 113.0, 42.0, 81.0, 344.0, 81.0, 344.0, 84.0, 358.0, 84.0, 358.0, 81.0, 361.0, 81.0, 361.0, 67.0, 358.0, 67.0, 358.0, 36.0" shape="poly" alt=":Aggregation" id="areadiagram_map_TlXOY.aAUERkShG3_default" href="ArchiMateAggregation_VlXOY_aAUERkShG2.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="359.0, 36.0, 359.0, 82.0, 163.0, 82.0, 163.0, 79.0, 149.0, 79.0, 149.0, 82.0, 146.0, 82.0, 146.0, 96.0, 149.0, 96.0, 149.0, 113.0, 163.0, 113.0, 163.0, 96.0, 359.0, 96.0, 359.0, 99.0, 373.0, 99.0, 373.0, 96.0, 376.0, 96.0, 376.0, 82.0, 373.0, 82.0, 373.0, 36.0" coords2="359.0, 36.0, 359.0, 82.0, 163.0, 82.0, 163.0, 79.0, 149.0, 79.0, 149.0, 82.0, 146.0, 82.0, 146.0, 96.0, 149.0, 96.0, 149.0, 113.0, 163.0, 113.0, 163.0, 96.0, 359.0, 96.0, 359.0, 99.0, 373.0, 99.0, 373.0, 96.0, 376.0, 96.0, 376.0, 82.0, 373.0, 82.0, 373.0, 36.0" shape="poly" alt=":Aggregation" id="areadiagram_map_d7POY.aAUERkShG__default" href="ArchiMateAggregation_J7POY_aAUERkShG_.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="377.0, 36.0, 377.0, 89.0, 294.0, 89.0, 294.0, 86.0, 280.0, 86.0, 280.0, 89.0, 277.0, 89.0, 277.0, 103.0, 280.0, 103.0, 280.0, 113.0, 294.0, 113.0, 294.0, 103.0, 377.0, 103.0, 377.0, 106.0, 391.0, 106.0, 391.0, 103.0, 394.0, 103.0, 394.0, 89.0, 391.0, 89.0, 391.0, 36.0" coords2="377.0, 36.0, 377.0, 89.0, 294.0, 89.0, 294.0, 86.0, 280.0, 86.0, 280.0, 89.0, 277.0, 89.0, 277.0, 103.0, 280.0, 103.0, 280.0, 113.0, 294.0, 113.0, 294.0, 103.0, 377.0, 103.0, 377.0, 106.0, 391.0, 106.0, 391.0, 103.0, 394.0, 103.0, 394.0, 89.0, 391.0, 89.0, 391.0, 36.0" shape="poly" alt=":Aggregation" id="areadiagram_map_UpguY.aAUERkShHL_default" href="ArchiMateAggregation_QpguY_aAUERkShHK.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="149.0, 156.0, 149.0, 215.0, 163.0, 215.0, 163.0, 156.0" coords2="149.0, 156.0, 149.0, 215.0, 163.0, 215.0, 163.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_x2EuY.aAUERkShHV_default" href="ArchiMateAggregation_W2EuY_aAUERkShHU.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="280.0, 156.0, 280.0, 231.0, 272.0, 231.0, 272.0, 245.0, 280.0, 245.0, 280.0, 248.0, 294.0, 248.0, 294.0, 245.0, 297.0, 245.0, 297.0, 231.0, 294.0, 231.0, 294.0, 156.0" coords2="280.0, 156.0, 280.0, 231.0, 272.0, 231.0, 272.0, 245.0, 280.0, 245.0, 280.0, 248.0, 294.0, 248.0, 294.0, 245.0, 297.0, 245.0, 297.0, 231.0, 294.0, 231.0, 294.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_GIsuY.aAUERkShHj_default" href="ArchiMateAggregation_8IsuY_aAUERkShHi.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="293.0, 156.0, 293.0, 231.0, 290.0, 231.0, 290.0, 245.0, 293.0, 245.0, 293.0, 248.0, 307.0, 248.0, 307.0, 245.0, 315.0, 245.0, 315.0, 231.0, 307.0, 231.0, 307.0, 156.0" coords2="293.0, 156.0, 293.0, 231.0, 290.0, 231.0, 290.0, 245.0, 293.0, 245.0, 293.0, 248.0, 307.0, 248.0, 307.0, 245.0, 315.0, 245.0, 315.0, 231.0, 307.0, 231.0, 307.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_R28uY.aAUERkShHt_default" href="ArchiMateAggregation_m28uY_aAUERkShHs.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1272.0, 36.0, 1272.0, 128.0, 1203.0, 128.0, 1203.0, 142.0, 1272.0, 142.0, 1272.0, 145.0, 1286.0, 145.0, 1286.0, 142.0, 1289.0, 142.0, 1289.0, 128.0, 1286.0, 128.0, 1286.0, 36.0" coords2="1272.0, 36.0, 1272.0, 128.0, 1203.0, 128.0, 1203.0, 142.0, 1272.0, 142.0, 1272.0, 145.0, 1286.0, 145.0, 1286.0, 142.0, 1289.0, 142.0, 1289.0, 128.0, 1286.0, 128.0, 1286.0, 36.0" shape="poly" alt=":Aggregation" id="areadiagram_map_3HBeY.aAUERkShJp_default" href="ArchiMateAggregation_zHBeY_aAUERkShJo.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1331.0, 36.0, 1331.0, 128.0, 1328.0, 128.0, 1328.0, 142.0, 1331.0, 142.0, 1331.0, 145.0, 1345.0, 145.0, 1345.0, 142.0, 1364.0, 142.0, 1364.0, 128.0, 1345.0, 128.0, 1345.0, 36.0" coords2="1331.0, 36.0, 1331.0, 128.0, 1328.0, 128.0, 1328.0, 142.0, 1331.0, 142.0, 1331.0, 145.0, 1345.0, 145.0, 1345.0, 142.0, 1364.0, 142.0, 1364.0, 128.0, 1345.0, 128.0, 1345.0, 36.0" shape="poly" alt=":Aggregation" id="areadiagram_map_0LxeY.aAUERkShJz_default" href="ArchiMateAggregation_fzxeY_aAUERkShJy.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1393.0, 156.0, 1393.0, 215.0, 1407.0, 215.0, 1407.0, 156.0" coords2="1393.0, 156.0, 1393.0, 215.0, 1407.0, 215.0, 1407.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_ClZeY.aAUERkShKB_default" href="ArchiMateAggregation_UlZeY_aAUERkShKA.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1176.0, 156.0, 1176.0, 184.0, 1173.0, 184.0, 1173.0, 198.0, 1176.0, 198.0, 1176.0, 201.0, 1190.0, 201.0, 1190.0, 198.0, 1267.0, 198.0, 1267.0, 215.0, 1281.0, 215.0, 1281.0, 198.0, 1284.0, 198.0, 1284.0, 184.0, 1281.0, 184.0, 1281.0, 181.0, 1267.0, 181.0, 1267.0, 184.0, 1190.0, 184.0, 1190.0, 156.0" coords2="1176.0, 156.0, 1176.0, 184.0, 1173.0, 184.0, 1173.0, 198.0, 1176.0, 198.0, 1176.0, 201.0, 1190.0, 201.0, 1190.0, 198.0, 1267.0, 198.0, 1267.0, 215.0, 1281.0, 215.0, 1281.0, 198.0, 1284.0, 198.0, 1284.0, 184.0, 1281.0, 184.0, 1281.0, 181.0, 1267.0, 181.0, 1267.0, 184.0, 1190.0, 184.0, 1190.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_jlVeY.aAUERkShKP_default" href="ArchiMateAggregation_FlVeY_aAUERkShKO.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1150.0, 156.0, 1150.0, 217.0, 1164.0, 217.0, 1164.0, 156.0" coords2="1150.0, 156.0, 1150.0, 217.0, 1164.0, 217.0, 1164.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_799eY.aAUERkShKy_default" href="ArchiMateAggregation_999eY_aAUERkShKx.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1118.0, 156.0, 1118.0, 182.0, 1048.0, 182.0, 1048.0, 179.0, 1034.0, 179.0, 1034.0, 182.0, 1031.0, 182.0, 1031.0, 196.0, 1034.0, 196.0, 1034.0, 215.0, 1048.0, 215.0, 1048.0, 196.0, 1118.0, 196.0, 1118.0, 199.0, 1132.0, 199.0, 1132.0, 196.0, 1135.0, 196.0, 1135.0, 182.0, 1132.0, 182.0, 1132.0, 156.0" coords2="1118.0, 156.0, 1118.0, 182.0, 1048.0, 182.0, 1048.0, 179.0, 1034.0, 179.0, 1034.0, 182.0, 1031.0, 182.0, 1031.0, 196.0, 1034.0, 196.0, 1034.0, 215.0, 1048.0, 215.0, 1048.0, 196.0, 1118.0, 196.0, 1118.0, 199.0, 1132.0, 199.0, 1132.0, 196.0, 1135.0, 196.0, 1135.0, 182.0, 1132.0, 182.0, 1132.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_9hTeY.aAUERkShK8_default" href="ArchiMateAggregation_ZhTeY_aAUERkShK7.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2105.0, 30.0, 2105.0, 76.0, 1738.0, 76.0, 1738.0, 73.0, 1724.0, 73.0, 1724.0, 76.0, 1721.0, 76.0, 1721.0, 90.0, 1724.0, 90.0, 1724.0, 113.0, 1738.0, 113.0, 1738.0, 90.0, 2105.0, 90.0, 2105.0, 93.0, 2119.0, 93.0, 2119.0, 90.0, 2122.0, 90.0, 2122.0, 76.0, 2119.0, 76.0, 2119.0, 30.0" coords2="2105.0, 30.0, 2105.0, 76.0, 1738.0, 76.0, 1738.0, 73.0, 1724.0, 73.0, 1724.0, 76.0, 1721.0, 76.0, 1721.0, 90.0, 1724.0, 90.0, 1724.0, 113.0, 1738.0, 113.0, 1738.0, 90.0, 2105.0, 90.0, 2105.0, 93.0, 2119.0, 93.0, 2119.0, 90.0, 2122.0, 90.0, 2122.0, 76.0, 2119.0, 76.0, 2119.0, 30.0" shape="poly" alt=":Aggregation" id="areadiagram_map_oUlBY.aAUERkShM._default" href="ArchiMateAggregation_PklBY_aAUERkShM9.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1708.0, 156.0, 1708.0, 230.0, 1682.0, 230.0, 1682.0, 244.0, 1708.0, 244.0, 1708.0, 247.0, 1722.0, 247.0, 1722.0, 244.0, 1725.0, 244.0, 1725.0, 230.0, 1722.0, 230.0, 1722.0, 156.0" coords2="1708.0, 156.0, 1708.0, 230.0, 1682.0, 230.0, 1682.0, 244.0, 1708.0, 244.0, 1708.0, 247.0, 1722.0, 247.0, 1722.0, 244.0, 1725.0, 244.0, 1725.0, 230.0, 1722.0, 230.0, 1722.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_7kNBY.aAUERkShNG_default" href="ArchiMateAggregation_9kNBY_aAUERkShNF.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1730.0, 156.0, 1730.0, 230.0, 1727.0, 230.0, 1727.0, 244.0, 1730.0, 244.0, 1730.0, 247.0, 1744.0, 247.0, 1744.0, 244.0, 1759.0, 244.0, 1759.0, 230.0, 1744.0, 230.0, 1744.0, 156.0" coords2="1730.0, 156.0, 1730.0, 230.0, 1727.0, 230.0, 1727.0, 244.0, 1730.0, 244.0, 1730.0, 247.0, 1744.0, 247.0, 1744.0, 244.0, 1759.0, 244.0, 1759.0, 230.0, 1744.0, 230.0, 1744.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_JbdBY.aAUERkShNY_default" href="ArchiMateAggregation_6bdBY_aAUERkShNX.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2120.0, 30.0, 2120.0, 93.0, 1877.0, 93.0, 1877.0, 90.0, 1863.0, 90.0, 1863.0, 93.0, 1860.0, 93.0, 1860.0, 107.0, 1863.0, 107.0, 1863.0, 113.0, 1877.0, 113.0, 1877.0, 107.0, 2120.0, 107.0, 2120.0, 110.0, 2134.0, 110.0, 2134.0, 107.0, 2137.0, 107.0, 2137.0, 93.0, 2134.0, 93.0, 2134.0, 30.0" coords2="2120.0, 30.0, 2120.0, 93.0, 1877.0, 93.0, 1877.0, 90.0, 1863.0, 90.0, 1863.0, 93.0, 1860.0, 93.0, 1860.0, 107.0, 1863.0, 107.0, 1863.0, 113.0, 1877.0, 113.0, 1877.0, 107.0, 2120.0, 107.0, 2120.0, 110.0, 2134.0, 110.0, 2134.0, 107.0, 2137.0, 107.0, 2137.0, 93.0, 2134.0, 93.0, 2134.0, 30.0" shape="poly" alt=":Aggregation" id="areadiagram_map_xAjBY.aAUERkShNi_default" href="ArchiMateAggregation_OAjBY_aAUERkShNh.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2134.0, 30.0, 2134.0, 81.0, 2006.0, 81.0, 2006.0, 78.0, 1992.0, 78.0, 1992.0, 81.0, 1989.0, 81.0, 1989.0, 95.0, 1992.0, 95.0, 1992.0, 113.0, 2006.0, 113.0, 2006.0, 95.0, 2134.0, 95.0, 2134.0, 98.0, 2148.0, 98.0, 2148.0, 95.0, 2151.0, 95.0, 2151.0, 81.0, 2148.0, 81.0, 2148.0, 30.0" coords2="2134.0, 30.0, 2134.0, 81.0, 2006.0, 81.0, 2006.0, 78.0, 1992.0, 78.0, 1992.0, 81.0, 1989.0, 81.0, 1989.0, 95.0, 1992.0, 95.0, 1992.0, 113.0, 2006.0, 113.0, 2006.0, 95.0, 2134.0, 95.0, 2134.0, 98.0, 2148.0, 98.0, 2148.0, 95.0, 2151.0, 95.0, 2151.0, 81.0, 2148.0, 81.0, 2148.0, 30.0" shape="poly" alt=":Aggregation" id="areadiagram_map_m4rBY.aAUERkShNu_default" href="ArchiMateAggregation_C4rBY_aAUERkShNt.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3991.0, 194.0, 3991.0, 244.0, 3986.0, 244.0, 3986.0, 258.0, 3991.0, 258.0, 3991.0, 261.0, 4005.0, 261.0, 4005.0, 258.0, 4008.0, 258.0, 4008.0, 244.0, 4005.0, 244.0, 4005.0, 194.0" coords2="3991.0, 194.0, 3991.0, 244.0, 3986.0, 244.0, 3986.0, 258.0, 3991.0, 258.0, 3991.0, 261.0, 4005.0, 261.0, 4005.0, 258.0, 4008.0, 258.0, 4008.0, 244.0, 4005.0, 244.0, 4005.0, 194.0" shape="poly" alt=":Aggregation" id="areadiagram_map_gqNRY.aAUERkShPK_default" href="ArchiMateAggregation_nKNRY_aAUERkShPJ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="4002.0, 194.0, 4002.0, 244.0, 3999.0, 244.0, 3999.0, 258.0, 4002.0, 258.0, 4002.0, 261.0, 4016.0, 261.0, 4016.0, 258.0, 4019.0, 258.0, 4019.0, 244.0, 4016.0, 244.0, 4016.0, 194.0" coords2="4002.0, 194.0, 4002.0, 244.0, 3999.0, 244.0, 3999.0, 258.0, 4002.0, 258.0, 4002.0, 261.0, 4016.0, 261.0, 4016.0, 258.0, 4019.0, 258.0, 4019.0, 244.0, 4016.0, 244.0, 4016.0, 194.0" shape="poly" alt=":Aggregation" id="areadiagram_map_OxdRY.aAUERkShPU_default" href="ArchiMateAggregation_yxdRY_aAUERkShPT.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3810.0, 189.0, 3810.0, 247.0, 3807.0, 247.0, 3807.0, 261.0, 3810.0, 261.0, 3810.0, 264.0, 3824.0, 264.0, 3824.0, 261.0, 3919.0, 261.0, 3919.0, 247.0, 3824.0, 247.0, 3824.0, 189.0" coords2="3810.0, 189.0, 3810.0, 247.0, 3807.0, 247.0, 3807.0, 261.0, 3810.0, 261.0, 3810.0, 264.0, 3824.0, 264.0, 3824.0, 261.0, 3919.0, 261.0, 3919.0, 247.0, 3824.0, 247.0, 3824.0, 189.0" shape="poly" alt=":Aggregation" id="areadiagram_map_RDsSU.aAUERkShRv_default" href="ArchiMateAggregation_0DsSU_aAUERkShRu.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3509.0, 76.0, 3509.0, 165.0, 3506.0, 165.0, 3506.0, 179.0, 3509.0, 179.0, 3509.0, 182.0, 3523.0, 182.0, 3523.0, 165.0, 3523.0, 76.0" coords2="3509.0, 76.0, 3509.0, 165.0, 3506.0, 165.0, 3506.0, 179.0, 3509.0, 179.0, 3509.0, 182.0, 3523.0, 182.0, 3523.0, 165.0, 3523.0, 76.0" shape="poly" alt=":Aggregation" id="areadiagram_map_th3qU.aAUERkShSP_default" href="ArchiMateAggregation_Jh3qU_aAUERkShSO.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2167.0, 156.0, 2167.0, 175.0, 1983.0, 175.0, 1983.0, 172.0, 1969.0, 172.0, 1969.0, 175.0, 1966.0, 175.0, 1966.0, 189.0, 1969.0, 189.0, 1969.0, 215.0, 1983.0, 215.0, 1983.0, 189.0, 2167.0, 189.0, 2167.0, 192.0, 2181.0, 192.0, 2181.0, 189.0, 2184.0, 189.0, 2184.0, 175.0, 2181.0, 175.0, 2181.0, 156.0" coords2="2167.0, 156.0, 2167.0, 175.0, 1983.0, 175.0, 1983.0, 172.0, 1969.0, 172.0, 1969.0, 175.0, 1966.0, 175.0, 1966.0, 189.0, 1969.0, 189.0, 1969.0, 215.0, 1983.0, 215.0, 1983.0, 189.0, 2167.0, 189.0, 2167.0, 192.0, 2181.0, 192.0, 2181.0, 189.0, 2184.0, 189.0, 2184.0, 175.0, 2181.0, 175.0, 2181.0, 156.0" shape="poly" alt=":Aggregation" id="areadiagram_map_upFOo.aAUERkSg4W_default" href="ArchiMateAggregation_CpFOo_aAUERkSg4V.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2154.0, 30.0, 2154.0, 86.0, 2151.0, 86.0, 2151.0, 100.0, 2154.0, 100.0, 2154.0, 103.0, 2168.0, 103.0, 2168.0, 100.0, 2212.0, 100.0, 2212.0, 113.0, 2226.0, 113.0, 2226.0, 100.0, 2229.0, 100.0, 2229.0, 86.0, 2226.0, 86.0, 2226.0, 83.0, 2212.0, 83.0, 2212.0, 86.0, 2168.0, 86.0, 2168.0, 30.0" coords2="2154.0, 30.0, 2154.0, 86.0, 2151.0, 86.0, 2151.0, 100.0, 2154.0, 100.0, 2154.0, 103.0, 2168.0, 103.0, 2168.0, 100.0, 2212.0, 100.0, 2212.0, 113.0, 2226.0, 113.0, 2226.0, 100.0, 2229.0, 100.0, 2229.0, 86.0, 2226.0, 86.0, 2226.0, 83.0, 2212.0, 83.0, 2212.0, 86.0, 2168.0, 86.0, 2168.0, 30.0" shape="poly" alt=":Aggregation" id="areadiagram_map_UK31fhaAUEQYHyma_default" href="ArchiMateAggregation_AK31fhaAUEQYHymZ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="409.0, 36.0, 409.0, 82.0, 406.0, 82.0, 406.0, 96.0, 409.0, 96.0, 409.0, 99.0, 423.0, 99.0, 423.0, 96.0, 542.0, 96.0, 542.0, 113.0, 556.0, 113.0, 556.0, 96.0, 559.0, 96.0, 559.0, 82.0, 556.0, 82.0, 556.0, 79.0, 542.0, 79.0, 542.0, 82.0, 423.0, 82.0, 423.0, 36.0" coords2="409.0, 36.0, 409.0, 82.0, 406.0, 82.0, 406.0, 96.0, 409.0, 96.0, 409.0, 99.0, 423.0, 99.0, 423.0, 96.0, 542.0, 96.0, 542.0, 113.0, 556.0, 113.0, 556.0, 96.0, 559.0, 96.0, 559.0, 82.0, 556.0, 82.0, 556.0, 79.0, 542.0, 79.0, 542.0, 82.0, 423.0, 82.0, 423.0, 36.0" shape="poly" alt=":Aggregation" id="areadiagram_map_ofINfhaAUEQYHyn2_default" href="ArchiMateAggregation_rvINfhaAUEQYHyn1.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2172.0, 30.0, 2172.0, 72.0, 2169.0, 72.0, 2169.0, 86.0, 2172.0, 86.0, 2172.0, 89.0, 2186.0, 89.0, 2186.0, 86.0, 2599.0, 86.0, 2599.0, 113.0, 2613.0, 113.0, 2613.0, 86.0, 2616.0, 86.0, 2616.0, 72.0, 2613.0, 72.0, 2613.0, 69.0, 2599.0, 69.0, 2599.0, 72.0, 2186.0, 72.0, 2186.0, 30.0" coords2="2172.0, 30.0, 2172.0, 72.0, 2169.0, 72.0, 2169.0, 86.0, 2172.0, 86.0, 2172.0, 89.0, 2186.0, 89.0, 2186.0, 86.0, 2599.0, 86.0, 2599.0, 113.0, 2613.0, 113.0, 2613.0, 86.0, 2616.0, 86.0, 2616.0, 72.0, 2613.0, 72.0, 2613.0, 69.0, 2599.0, 69.0, 2599.0, 72.0, 2186.0, 72.0, 2186.0, 30.0" shape="poly" alt=":Aggregation" id="areadiagram_map_h9TNfhaAUEQYHyo4_default" href="ArchiMateAggregation_69TNfhaAUEQYHyo3.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2188.0, 30.0, 2188.0, 65.0, 2185.0, 65.0, 2185.0, 79.0, 2188.0, 79.0, 2188.0, 82.0, 2202.0, 82.0, 2202.0, 79.0, 2898.0, 79.0, 2898.0, 113.0, 2912.0, 113.0, 2912.0, 79.0, 2915.0, 79.0, 2915.0, 65.0, 2912.0, 65.0, 2912.0, 62.0, 2898.0, 62.0, 2898.0, 65.0, 2202.0, 65.0, 2202.0, 30.0" coords2="2188.0, 30.0, 2188.0, 65.0, 2185.0, 65.0, 2185.0, 79.0, 2188.0, 79.0, 2188.0, 82.0, 2202.0, 82.0, 2202.0, 79.0, 2898.0, 79.0, 2898.0, 113.0, 2912.0, 113.0, 2912.0, 79.0, 2915.0, 79.0, 2915.0, 65.0, 2912.0, 65.0, 2912.0, 62.0, 2898.0, 62.0, 2898.0, 65.0, 2202.0, 65.0, 2202.0, 30.0" shape="poly" alt=":Aggregation" id="areadiagram_map_yKL9fhaAUEQYHyrD_default" href="ArchiMateAggregation_3yL9fhaAUEQYHyrC.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="429.0, 36.0, 429.0, 67.0, 426.0, 67.0, 426.0, 81.0, 429.0, 81.0, 429.0, 84.0, 443.0, 84.0, 443.0, 81.0, 784.0, 81.0, 784.0, 113.0, 798.0, 113.0, 798.0, 81.0, 801.0, 81.0, 801.0, 67.0, 798.0, 67.0, 798.0, 64.0, 784.0, 64.0, 784.0, 67.0, 443.0, 67.0, 443.0, 36.0" coords2="429.0, 36.0, 429.0, 67.0, 426.0, 67.0, 426.0, 81.0, 429.0, 81.0, 429.0, 84.0, 443.0, 84.0, 443.0, 81.0, 784.0, 81.0, 784.0, 113.0, 798.0, 113.0, 798.0, 81.0, 801.0, 81.0, 801.0, 67.0, 798.0, 67.0, 798.0, 64.0, 784.0, 64.0, 784.0, 67.0, 443.0, 67.0, 443.0, 36.0" shape="poly" alt=":Aggregation" id="areadiagram_map_aqAjfhaAUEQYHysS_default" href="ArchiMateAggregation_UqAjfhaAUEQYHysR.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3523, 151, 3599, 194" coords2="3523, 151, 3599, 194" shape="rect" alt="Kunne maskere deler av materiale:Requirement" id="areadiagram_map_onjqU.aAUERkShSA_default" href="ArchiMateRequirement_4njqU_aAUERkShSB.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="4019, 237, 4086, 265" coords2="4019, 237, 4086, 265" shape="rect" alt="Video/lyd:Requirement" id="areadiagram_map_fOORY.aAUERkShOi_default" href="ArchiMateRequirement_fOORY_aAUERkShOj.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3919, 237, 3986, 265" coords2="3919, 237, 3986, 265" shape="rect" alt="Foto:Requirement" id="areadiagram_map_AO6RY.aAUERkShOP_default" href="ArchiMateRequirement_gO6RY_aAUERkShOQ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1759, 215, 1826, 258" coords2="1759, 215, 1826, 258" shape="rect" alt="Elektroniske dokument:Requirement" id="areadiagram_map_JduBY.aAUERkShMt_default" href="ArchiMateRequirement_JduBY_aAUERkShMu.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1615, 215, 1682, 258" coords2="1615, 215, 1682, 258" shape="rect" alt="Digitaliserte dokument:Requirement" id="areadiagram_map_.pGBY.aAUERkShMj_default" href="ArchiMateRequirement_BpGBY_aAUERkShMk.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1966, 113, 2051, 156" coords2="1966, 113, 2051, 156" shape="rect" alt="Automatisering av arbeidsoppgaver:Requirement" id="areadiagram_map_Bif.Y.aAUERkShMF_default" href="ArchiMateRequirement_Rif_Y_aAUERkShMG.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1836, 113, 1903, 156" coords2="1836, 113, 1903, 156" shape="rect" alt="Ny statistikk av bruk:Requirement" id="areadiagram_map_ISL.Y.aAUERkShL7_default" href="ArchiMateRequirement_ISL_Y_aAUERkShL8.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1695, 113, 1762, 156" coords2="1695, 113, 1762, 156" shape="rect" alt="OCR lesing:Requirement" id="areadiagram_map_5c9.Y.aAUERkShLv_default" href="ArchiMateRequirement_Fc9_Y_aAUERkShLw.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1366, 215, 1433, 258" coords2="1366, 215, 1433, 258" shape="rect" alt="Se hvor materiale kommer fra:Requirement" id="areadiagram_map_gs6eY.aAUERkShJY_default" href="ArchiMateRequirement_Qs6eY_aAUERkShJZ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1240, 215, 1320, 258" coords2="1240, 215, 1320, 258" shape="rect" alt="For forskere:Requirement" id="areadiagram_map_5tieY.aAUERkShJM_default" href="ArchiMateRequirement_5tieY_aAUERkShJN.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1123, 217, 1202, 258" coords2="1123, 217, 1202, 258" shape="rect" alt="For lekmann:Requirement" id="areadiagram_map_d0MeY.aAUERkShJC_default" href="ArchiMateRequirement_d0MeY_aAUERkShJD.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1007, 215, 1085, 258" coords2="1007, 215, 1085, 258" shape="rect" alt="For arkivarer:Requirement" id="areadiagram_map__14eY.aAUERkShI4_default" href="ArchiMateRequirement__14eY_aAUERkShI5.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1364, 113, 1436, 156" coords2="1364, 113, 1436, 156" shape="rect" alt="Opphav for matriale:Requirement" id="areadiagram_map_hP3uY.aAUERkShIk_default" href="ArchiMateRequirement_hP3uY_aAUERkShIl.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1111, 113, 1203, 156" coords2="1111, 113, 1203, 156" shape="rect" alt="Søkefunksjonalitet:Requirement" id="areadiagram_map_IOHuY.aAUERkShIe_default" href="ArchiMateRequirement_IOHuY_aAUERkShIf.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="315, 215, 399, 258" coords2="315, 215, 399, 258" shape="rect" alt="Brukerveiledning:Requirement" id="areadiagram_map_DHzOY.aAUERkShGm_default" href="ArchiMateRequirement_jHzOY_aAUERkShGn.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="205, 215, 272, 258" coords2="205, 215, 272, 258" shape="rect" alt="Opplæring:Requirement" id="areadiagram_map_pBtOY.aAUERkShGg_default" href="ArchiMateRequirement_pBtOY_aAUERkShGh.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="254, 113, 335, 156" coords2="254, 113, 335, 156" shape="rect" alt="Avtale:Requirement" id="areadiagram_map_RtZOY.aAUERkShGM_default" href="ArchiMateRequirement_RtZOY_aAUERkShGN.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="95, 215, 193, 258" coords2="95, 215, 193, 258" shape="rect" alt="Enkelt og intuativt:Requirement" id="areadiagram_map_2zuOY.aAUERkShF._default" href="ArchiMateRequirement_OzuOY_aAUERkShF_.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="122, 113, 189, 156" coords2="122, 113, 189, 156" shape="rect" alt="Grensesnitt opplasting av materiale:Requirement" id="areadiagram_map_SNyOY.aAUERkShFs_default" href="ArchiMateRequirement_yNyOY_aAUERkShFt.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1, 113, 80, 156" coords2="1, 113, 80, 156" shape="rect" alt="Emneknagger:Requirement" id="areadiagram_map_y0EOY.aAUERkShFg_default" href="ArchiMateRequirement_K0EOY_aAUERkShFh.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3836, 266, 3903, 309" coords2="3836, 266, 3903, 309" shape="rect" alt="Alt type av materiale:Requirement" id="areadiagram_map_lBmKY.aAUERkShDq_default" href="ArchiMateRequirement_VBmKY_aAUERkShDr.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2641, 216, 2708, 259" coords2="2641, 216, 2708, 259" shape="rect" alt="Fra kamra til tilgjengeliggjøring:Requirement" id="areadiagram_map_FzPyY.aAUERkShCy_default" href="ArchiMateRequirement_FzPyY_aAUERkShCz.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2507, 216, 2574, 259" coords2="2507, 216, 2574, 259" shape="rect" alt="Digitaliser on demand:Requirement" id="areadiagram_map_.ZbyY.aAUERkShCm_default" href="ArchiMateRequirement__ZbyY_aAUERkShCn.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3088, 317, 3185, 370" coords2="3088, 317, 3185, 370" shape="rect" alt="Delta i nasjonale eller inetnasjonale nettverk:Requirement" id="areadiagram_map_ADIyY.aAUERkShCI_default" href="ArchiMateRequirement_ADIyY_aAUERkShCJ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2714, 317, 2803, 350" coords2="2714, 317, 2803, 350" shape="rect" alt="Tilgjengliggjør private arkiver:Requirement" id="areadiagram_map__0BiY.aAUERkShBX_default" href="ArchiMateRequirement_AMBiY_aAUERkShBY.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3964, 151, 4031, 194" coords2="3964, 151, 4031, 194" shape="rect" alt="Digitalt skapt:Requirement" id="areadiagram_map_i1dCY.aAUERkShBN_default" href="ArchiMateRequirement_S1dCY_aAUERkShBO.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3701, 266, 3768, 309" coords2="3701, 266, 3768, 309" shape="rect" alt="Sluttbruker skal finne alt i en inngang:Requirement" id="areadiagram_map_4dksY.aAUERkShAn_default" href="ArchiMateRequirement_EdksY_aAUERkShAo.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3768, 146, 3835, 189" coords2="3768, 146, 3835, 189" shape="rect" alt="En inngang til arkivene:Requirement" id="areadiagram_map_k7gsY.aAUERkShAZ_default" href="ArchiMateRequirement_07gsY_aAUERkShAa.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="569, 307, 656, 350" coords2="569, 307, 656, 350" shape="rect" alt="Parkeringsplass digitaliserte enkeltdokument:Requirement" id="areadiagram_map_DdTUY.aAUERkSg_E_default" href="ArchiMateRequirement_DdTUY_aAUERkSg_F.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="579, 217, 648, 258" coords2="579, 217, 648, 258" shape="rect" alt="Håndtere henvendelser:Requirement" id="areadiagram_map__fFUY.aAUERkSg.._default" href="ArchiMateRequirement_A_FUY_aAUERkSg__.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="422, 217, 532, 258" coords2="422, 217, 532, 258" shape="rect" alt="Veiledning arkivskapere:Requirement" id="areadiagram_map_Kl.UY.aAUERkSg.0_default" href="ArchiMateRequirement_6l_UY_aAUERkSg_1.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3301, 241, 3379, 284" coords2="3301, 241, 3379, 284" shape="rect" alt="Tilgang brukergrupper:Requirement" id="areadiagram_map_iBjVo.aAUERkSg93_default" href="ArchiMateRequirement_SBjVo_aAUERkSg94.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3487, 241, 3566, 284" coords2="3487, 241, 3566, 284" shape="rect" alt="Tilgjengelighet for klausulert matereiale:Requirement" id="areadiagram_map_1SXlo.aAUERkSg9b_default" href="ArchiMateRequirement_1SXlo_aAUERkSg9c.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3399, 241, 3470, 284" coords2="3399, 241, 3470, 284" shape="rect" alt="Arkivskaper gir brukernavn og passord:Requirement" id="areadiagram_map_4qFFo.aAUERkSg81_default" href="ArchiMateRequirement_EqFFo_aAUERkSg82.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3389, 151, 3469, 194" coords2="3389, 151, 3469, 194" shape="rect" alt="Tilgangsløsning:Requirement" id="areadiagram_map_A.6Fo.aAUERkSg8r_default" href="ArchiMateRequirement_Q_6Fo_aAUERkSg8s.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2160, 340, 2227, 375" coords2="2160, 340, 2227, 375" shape="rect" alt="Adobe Lightroom (exif):Requirement" id="areadiagram_map_D2w.o.aAUERkSg6f_default" href="ArchiMateRequirement_T2w_o_aAUERkSg6g.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2301, 340, 2387, 375" coords2="2301, 340, 2387, 375" shape="rect" alt="Masseredigering metadata:Requirement" id="areadiagram_map_agMeo.aAUERkSg6J_default" href="ArchiMateRequirement_agMeo_aAUERkSg6K.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1937, 340, 2012, 375" coords2="1937, 340, 2012, 375" shape="rect" alt="Sikker lagring klausulert materiale:Requirement" id="areadiagram_map_Ao9uo.aAUERkSg5r_default" href="ArchiMateRequirement_go9uo_aAUERkSg5s.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1941, 215, 2012, 258" coords2="1941, 215, 2012, 258" shape="rect" alt="Lagring:Requirement" id="areadiagram_map_ghKmo.aAUERkSg39_default" href="ArchiMateRequirement_ghKmo_aAUERkSg3_.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3010, 317, 3077, 345" coords2="3010, 317, 3077, 345" shape="rect" alt="Crowdsourcing:Requirement" id="areadiagram_map_cBA6o.aAUERkSg0__default" href="ArchiMateRequirement_cBA6o_aAUERkSg1A.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3017, 215, 3088, 258" coords2="3017, 215, 3088, 258" shape="rect" alt="Deling av kunnskap:Requirement" id="areadiagram_map_VTFao.aAUERkSg01_default" href="ArchiMateRequirement_VTFao_aAUERkSg02.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="750, 364, 844, 411" coords2="750, 364, 844, 411" shape="rect" alt="Link for lokal veiledningstjeneste:Requirement" id="areadiagram_map_T_Sqo.aAUERkSgzV_default" href="ArchiMateRequirement_T_Sqo_aAUERkSgzW.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="265, 648, 339, 683" coords2="265, 648, 339, 683" shape="rect" alt="Bedre bruk av Arkivportalen:Requirement" id="areadiagram_map_3kiKo.aAUERkSgyD_default" href="ArchiMateRequirement_3kiKo_aAUERkSgyE.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="139, 648, 213, 683" coords2="139, 648, 213, 683" shape="rect" alt="Bedre bruk av ASTA:Requirement" id="areadiagram_map_27gKo.aAUERkSgxx_default" href="ArchiMateRequirement_27gKo_aAUERkSgxy.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="201, 545, 272, 585" coords2="201, 545, 272, 585" shape="rect" alt="Tilknyttede portaler:Requirement" id="areadiagram_map_k3tyo.aAUERkSgxJ_default" href="ArchiMateRequirement_U3tyo_aAUERkSgxK.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="297, 546, 368, 586" coords2="297, 546, 368, 586" shape="rect" alt="Stabilelenker:Requirement" id="areadiagram_map_96Fyo.aAUERkSgw9_default" href="ArchiMateRequirement_96Fyo_aAUERkSgw_.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="95, 548, 166, 591" coords2="95, 548, 166, 591" shape="rect" alt="Kontinuitet i satsning på Digitalarkivet:Requirement" id="areadiagram_map_Xk_So.aAUERkSgw3_default" href="ArchiMateRequirement_Pk_So_aAUERkSgw4.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="827, 307, 901, 350" coords2="827, 307, 901, 350" shape="rect" alt="Merking av opphav:Requirement" id="areadiagram_map_yS5sg.aAUERkSguc_default" href="ArchiMateRequirement_yS5sg_aAUERkSgud.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="677, 307, 750, 350" coords2="677, 307, 750, 350" shape="rect" alt="Rute bruker til rett kontaktpunkt:Requirement" id="areadiagram_map_qyysg.aAUERkSgte_default" href="ArchiMateRequirement_qyysg_aAUERkSgtf.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="756, 217, 827, 258" coords2="756, 217, 827, 258" shape="rect" alt="Kontaktpunkt:Requirement" id="areadiagram_map_Br0sg.aAUERkSgtO_default" href="ArchiMateRequirement_hr0sg_aAUERkSgtP.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2450, 340, 2517, 375" coords2="2450, 340, 2517, 375" shape="rect" alt="Geodata:Requirement" id="areadiagram_map_oQyMg.aAUERkSgsX_default" href="ArchiMateRequirement_oQyMg_aAUERkSgsY.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2370, 215, 2441, 258" coords2="2370, 215, 2441, 258" shape="rect" alt="Tagging:Requirement" id="areadiagram_map_oo4Mg.aAUERkSgr__default" href="ArchiMateRequirement_oo4Mg_aAUERkSgsA.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2046, 340, 2113, 375" coords2="2046, 340, 2113, 375" shape="rect" alt="Enkelt å håndtere metadata:Requirement" id="areadiagram_map_LUG0g.aAUERkSgrX_default" href="ArchiMateRequirement_LUG0g_aAUERkSgrY.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2097, 216, 2168, 259" coords2="2097, 216, 2168, 259" shape="rect" alt="Metadata:Requirement" id="areadiagram_map_t5E0g.aAUERkSgrR_default" href="ArchiMateRequirement_d5E0g_aAUERkSgrS.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2249, 216, 2320, 259" coords2="2249, 216, 2320, 259" shape="rect" alt="Bevaring:Requirement" id="areadiagram_map_YUA0g.aAUERkSgrB_default" href="ArchiMateRequirement_YUA0g_aAUERkSgrC.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2909, 317, 3000, 345" coords2="2909, 317, 3000, 345" shape="rect" alt="Tilgjengeliggjøring:Requirement" id="areadiagram_map_L3uUg.aAUERkSgpu_default" href="ArchiMateRequirement_L3uUg_aAUERkSgpv.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2818, 317, 2895, 345" coords2="2818, 317, 2895, 345" shape="rect" alt="Skanning:Requirement" id="areadiagram_map_A82Ug.aAUERkSgpi_default" href="ArchiMateRequirement_g82Ug_aAUERkSgpj.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2862, 215, 2941, 258" coords2="2862, 215, 2941, 258" shape="rect" alt="Felles kvalitetsrutiner :Requirement" id="areadiagram_map_whEUg.aAUERkSgoy_default" href="ArchiMateRequirement_whEUg_aAUERkSgoz.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2742, 216, 2813, 259" coords2="2742, 216, 2813, 259" shape="rect" alt="Arkivskaper står selv for kvalitet:Requirement" id="areadiagram_map_qiAUg.aAUERkSgoi_default" href="ArchiMateRequirement_qiAUg_aAUERkSgoj.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="177, 449, 286, 477" coords2="177, 449, 286, 477" shape="rect" alt="Krav ikke knyttet til Digitalarkivet:Requirement" id="areadiagram_map_Gwr4g.aAUERkSgoV_default" href="ArchiMateRequirement_mwr4g_aAUERkSgoW.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="736, 113, 845, 156" coords2="736, 113, 845, 156" shape="rect" alt="Synlighet:Requirement" id="areadiagram_map_vcd4g.aAUERkSgoI_default" href="ArchiMateRequirement_vcd4g_aAUERkSgoJ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2850, 113, 2959, 141" coords2="2850, 113, 2959, 141" shape="rect" alt="Kvalitet:Requirement" id="areadiagram_map_IsV4g.aAUERkSgn8_default" href="ArchiMateRequirement_osV4g_aAUERkSgn9.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2164, 113, 2248, 156" coords2="2164, 113, 2248, 156" shape="rect" alt="Data:Requirement" id="areadiagram_map_Iop4g.aAUERkSgn0_default" href="ArchiMateRequirement_oop4g_aAUERkSgn1.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2551, 113, 2660, 156" coords2="2551, 113, 2660, 156" shape="rect" alt="Muligheter:Requirement" id="areadiagram_map_MzB4g.aAUERkSgnu_default" href="ArchiMateRequirement_MzB4g_aAUERkSgnv.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3861, 48, 3970, 76" coords2="3861, 48, 3970, 76" shape="rect" alt="5 Ett Digitalarkiv:Requirement" id="areadiagram_map_5sK4g.aAUERkSgni_default" href="ArchiMateRequirement_FsK4g_aAUERkSgnj.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="3449, 48, 3558, 76" coords2="3449, 48, 3558, 76" shape="rect" alt="4 Tilgangskontroll:Requirement" id="areadiagram_map_Db84g.aAUERkSgnc_default" href="ArchiMateRequirement_Db84g_aAUERkSgnd.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="495, 113, 604, 156" coords2="495, 113, 604, 156" shape="rect" alt="Veiledning:Requirement" id="areadiagram_map_ZSk4g.aAUERkSgnP_default" href="ArchiMateRequirement_ZSk4g_aAUERkSgnQ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2097, 2, 2206, 30" coords2="2097, 2, 2206, 30" shape="rect" alt="3 Prosess:Requirement" id="areadiagram_map_ubw4g.aAUERkSgnB_default" href="ArchiMateRequirement_ubw4g_aAUERkSgnC.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1255, 8, 1364, 36" coords2="1255, 8, 1364, 36" shape="rect" alt="2 Publikum:Requirement" id="areadiagram_map_tBPYg.aAUERkSgm1_default" href="ArchiMateRequirement_dBPYg_aAUERkSgm2.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="343, 8, 452, 36" coords2="343, 8, 452, 36" shape="rect" alt="1 Arkivskapere:Requirement" id="areadiagram_map_4o7Yg.aAUERkSgmh_default" href="ArchiMateRequirement_4o7Yg_aAUERkSgmi.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_4njqU_aAUERkShSB.html" class="ItemLink">Kunne maskere deler av materiale : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_fOORY_aAUERkShOj.html" class="ItemLink">Video/lyd : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_gO6RY_aAUERkShOQ.html" class="ItemLink">Foto : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_JduBY_aAUERkShMu.html" class="ItemLink">Elektroniske dokument : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_BpGBY_aAUERkShMk.html" class="ItemLink">Digitaliserte dokument : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_Rif_Y_aAUERkShMG.html" class="ItemLink">Automatisering av arbeidsoppgaver : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_ISL_Y_aAUERkShL8.html" class="ItemLink">Ny statistikk av bruk : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_Fc9_Y_aAUERkShLw.html" class="ItemLink">OCR lesing : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_Qs6eY_aAUERkShJZ.html" class="ItemLink">Se hvor materiale kommer fra : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_5tieY_aAUERkShJN.html" class="ItemLink">For forskere : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_d0MeY_aAUERkShJD.html" class="ItemLink">For lekmann : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement__14eY_aAUERkShI5.html" class="ItemLink">For arkivarer : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_hP3uY_aAUERkShIl.html" class="ItemLink">Opphav for matriale : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_IOHuY_aAUERkShIf.html" class="ItemLink">Søkefunksjonalitet : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_jHzOY_aAUERkShGn.html" class="ItemLink">Brukerveiledning : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_pBtOY_aAUERkShGh.html" class="ItemLink">Opplæring : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_RtZOY_aAUERkShGN.html" class="ItemLink">Avtale : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_OzuOY_aAUERkShF_.html" class="ItemLink">Enkelt og intuativt : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_yNyOY_aAUERkShFt.html" class="ItemLink">Grensesnitt opplasting av materiale : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_K0EOY_aAUERkShFh.html" class="ItemLink">Emneknagger : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_VBmKY_aAUERkShDr.html" class="ItemLink">Alt type av materiale : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_FzPyY_aAUERkShCz.html" class="ItemLink">Fra kamra til tilgjengeliggjøring : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement__ZbyY_aAUERkShCn.html" class="ItemLink">Digitaliser on demand : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_ADIyY_aAUERkShCJ.html" class="ItemLink">Delta i nasjonale eller inetnasjonale nettverk : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_AMBiY_aAUERkShBY.html" class="ItemLink">Tilgjengliggjør private arkiver : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_S1dCY_aAUERkShBO.html" class="ItemLink">Digitalt skapt : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_EdksY_aAUERkShAo.html" class="ItemLink">Sluttbruker skal finne alt i en inngang : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_07gsY_aAUERkShAa.html" class="ItemLink">En inngang til arkivene : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_DdTUY_aAUERkSg_F.html" class="ItemLink">Parkeringsplass digitaliserte enkeltdokument : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_A_FUY_aAUERkSg__.html" class="ItemLink">Håndtere henvendelser : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_6l_UY_aAUERkSg_1.html" class="ItemLink">Veiledning arkivskapere : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_SBjVo_aAUERkSg94.html" class="ItemLink">Tilgang brukergrupper : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_1SXlo_aAUERkSg9c.html" class="ItemLink">Tilgjengelighet for klausulert matereiale : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_EqFFo_aAUERkSg82.html" class="ItemLink">Arkivskaper gir brukernavn og passord : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_Q_6Fo_aAUERkSg8s.html" class="ItemLink">Tilgangsløsning : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_T2w_o_aAUERkSg6g.html" class="ItemLink">Adobe Lightroom (exif) : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_agMeo_aAUERkSg6K.html" class="ItemLink">Masseredigering metadata : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_go9uo_aAUERkSg5s.html" class="ItemLink">Sikker lagring klausulert materiale : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_ghKmo_aAUERkSg3_.html" class="ItemLink">Lagring : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_cBA6o_aAUERkSg1A.html" class="ItemLink">Crowdsourcing : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_VTFao_aAUERkSg02.html" class="ItemLink">Deling av kunnskap : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_T_Sqo_aAUERkSgzW.html" class="ItemLink">Link for lokal veiledningstjeneste : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_3kiKo_aAUERkSgyE.html" class="ItemLink">Bedre bruk av Arkivportalen : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_27gKo_aAUERkSgxy.html" class="ItemLink">Bedre bruk av ASTA : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_U3tyo_aAUERkSgxK.html" class="ItemLink">Tilknyttede portaler : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_96Fyo_aAUERkSgw_.html" class="ItemLink">Stabilelenker : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_Pk_So_aAUERkSgw4.html" class="ItemLink">Kontinuitet i satsning på Digitalarkivet : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_yS5sg_aAUERkSgud.html" class="ItemLink">Merking av opphav : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_qyysg_aAUERkSgtf.html" class="ItemLink">Rute bruker til rett kontaktpunkt : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_hr0sg_aAUERkSgtP.html" class="ItemLink">Kontaktpunkt : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_oQyMg_aAUERkSgsY.html" class="ItemLink">Geodata : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_oo4Mg_aAUERkSgsA.html" class="ItemLink">Tagging : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_LUG0g_aAUERkSgrY.html" class="ItemLink">Enkelt å håndtere metadata : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_d5E0g_aAUERkSgrS.html" class="ItemLink">Metadata : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_YUA0g_aAUERkSgrC.html" class="ItemLink">Bevaring : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_L3uUg_aAUERkSgpv.html" class="ItemLink">Tilgjengeliggjøring : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_g82Ug_aAUERkSgpj.html" class="ItemLink">Skanning : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_whEUg_aAUERkSgoz.html" class="ItemLink">Felles kvalitetsrutiner  : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_qiAUg_aAUERkSgoj.html" class="ItemLink">Arkivskaper står selv for kvalitet : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_mwr4g_aAUERkSgoW.html" class="ItemLink">Krav ikke knyttet til Digitalarkivet : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_vcd4g_aAUERkSgoJ.html" class="ItemLink">Synlighet : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_osV4g_aAUERkSgn9.html" class="ItemLink">Kvalitet : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_oop4g_aAUERkSgn1.html" class="ItemLink">Data : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_MzB4g_aAUERkSgnv.html" class="ItemLink">Muligheter : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_FsK4g_aAUERkSgnj.html" class="ItemLink">5 Ett Digitalarkiv : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_Db84g_aAUERkSgnd.html" class="ItemLink">4 Tilgangskontroll : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_ZSk4g_aAUERkSgnQ.html" class="ItemLink">Veiledning : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_ubw4g_aAUERkSgnC.html" class="ItemLink">3 Prosess : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_dBPYg_aAUERkSgm2.html" class="ItemLink">2 Publikum : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateRequirement_4o7Yg_aAUERkSgmi.html" class="ItemLink">1 Arkivskapere : Requirement</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		Digitalarkivet som løsning	</div>
+</body>
+</html>

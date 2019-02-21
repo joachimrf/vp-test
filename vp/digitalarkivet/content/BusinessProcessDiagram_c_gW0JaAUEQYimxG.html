@@ -1,0 +1,356 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Business Process Diagram - META20 - Statuser til arbeidsliste</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		Digitalarkivet som løsning	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="PageParentTitle">META20 - Det nye grensesnittet for redigering av kildemetadata : Model</a>	</p>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Business Process Diagram - META20 - Statuser til <a onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" class="ItemLink">arbeidsliste</a>		</span>
+<a onclick="javascript: showVpLink('Digitalarkivet som løsning.vpp://diagram/c.gW0JaAUEQYimxG', 'META20 - Statuser til arbeidsliste\nDigitalarkivet som l&#xf8;sning.vpp://diagram/c.gW0JaAUEQYimxG', 'META20 - Statuser til arbeidsliste', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|42.0|165.0|20.0|20.0|BPStartEvent_ojQW0JaAUEQYimzc.html|BPStartEvent_ojQW0JaAUEQYimzc.html|QjQW0JaAUEQYimxx" id="optionQjQW0JaAUEQYimxx">Arbeidsliste er opprettet : Start Event</option>
+<option value="shape|122.0|155.0|110.0|40.0|BPTask_5H0W0JaAUEQYim7h.html|BPTask_5H0W0JaAUEQYim7h.html|5H0W0JaAUEQYim7g" id="option5H0W0JaAUEQYim7g">Ikke påbegynt : Task</option>
+<option value="shape|332.0|5.0|20.0|20.0|BPEndEvent_baCW0JaAUEQYim8Q.html|BPEndEvent_baCW0JaAUEQYim8Q.html|baCW0JaAUEQYim8P" id="optionbaCW0JaAUEQYim8P">Arbeidsliste er slettet : End Event</option>
+<option value="shape|292.0|155.0|140.0|40.0|BPTask_oW6W0JaAUEQYinIA.html|BPTask_oW6W0JaAUEQYinIA.html|IW6W0JaAUEQYinH_" id="optionIW6W0JaAUEQYinH_">Begynner å jobbe med arbeidslisten : Task</option>
+<option value="shape|182.0|5.0|20.0|20.0|BPIntermediateEvent_6z_W0JaAUEQYinIx.html|BPIntermediateEvent_6z_W0JaAUEQYinIx.html|az.W0JaAUEQYinIw" id="optionaz.W0JaAUEQYinIw">Liste skal slettes : Intermediate Event</option>
+<option value="shape|492.0|155.0|80.0|40.0|BPTask_LL1W0JaAUEQYinS8.html|BPTask_LL1W0JaAUEQYinS8.html|zL1W0JaAUEQYinS7" id="optionzL1W0JaAUEQYinS7">Påbegynt : Task</option>
+<option value="shape|622.0|155.0|140.0|40.0|BPTask_aEjW0JaAUEQYinTw.html|BPTask_aEjW0JaAUEQYinTw.html|aEjW0JaAUEQYinTv" id="optionaEjW0JaAUEQYinTv">Ferdig med alle endringene : Task</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/META20_Statuser_til_arbeidsliste.png" usemap="#diagram_map" class="Image" width="766" height="229"/>
+					<map name="diagram_map">
+<area coords="352,175,414,190" coords2="352,175,414,190" shape="rect" alt="arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');"/>
+<area imageId="diagram" coords="62.0, 168.0, 62.0, 182.0, 122.0, 182.0, 122.0, 168.0" coords2="62.0, 168.0, 62.0, 182.0, 122.0, 182.0, 122.0, 168.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_dK8W0JaAUEQYim73_default" href="BPSequenceFlow_NK8W0JaAUEQYim72.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="232.0, 168.0, 232.0, 182.0, 292.0, 182.0, 292.0, 168.0" coords2="232.0, 168.0, 232.0, 182.0, 292.0, 182.0, 292.0, 168.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_UBuW0JaAUEQYinIe_default" href="BPSequenceFlow_4BuW0JaAUEQYinId.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="202.0, 8.0, 202.0, 22.0, 332.0, 22.0, 332.0, 8.0" coords2="202.0, 8.0, 202.0, 22.0, 332.0, 22.0, 332.0, 8.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_Z3lW0JaAUEQYinJF_default" href="BPSequenceFlow_J3lW0JaAUEQYinJE.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="432.0, 168.0, 432.0, 182.0, 492.0, 182.0, 492.0, 168.0" coords2="432.0, 168.0, 432.0, 182.0, 492.0, 182.0, 492.0, 168.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_TrtW0JaAUEQYinTU_default" href="BPSequenceFlow_DrtW0JaAUEQYinTT.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="572.0, 168.0, 572.0, 182.0, 622.0, 182.0, 622.0, 168.0" coords2="572.0, 168.0, 572.0, 182.0, 622.0, 182.0, 622.0, 168.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_VzLW0JaAUEQYinUI_default" href="BPSequenceFlow_FzLW0JaAUEQYinUH.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="622, 155, 762, 195" coords2="622, 155, 762, 195" shape="rect" alt="Ferdig med alle endringene:Task" id="areadiagram_map_aEjW0JaAUEQYinTv_default" href="BPTask_aEjW0JaAUEQYinTw.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="492, 155, 572, 195" coords2="492, 155, 572, 195" shape="rect" alt="Påbegynt:Task" id="areadiagram_map_zL1W0JaAUEQYinS7_default" href="BPTask_LL1W0JaAUEQYinS8.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="182, 5, 202, 25" coords2="182, 5, 202, 25" shape="rect" alt="Liste skal slettes:Intermediate Event" id="areadiagram_map_az.W0JaAUEQYinIw_default" href="BPIntermediateEvent_6z_W0JaAUEQYinIx.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="292, 155, 432, 195" coords2="292, 155, 432, 195" shape="rect" alt="Begynner å jobbe med arbeidslisten:Task" id="areadiagram_map_IW6W0JaAUEQYinH__default" href="BPTask_oW6W0JaAUEQYinIA.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="332, 5, 352, 25" coords2="332, 5, 352, 25" shape="rect" alt="Arbeidsliste er slettet:End Event" id="areadiagram_map_baCW0JaAUEQYim8P_default" href="BPEndEvent_baCW0JaAUEQYim8Q.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="122, 155, 232, 195" coords2="122, 155, 232, 195" shape="rect" alt="Ikke påbegynt:Task" id="areadiagram_map_5H0W0JaAUEQYim7g_default" href="BPTask_5H0W0JaAUEQYim7h.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="42, 165, 62, 185" coords2="42, 165, 62, 185" shape="rect" alt="Arbeidsliste er opprettet:Start Event" id="areadiagram_map_QjQW0JaAUEQYimxx_default" href="BPStartEvent_ojQW0JaAUEQYimzc.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="6" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="10%">
+<span class="TableHeaderText">ID</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP81</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsStart.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsStart.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPStartEvent_ojQW0JaAUEQYimzc.html" class="ItemLink">Arbeidsliste er opprettet : Start Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP82</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_5H0W0JaAUEQYim7h.html" class="ItemLink">Ikke påbegynt : Service Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP84</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_baCW0JaAUEQYim8Q.html" class="ItemLink">Arbeidsliste er slettet : End Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP85</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_oW6W0JaAUEQYinIA.html" class="ItemLink">Begynner å jobbe med arbeidslisten : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP87</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsIntermediate.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsIntermediate.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPIntermediateEvent_6z_W0JaAUEQYinIx.html" class="ItemLink">Liste skal slettes : Message Trigger</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP89</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_LL1W0JaAUEQYinS8.html" class="ItemLink">Påbegynt : Service Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP91</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_aEjW0JaAUEQYinTw.html" class="ItemLink">Ferdig med alle endringene : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		Digitalarkivet som løsning	</div>
+</body>
+</html>

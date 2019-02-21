@@ -1,0 +1,968 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Business Process Diagram - Endre på metadata på kilder i arbeidsliste</title>
+	<META name="Description" content="Dette er hovedprosess for rollen operatør"/>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		Digitalarkivet som løsning	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="PageParentTitle">META20 - Det nye grensesnittet for redigering av kildemetadata : Model</a><span class="PageParentTitle">&nbsp;.&nbsp;</span><a href="BusinessProcessDiagram_uyZiKRaAUEQYtgyM.html" class="PageParentTitle">Operatør : Pool</a><span class="PageParentTitle">&nbsp;.&nbsp;</span><a href="BusinessProcessDiagram_uyZiKRaAUEQYtgyM.html" class="PageParentTitle">META20 : Lane</a><span class="PageParentTitle">&nbsp;.&nbsp;</span><a href="BusinessProcessDiagram_uyZiKRaAUEQYtgyM.html" class="PageParentTitle">Endre på metadata på kilder i arbeidsliste : Sub-Process</a>	</p>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Business Process Diagram - Endre på metadata på <a onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" class="ItemLink">kilder</a> i <a onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" class="ItemLink">arbeidsliste</a>		</span>
+<a onclick="javascript: showVpLink('Digitalarkivet som løsning.vpp://diagram/yflhmRaAUEQYtnnD', 'Endre p&#xe5; metadata p&#xe5; kilder i arbeidsliste\nDigitalarkivet som l&#xf8;sning.vpp://diagram/yflhmRaAUEQYtnnD', 'Endre p&#xe5; metadata p&#xe5; kilder i arbeidsliste', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|2.0|752.0|20.0|20.0|BPStartEvent_xgVhmRaAUEQYtnne.html|BPStartEvent_xgVhmRaAUEQYtnne.html|BgVhmRaAUEQYtnnM" id="optionBgVhmRaAUEQYtnnM">Unnamed Start Event : Start Event</option>
+<option value="shape|1952.0|752.0|20.0|20.0|BPEndEvent_dgVhmRaAUEQYtnni.html|BPEndEvent_dgVhmRaAUEQYtnni.html|tgVhmRaAUEQYtnnh" id="optiontgVhmRaAUEQYtnnh">Unnamed End Event : End Event</option>
+<option value="shape|182.0|732.0|180.0|60.0|BPTask_Wah1mRaAUEQYtn2j.html|BPTask_Wah1mRaAUEQYtn2j.html|Wah1mRaAUEQYtn2i" id="optionWah1mRaAUEQYtn2i">Fordele endringer i masseredigeringer, endirnger for areidsliste og enkeltendringer : Task</option>
+<option value="shape|302.0|482.0|40.0|50.0|BPDataObject_l1N1mRaAUEQYtn3z.html|BPDataObject_l1N1mRaAUEQYtn3z.html|l1N1mRaAUEQYtn3y" id="optionl1N1mRaAUEQYtn3y">Masseredigeringer : Data Object</option>
+<option value="shape|533.0|742.0|40.0|40.0|BPGateway_ToP1mRaAUEQYtn6n.html|BPGateway_ToP1mRaAUEQYtn6n.html|ToP1mRaAUEQYtn6m" id="optionToP1mRaAUEQYtn6m">Er det noen masseredigeringer som skal gjøres? : Gateway</option>
+<option value="shape|1092.0|742.0|40.0|40.0|BPGateway_oboNmRaAUEQYtn7c.html|BPGateway_oboNmRaAUEQYtn7c.html|oboNmRaAUEQYtn7b" id="optionoboNmRaAUEQYtn7b">Er det noen endringer for arbeidsliste som skal gjøres? : Gateway</option>
+<option value="shape|393.0|42.0|540.0|480.0|BPSubProcess_wdBtmRaAUEQYtojy.html|BPSubProcess_wdBtmRaAUEQYtojy.html|wdBtmRaAUEQYtojx" id="optionwdBtmRaAUEQYtojx">Masseredigering : Sub-Process</option>
+<option value="shape|464.0|455.0|179.0|49.0|BPTask_E7QdmRaAUEQYtokT.html|BPTask_E7QdmRaAUEQYtokT.html|47QdmRaAUEQYtokS" id="option47QdmRaAUEQYtokS">Velge neste enkelt masseredigering : Task</option>
+<option value="shape|542.0|298.0|40.0|40.0|BPGateway_j_CDmRaAUEQYtom8.html|BPGateway_j_CDmRaAUEQYtom8.html|j.CDmRaAUEQYtom7" id="optionj.CDmRaAUEQYtom7">Er det operasjon over emneknagger? : Gateway</option>
+<option value="shape|738.0|439.0|179.0|64.0|BPTask_BNFDmRaAUEQYtpBI.html|BPTask_BNFDmRaAUEQYtpBI.html|BNFDmRaAUEQYtpBH" id="optionBNFDmRaAUEQYtpBH">Se om det er flere masseredigeringsoperasjoner : Task</option>
+<option value="shape|667.0|455.0|40.0|40.0|BPGateway_zQDDmRaAUEQYtpBk.html|BPGateway_zQDDmRaAUEQYtpBk.html|zQDDmRaAUEQYtpBj" id="optionzQDDmRaAUEQYtpBj">Er det flere masserdigeringer? : Gateway</option>
+<option value="shape|464.0|171.0|179.0|50.0|BPTask_oVSjmRaAUEQYtpOJ.html|BPTask_oVSjmRaAUEQYtpOJ.html|oVSjmRaAUEQYtpOI" id="optionoVSjmRaAUEQYtpOI">Slett eller legg emneknagger eller andre samlefelt : Task</option>
+<option value="shape|464.0|89.0|179.0|54.0|BPTask_d22jmRaAUEQYtpOb.html|BPTask_d22jmRaAUEQYtpOb.html|d22jmRaAUEQYtpOa" id="optiond22jmRaAUEQYtpOa">Definer en ny verdi for felt med noen få variabler for enkeltverdi felt : Task</option>
+<option value="shape|734.0|90.0|179.0|40.0|BPTask_MnpjmRaAUEQYtpO7.html|BPTask_MnpjmRaAUEQYtpO7.html|MnpjmRaAUEQYtpO6" id="optionMnpjmRaAUEQYtpO6">Utfør endringer over arbeidsliste : Task</option>
+<option value="shape|464.0|372.0|179.0|40.0|BPTask_EJXdeRaAUEQYtiaG.html|BPTask_EJXdeRaAUEQYtiaG.html|EJXdeRaAUEQYtiaF" id="optionEJXdeRaAUEQYtiaF">Velg arbeidsliste fra liste over alle kilder : Task</option>
+<option value="shape|1014.0|362.0|179.0|40.0|BPTask_EJXdeRaAUEQYtiaG.html|BPTask_EJXdeRaAUEQYtiaG.html|pcf9eRaAUEQYtjUG" id="optionpcf9eRaAUEQYtjUG">Velg arbeidsliste fra liste over alle kilder : Task</option>
+<option value="shape|663.0|288.0|40.0|50.0|BPDataObject_73s9eRaAUEQYtibS.html|BPDataObject_73s9eRaAUEQYtibS.html|b3s9eRaAUEQYtibR" id="optionb3s9eRaAUEQYtibR">Utvalgte kilder som skal rettes : Data Object</option>
+<option value="shape|1146.0|267.0|40.0|50.0|BPDataObject_73s9eRaAUEQYtibS.html|BPDataObject_73s9eRaAUEQYtibS.html|Vcf9eRaAUEQYtjUJ" id="optionVcf9eRaAUEQYtjUJ">Utvalgte kilder som skal rettes : Data Object</option>
+<option value="shape|302.0|602.0|40.0|50.0|BPDataObject_K8SWeRaAUEQYthUw.html|BPDataObject_K8SWeRaAUEQYthUw.html|c8SWeRaAUEQYthUe" id="optionc8SWeRaAUEQYthUe">Endringer for arbeidsliste : Data Object</option>
+<option value="shape|302.0|822.0|40.0|50.0|BPDataObject_SpIVeRaAUEQYtiSH.html|BPDataObject_SpIVeRaAUEQYtiSH.html|MpIVeRaAUEQYtiR1" id="optionMpIVeRaAUEQYtiR1">Enkeltendringer : Data Object</option>
+<option value="shape|1002.0|42.0|480.0|480.0|BPSubProcess_chINeRaAUEQYtiYI.html|BPSubProcess_chINeRaAUEQYtiYI.html|chINeRaAUEQYtiYH" id="optionchINeRaAUEQYtiYH">Endringer for arbeidsliste : Sub-Process</option>
+<option value="shape|1014.0|454.0|160.0|40.0|BPTask_FAwNeRaAUEQYtiX4.html|BPTask_FAwNeRaAUEQYtiX4.html|FAwNeRaAUEQYtiX3" id="optionFAwNeRaAUEQYtiX3">Velge neste enkelt endring for arbeidsliste : Task</option>
+<option value="shape|1035.0|170.0|150.0|60.0|BPTask_s_QDeRaAUEQYtjU4.html|BPTask_s_QDeRaAUEQYtjU4.html|s_QDeRaAUEQYtjU3" id="options_QDeRaAUEQYtjU3">Gå gjennom arbeidsliste og inføre endringer : Task</option>
+<option value="shape|1306.0|448.0|126.0|54.0|BPTask_Ex6DeRaAUEQYtjW0.html|BPTask_Ex6DeRaAUEQYtjW0.html|Ex6DeRaAUEQYtjWz" id="optionEx6DeRaAUEQYtjWz">Se om det er flere endringer for arbeidsliste : Task</option>
+<option value="shape|1211.0|454.0|40.0|40.0|BPGateway_2tijeRaAUEQYtj24.html|BPGateway_2tijeRaAUEQYtj24.html|2tijeRaAUEQYtj23" id="option2tijeRaAUEQYtj23">Er det flere endringer for arbeidsliste? : Gateway</option>
+<option value="shape|412.0|72.0|510.0|290.0|BPGroup_HLvDeRaAUEQYtjjI.html|BPGroup_HLvDeRaAUEQYtjjI.html|HLvDeRaAUEQYtjjH" id="optionHLvDeRaAUEQYtjjH">Håndtering av enkelt masseredigering : Group</option>
+<option value="shape|1630.0|742.0|40.0|40.0|BPGateway_muNzeRaAUEQYtltV.html|BPGateway_muNzeRaAUEQYtltV.html|cuNzeRaAUEQYtltD" id="optioncuNzeRaAUEQYtltD">Er det noen enkeltendringer som skal gjøres? : Gateway</option>
+<option value="shape|1530.0|42.0|510.0|480.0|BPSubProcess_WSHwxRaAUEQYthYO.html|BPSubProcess_WSHwxRaAUEQYthYO.html|mSHwxRaAUEQYthYN" id="optionmSHwxRaAUEQYthYN">Enkeltendringer : Sub-Process</option>
+<option value="shape|1569.0|450.0|160.0|40.0|BPTask_gQTwxRaAUEQYthXt.html|BPTask_gQTwxRaAUEQYthXt.html|gQTwxRaAUEQYthXs" id="optiongQTwxRaAUEQYthXs">Velge neste enkeltendring : Task</option>
+<option value="shape|1560.0|362.0|170.0|40.0|BPTask_PYcIxRaAUEQYthZz.html|BPTask_PYcIxRaAUEQYthZz.html|PYcIxRaAUEQYthZy" id="optionPYcIxRaAUEQYthZy">Naviger til kilde som skal endres og åpn kilden : Task</option>
+<option value="shape|1550.0|272.0|190.0|40.0|BPTask_D7BIxRaAUEQYthaq.html|BPTask_D7BIxRaAUEQYthaq.html|D7BIxRaAUEQYthap" id="optionD7BIxRaAUEQYthap">Utfør endring på enkelt kilde : Task</option>
+<option value="shape|1880.0|440.0|120.0|50.0|BPTask_FozIxRaAUEQYtiNz.html|BPTask_FozIxRaAUEQYtiNz.html|FozIxRaAUEQYtiNy" id="optionFozIxRaAUEQYtiNy">Se om det er flere enkeltendringer : Task</option>
+<option value="shape|1780.0|452.0|40.0|40.0|BPGateway_33PIxRaAUEQYtiOg.html|BPGateway_33PIxRaAUEQYtiOg.html|33PIxRaAUEQYtiOf" id="option33PIxRaAUEQYtiOf">Er det flere enkeltendringer? : Gateway</option>
+<option value="shape|53.0|482.0|40.0|50.0|BPDataObject_FWlmmRaAUEQYtlXn.html|BPDataObject_FWlmmRaAUEQYtlXn.html|jsQRmRaAUEQYtno1" id="optionjsQRmRaAUEQYtno1">Arbeidsliste : Data Object</option>
+<option value="shape|53.0|612.0|40.0|50.0|BPDataInput_UGaWmRaAUEQYtlat.html|BPDataInput_UGaWmRaAUEQYtlat.html|4w4RmRaAUEQYtnpp" id="option4w4RmRaAUEQYtnpp">Nye verdier for kilder : Data Input</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/Endre_p_metadata_p_kilder_i_arbeidsliste.png" usemap="#diagram_map" class="Image" width="2044" height="890"/>
+					<map name="diagram_map">
+<area coords="529,42,577,51" coords2="529,42,577,51" shape="rect" alt="masseredigering" href="GridDiagram_fD0feRaAUEQYtpd5.html#1RaLeRaAUEQYtlvP" onclick="javascript: highlightGridModelSelection('1RaLeRaAUEQYtlvP');"/>
+<area coords="625,72,673,81" coords2="625,72,673,81" shape="rect" alt="masseredigering" href="GridDiagram_fD0feRaAUEQYtpd5.html#1RaLeRaAUEQYtlvP" onclick="javascript: highlightGridModelSelection('1RaLeRaAUEQYtlvP');"/>
+<area coords="36,537,70,546" coords2="36,537,70,546" shape="rect" alt="arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');"/>
+<area coords="45,671,60,680" coords2="45,671,60,680" shape="rect" alt="kilde" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');"/>
+<area coords="206,741,260,750" coords2="206,741,260,750" shape="rect" alt="masseredigering" href="GridDiagram_fD0feRaAUEQYtpd5.html#1RaLeRaAUEQYtlvP" onclick="javascript: highlightGridModelSelection('1RaLeRaAUEQYtlvP');"/>
+<area coords="226,759,271,768" coords2="226,759,271,768" shape="rect" alt="enkeltendring" href="GridDiagram_fD0feRaAUEQYtpd5.html#AM.PeRaAUEQYtoGv" onclick="javascript: highlightGridModelSelection('AM.PeRaAUEQYtoGv');"/>
+<area coords="270,532,324,541" coords2="270,532,324,541" shape="rect" alt="masseredigering" href="GridDiagram_fD0feRaAUEQYtpd5.html#1RaLeRaAUEQYtlvP" onclick="javascript: highlightGridModelSelection('1RaLeRaAUEQYtlvP');"/>
+<area coords="1068,791,1105,800" coords2="1068,791,1105,800" shape="rect" alt="endring for arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#60xLeRaAUEQYtl5Z" onclick="javascript: highlightGridModelSelection('60xLeRaAUEQYtl5Z');"/>
+<area coords="1056,800,1089,809" coords2="1056,800,1089,809" shape="rect" alt="endring for arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#60xLeRaAUEQYtl5Z" onclick="javascript: highlightGridModelSelection('60xLeRaAUEQYtl5Z');"/>
+<area coords="282,652,320,661" coords2="282,652,320,661" shape="rect" alt="endring for arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#60xLeRaAUEQYtl5Z" onclick="javascript: highlightGridModelSelection('60xLeRaAUEQYtl5Z');"/>
+<area coords="284,661,317,670" coords2="284,661,317,670" shape="rect" alt="endring for arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#60xLeRaAUEQYtl5Z" onclick="javascript: highlightGridModelSelection('60xLeRaAUEQYtl5Z');"/>
+<area coords="1108,42,1181,51" coords2="1108,42,1181,51" shape="rect" alt="endring for arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#60xLeRaAUEQYtl5Z" onclick="javascript: highlightGridModelSelection('60xLeRaAUEQYtl5Z');"/>
+<area coords="1041,466,1107,475" coords2="1041,466,1107,475" shape="rect" alt="endring for arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#60xLeRaAUEQYtl5Z" onclick="javascript: highlightGridModelSelection('60xLeRaAUEQYtl5Z');"/>
+<area coords="1052,365,1085,374" coords2="1052,365,1085,374" shape="rect" alt="arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');"/>
+<area coords="1079,374,1094,383" coords2="1079,374,1094,383" shape="rect" alt="kilde" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');"/>
+<area coords="1109,317,1124,326" coords2="1109,317,1124,326" shape="rect" alt="kilde" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');"/>
+<area coords="1062,179,1095,188" coords2="1062,179,1095,188" shape="rect" alt="arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');"/>
+<area coords="1338,459,1375,468" coords2="1338,459,1375,468" shape="rect" alt="endring for arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#60xLeRaAUEQYtl5Z" onclick="javascript: highlightGridModelSelection('60xLeRaAUEQYtl5Z');"/>
+<area coords="1341,468,1374,477" coords2="1341,468,1374,477" shape="rect" alt="endring for arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#60xLeRaAUEQYtl5Z" onclick="javascript: highlightGridModelSelection('60xLeRaAUEQYtl5Z');"/>
+<area coords="506,469,554,478" coords2="506,469,554,478" shape="rect" alt="masseredigering" href="GridDiagram_fD0feRaAUEQYtpd5.html#1RaLeRaAUEQYtlvP" onclick="javascript: highlightGridModelSelection('1RaLeRaAUEQYtlvP');"/>
+<area coords="784,102,817,111" coords2="784,102,817,111" shape="rect" alt="arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');"/>
+<area coords="502,375,535,384" coords2="502,375,535,384" shape="rect" alt="arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');"/>
+<area coords="529,384,544,393" coords2="529,384,544,393" shape="rect" alt="kilde" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');"/>
+<area coords="628,338,643,347" coords2="628,338,643,347" shape="rect" alt="kilde" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');"/>
+<area coords="1201,417,1228,426" coords2="1201,417,1228,426" shape="rect" alt="endring for arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#60xLeRaAUEQYtl5Z" onclick="javascript: highlightGridModelSelection('60xLeRaAUEQYtl5Z');"/>
+<area coords="1175,426,1218,435" coords2="1175,426,1218,435" shape="rect" alt="endring for arbeidsliste" href="GridDiagram_fD0feRaAUEQYtpd5.html#60xLeRaAUEQYtl5Z" onclick="javascript: highlightGridModelSelection('60xLeRaAUEQYtl5Z');"/>
+<area coords="1590,791,1635,800" coords2="1590,791,1635,800" shape="rect" alt="enkeltendring" href="GridDiagram_fD0feRaAUEQYtpd5.html#AM.PeRaAUEQYtoGv" onclick="javascript: highlightGridModelSelection('AM.PeRaAUEQYtoGv');"/>
+<area coords="1659,42,1705,51" coords2="1659,42,1705,51" shape="rect" alt="enkeltendring" href="GridDiagram_fD0feRaAUEQYtpd5.html#AM.PeRaAUEQYtoGv" onclick="javascript: highlightGridModelSelection('AM.PeRaAUEQYtoGv');"/>
+<area coords="1628,457,1667,466" coords2="1628,457,1667,466" shape="rect" alt="enkeltendring" href="GridDiagram_fD0feRaAUEQYtpd5.html#AM.PeRaAUEQYtoGv" onclick="javascript: highlightGridModelSelection('AM.PeRaAUEQYtoGv');"/>
+<area coords="1619,365,1632,374" coords2="1619,365,1632,374" shape="rect" alt="kilde" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');"/>
+<area coords="1637,374,1654,383" coords2="1637,374,1654,383" shape="rect" alt="kilde" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');"/>
+<area coords="1648,279,1661,288" coords2="1648,279,1661,288" shape="rect" alt="kilde" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');"/>
+<area coords="1907,455,1952,464" coords2="1907,455,1952,464" shape="rect" alt="enkeltendring" href="GridDiagram_fD0feRaAUEQYtpd5.html#AM.PeRaAUEQYtoGv" onclick="javascript: highlightGridModelSelection('AM.PeRaAUEQYtoGv');"/>
+<area coords="1744,424,1789,433" coords2="1744,424,1789,433" shape="rect" alt="enkeltendring" href="GridDiagram_fD0feRaAUEQYtpd5.html#AM.PeRaAUEQYtoGv" onclick="javascript: highlightGridModelSelection('AM.PeRaAUEQYtoGv');"/>
+<area imageId="diagram" coords="22.0, 754.0, 22.0, 768.0, 182.0, 768.0, 182.0, 754.0" coords2="22.0, 754.0, 22.0, 768.0, 182.0, 768.0, 182.0, 754.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_iRF1mRaAUEQYtn27_default" href="BPSequenceFlow_8RF1mRaAUEQYtn26.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="217.0, 627.0, 217.0, 630.0, 93.0, 630.0, 93.0, 644.0, 217.0, 644.0, 217.0, 732.0, 231.0, 732.0, 231.0, 644.0, 234.0, 644.0, 234.0, 630.0, 231.0, 630.0, 231.0, 627.0" coords2="217.0, 627.0, 217.0, 630.0, 93.0, 630.0, 93.0, 644.0, 217.0, 644.0, 217.0, 732.0, 231.0, 732.0, 231.0, 644.0, 234.0, 644.0, 234.0, 630.0, 231.0, 630.0, 231.0, 627.0" shape="poly" alt=":Data Association" id="areadiagram_map_CUV1mRaAUEQYtn3c_default" href="BPDataAssociation_sUV1mRaAUEQYtn3b.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="245.0, 497.0, 245.0, 500.0, 242.0, 500.0, 242.0, 514.0, 245.0, 514.0, 245.0, 732.0, 259.0, 732.0, 259.0, 514.0, 302.0, 514.0, 302.0, 500.0, 259.0, 500.0, 259.0, 497.0" coords2="245.0, 497.0, 245.0, 500.0, 242.0, 500.0, 242.0, 514.0, 245.0, 514.0, 245.0, 732.0, 259.0, 732.0, 259.0, 514.0, 302.0, 514.0, 302.0, 500.0, 259.0, 500.0, 259.0, 497.0" shape="poly" alt=":Association" id="areadiagram_map_ANN1mRaAUEQYtn35_default" href="BPAssociation_P1N1mRaAUEQYtn34.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="362.0, 755.0, 362.0, 769.0, 533.0, 769.0, 533.0, 755.0" coords2="362.0, 755.0, 362.0, 769.0, 533.0, 769.0, 533.0, 755.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_vnQNmRaAUEQYtn7E_default" href="BPSequenceFlow_XnQNmRaAUEQYtn7D.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="573.0, 755.0, 573.0, 769.0, 1092.0, 769.0, 1092.0, 755.0" coords2="573.0, 755.0, 573.0, 769.0, 1092.0, 769.0, 1092.0, 755.0" shape="poly" alt="Nei:Sequence Flow" id="areadiagram_map_k_0NmRaAUEQYtn7._default" href="BPSequenceFlow_4_0NmRaAUEQYtn79.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="546.0, 504.0, 546.0, 742.0, 560.0, 742.0, 560.0, 504.0" coords2="546.0, 504.0, 546.0, 742.0, 560.0, 742.0, 560.0, 504.0" shape="poly" alt="Ja:Sequence Flow" id="areadiagram_map_08StmRaAUEQYtohB_default" href="BPSequenceFlow_k8StmRaAUEQYtohA.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="546.0, 412.0, 546.0, 455.0, 560.0, 455.0, 560.0, 412.0" coords2="546.0, 412.0, 546.0, 455.0, 560.0, 455.0, 560.0, 412.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_yPODmRaAUEQYtonY_default" href="BPSequenceFlow_CPODmRaAUEQYtonX.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="707.0, 465.0, 707.0, 479.0, 738.0, 479.0, 738.0, 465.0" coords2="707.0, 465.0, 707.0, 479.0, 738.0, 479.0, 738.0, 465.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_0RzDmRaAUEQYtpCA_default" href="BPSequenceFlow_kRzDmRaAUEQYtpB_.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="643.0, 469.0, 643.0, 483.0, 667.0, 483.0, 667.0, 469.0" coords2="643.0, 469.0, 643.0, 483.0, 667.0, 483.0, 667.0, 469.0" shape="poly" alt="Ja:Sequence Flow" id="areadiagram_map_JeLDmRaAUEQYtpCW_default" href="BPSequenceFlow_ReLDmRaAUEQYtpCV.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="680.0, 495.0, 680.0, 755.0, 677.0, 755.0, 677.0, 769.0, 680.0, 769.0, 680.0, 772.0, 694.0, 772.0, 694.0, 769.0, 1092.0, 769.0, 1092.0, 755.0, 694.0, 755.0, 694.0, 495.0" coords2="680.0, 495.0, 680.0, 755.0, 677.0, 755.0, 677.0, 769.0, 680.0, 769.0, 680.0, 772.0, 694.0, 772.0, 694.0, 769.0, 1092.0, 769.0, 1092.0, 755.0, 694.0, 755.0, 694.0, 495.0" shape="poly" alt="Nei:Sequence Flow" id="areadiagram_map_TZQjmRaAUEQYtpDm_default" href="BPSequenceFlow_9ZQjmRaAUEQYtpDl.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="414.0, 105.0, 414.0, 108.0, 411.0, 108.0, 411.0, 122.0, 414.0, 122.0, 414.0, 310.0, 411.0, 310.0, 411.0, 324.0, 414.0, 324.0, 414.0, 327.0, 428.0, 327.0, 428.0, 324.0, 542.0, 324.0, 542.0, 310.0, 428.0, 310.0, 428.0, 122.0, 464.0, 122.0, 464.0, 108.0, 428.0, 108.0, 428.0, 105.0" coords2="414.0, 105.0, 414.0, 108.0, 411.0, 108.0, 411.0, 122.0, 414.0, 122.0, 414.0, 310.0, 411.0, 310.0, 411.0, 324.0, 414.0, 324.0, 414.0, 327.0, 428.0, 327.0, 428.0, 324.0, 542.0, 324.0, 542.0, 310.0, 428.0, 310.0, 428.0, 122.0, 464.0, 122.0, 464.0, 108.0, 428.0, 108.0, 428.0, 105.0" shape="poly" alt="Nei:Sequence Flow" id="areadiagram_map_HFljmRaAUEQYtpPX_default" href="BPSequenceFlow_bFljmRaAUEQYtpPW.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="558.0, 221.0, 558.0, 298.0, 572.0, 298.0, 572.0, 221.0" coords2="558.0, 221.0, 558.0, 298.0, 572.0, 298.0, 572.0, 221.0" shape="poly" alt="Ja:Sequence Flow" id="areadiagram_map_459jmRaAUEQYtpP9_default" href="BPSequenceFlow_I59jmRaAUEQYtpP8.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="744.0, 130.0, 744.0, 205.0, 643.0, 205.0, 643.0, 219.0, 744.0, 219.0, 744.0, 222.0, 758.0, 222.0, 758.0, 219.0, 761.0, 219.0, 761.0, 205.0, 758.0, 205.0, 758.0, 130.0" coords2="744.0, 130.0, 744.0, 205.0, 643.0, 205.0, 643.0, 219.0, 744.0, 219.0, 744.0, 222.0, 758.0, 222.0, 758.0, 219.0, 761.0, 219.0, 761.0, 205.0, 758.0, 205.0, 758.0, 130.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_oyjjmRaAUEQYtpQZ_default" href="BPSequenceFlow_wyjjmRaAUEQYtpQY.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="643.0, 105.0, 643.0, 119.0, 734.0, 119.0, 734.0, 105.0" coords2="643.0, 105.0, 643.0, 119.0, 734.0, 119.0, 734.0, 105.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_mATjmRaAUEQYtpQv_default" href="BPSequenceFlow_6ATjmRaAUEQYtpQu.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="815.0, 130.0, 815.0, 439.0, 829.0, 439.0, 829.0, 130.0" coords2="815.0, 130.0, 815.0, 439.0, 829.0, 439.0, 829.0, 130.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_K6LjmRaAUEQYtpRP_default" href="BPSequenceFlow_S6LjmRaAUEQYtpRO.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="65.0, 381.0, 65.0, 384.0, 62.0, 384.0, 62.0, 398.0, 65.0, 398.0, 65.0, 482.0, 79.0, 482.0, 79.0, 398.0, 464.0, 398.0, 464.0, 384.0, 79.0, 384.0, 79.0, 381.0" coords2="65.0, 381.0, 65.0, 384.0, 62.0, 384.0, 62.0, 398.0, 65.0, 398.0, 65.0, 482.0, 79.0, 482.0, 79.0, 398.0, 464.0, 398.0, 464.0, 384.0, 79.0, 384.0, 79.0, 381.0" shape="poly" alt=":Association" id="areadiagram_map_UyKTmRaAUEQYtpTN_default" href="BPAssociation_QyKTmRaAUEQYtpTM.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="245.0, 617.0, 245.0, 620.0, 242.0, 620.0, 242.0, 634.0, 245.0, 634.0, 245.0, 732.0, 259.0, 732.0, 259.0, 634.0, 302.0, 634.0, 302.0, 620.0, 259.0, 620.0, 259.0, 617.0" coords2="245.0, 617.0, 245.0, 620.0, 242.0, 620.0, 242.0, 634.0, 245.0, 634.0, 245.0, 732.0, 259.0, 732.0, 259.0, 634.0, 302.0, 634.0, 302.0, 620.0, 259.0, 620.0, 259.0, 617.0" shape="poly" alt=":Data Association" id="areadiagram_map_ti02eRaAUEQYthXv_default" href="BPDataAssociation_5i02eRaAUEQYthXu.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="245.0, 792.0, 245.0, 835.0, 242.0, 835.0, 242.0, 849.0, 245.0, 849.0, 245.0, 852.0, 259.0, 852.0, 259.0, 849.0, 302.0, 849.0, 302.0, 835.0, 259.0, 835.0, 259.0, 792.0" coords2="245.0, 792.0, 245.0, 835.0, 242.0, 835.0, 242.0, 849.0, 245.0, 849.0, 245.0, 852.0, 259.0, 852.0, 259.0, 849.0, 302.0, 849.0, 302.0, 835.0, 259.0, 835.0, 259.0, 792.0" shape="poly" alt=":Data Association" id="areadiagram_map_uEEVeRaAUEQYtiSf_default" href="BPDataAssociation_KEEVeRaAUEQYtiSe.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="555.0, 338.0, 555.0, 372.0, 569.0, 372.0, 569.0, 338.0" coords2="555.0, 338.0, 555.0, 372.0, 569.0, 372.0, 569.0, 338.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_lhY9eRaAUEQYtiav_default" href="BPSequenceFlow_ZhY9eRaAUEQYtiau.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="605.0, 302.0, 605.0, 305.0, 602.0, 305.0, 602.0, 319.0, 605.0, 319.0, 605.0, 372.0, 619.0, 372.0, 619.0, 319.0, 663.0, 319.0, 663.0, 305.0, 619.0, 305.0, 619.0, 302.0" coords2="605.0, 302.0, 605.0, 305.0, 602.0, 305.0, 602.0, 319.0, 605.0, 319.0, 605.0, 372.0, 619.0, 372.0, 619.0, 319.0, 663.0, 319.0, 663.0, 305.0, 619.0, 305.0, 619.0, 302.0" shape="poly" alt=":Data Association" id="areadiagram_map_TJC9eRaAUEQYtibo_default" href="BPDataAssociation_1JC9eRaAUEQYtibn.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="773.0, 130.0, 773.0, 306.0, 703.0, 306.0, 703.0, 320.0, 773.0, 320.0, 773.0, 323.0, 787.0, 323.0, 787.0, 320.0, 790.0, 320.0, 790.0, 306.0, 787.0, 306.0, 787.0, 130.0" coords2="773.0, 130.0, 773.0, 306.0, 703.0, 306.0, 703.0, 320.0, 773.0, 320.0, 773.0, 323.0, 787.0, 323.0, 787.0, 320.0, 790.0, 320.0, 790.0, 306.0, 787.0, 306.0, 787.0, 130.0" shape="poly" alt=":Association" id="areadiagram_map_bzS9eRaAUEQYtib9_default" href="BPAssociation_TzS9eRaAUEQYtib8.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1158.0, 317.0, 1158.0, 362.0, 1172.0, 362.0, 1172.0, 317.0" coords2="1158.0, 317.0, 1158.0, 362.0, 1172.0, 362.0, 1172.0, 317.0" shape="poly" alt=":Data Association" id="areadiagram_map_Ncf9eRaAUEQYtjUM_default" href="BPDataAssociation_1JC9eRaAUEQYtibn.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1094.0, 402.0, 1094.0, 454.0, 1108.0, 454.0, 1108.0, 402.0" coords2="1094.0, 402.0, 1094.0, 454.0, 1108.0, 454.0, 1108.0, 402.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_L__9eRaAUEQYtjUh_default" href="BPSequenceFlow_D__9eRaAUEQYtjUg.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1163.0, 230.0, 1163.0, 267.0, 1177.0, 267.0, 1177.0, 230.0" coords2="1163.0, 230.0, 1163.0, 267.0, 1177.0, 267.0, 1177.0, 230.0" shape="poly" alt=":Association" id="areadiagram_map_7T8DeRaAUEQYtjV7_default" href="BPAssociation_dT8DeRaAUEQYtjV6.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1108.0, 230.0, 1108.0, 362.0, 1122.0, 362.0, 1122.0, 230.0" coords2="1108.0, 230.0, 1108.0, 362.0, 1122.0, 362.0, 1122.0, 230.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_.ISDeRaAUEQYtjWY_default" href="BPSequenceFlow_uISDeRaAUEQYtjWX.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1365.0, 192.0, 1365.0, 195.0, 1185.0, 195.0, 1185.0, 209.0, 1365.0, 209.0, 1365.0, 448.0, 1379.0, 448.0, 1379.0, 209.0, 1382.0, 209.0, 1382.0, 195.0, 1379.0, 195.0, 1379.0, 192.0" coords2="1365.0, 192.0, 1365.0, 195.0, 1185.0, 195.0, 1185.0, 209.0, 1365.0, 209.0, 1365.0, 448.0, 1379.0, 448.0, 1379.0, 209.0, 1382.0, 209.0, 1382.0, 195.0, 1379.0, 195.0, 1379.0, 192.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_Zp2DeRaAUEQYtjXM_default" href="BPSequenceFlow_Jp2DeRaAUEQYtjXL.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1251.0, 468.0, 1251.0, 482.0, 1306.0, 482.0, 1306.0, 468.0" coords2="1251.0, 468.0, 1251.0, 482.0, 1306.0, 482.0, 1306.0, 468.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_XsmjeRaAUEQYtj3q_default" href="BPSequenceFlow_HsmjeRaAUEQYtj3p.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1174.0, 466.0, 1174.0, 480.0, 1211.0, 480.0, 1211.0, 466.0" coords2="1174.0, 466.0, 1174.0, 480.0, 1211.0, 480.0, 1211.0, 466.0" shape="poly" alt="Ja:Sequence Flow" id="areadiagram_map_xt.jeRaAUEQYtj4a_default" href="BPSequenceFlow_ht_jeRaAUEQYtj4Z.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1095.0, 494.0, 1095.0, 742.0, 1109.0, 742.0, 1109.0, 494.0" coords2="1095.0, 494.0, 1095.0, 742.0, 1109.0, 742.0, 1109.0, 494.0" shape="poly" alt="Ja:Sequence Flow" id="areadiagram_map_h.RjeRaAUEQYtj42_default" href="BPSequenceFlow___RjeRaAUEQYtj41.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1132.0, 755.0, 1132.0, 769.0, 1630.0, 769.0, 1630.0, 755.0" coords2="1132.0, 755.0, 1132.0, 769.0, 1630.0, 769.0, 1630.0, 755.0" shape="poly" alt="Nei:Sequence Flow" id="areadiagram_map_XlzzeRaAUEQYtltx_default" href="BPSequenceFlow_HlzzeRaAUEQYtltw.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="944.0, -8.0, 944.0, -5.0, 941.0, -5.0, 941.0, 9.0, 944.0, 9.0, 944.0, 619.0, 342.0, 619.0, 342.0, 633.0, 944.0, 633.0, 944.0, 636.0, 958.0, 636.0, 958.0, 633.0, 961.0, 633.0, 961.0, 619.0, 958.0, 619.0, 958.0, 9.0, 1234.0, 9.0, 1234.0, 42.0, 1248.0, 42.0, 1248.0, 9.0, 1251.0, 9.0, 1251.0, -5.0, 1248.0, -5.0, 1248.0, -8.0, 1234.0, -8.0, 1234.0, -5.0, 958.0, -5.0, 958.0, -8.0" coords2="944.0, -8.0, 944.0, -5.0, 941.0, -5.0, 941.0, 9.0, 944.0, 9.0, 944.0, 619.0, 342.0, 619.0, 342.0, 633.0, 944.0, 633.0, 944.0, 636.0, 958.0, 636.0, 958.0, 633.0, 961.0, 633.0, 961.0, 619.0, 958.0, 619.0, 958.0, 9.0, 1234.0, 9.0, 1234.0, 42.0, 1248.0, 42.0, 1248.0, 9.0, 1251.0, 9.0, 1251.0, -5.0, 1248.0, -5.0, 1248.0, -8.0, 1234.0, -8.0, 1234.0, -5.0, 958.0, -5.0, 958.0, -8.0" shape="poly" alt=":Association" id="areadiagram_map_xxUveRaAUEQYtolt_default" href="BPAssociation_qxUveRaAUEQYtoll.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1670.0, 755.0, 1670.0, 769.0, 1952.0, 769.0, 1952.0, 755.0" coords2="1670.0, 755.0, 1670.0, 769.0, 1952.0, 769.0, 1952.0, 755.0" shape="poly" alt="Nei:Sequence Flow" id="areadiagram_map_RpG_eRaAUEQYtqD6_default" href="BPSequenceFlow_BpG_eRaAUEQYtqD5.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1644.0, 490.0, 1644.0, 742.0, 1658.0, 742.0, 1658.0, 490.0" coords2="1644.0, 490.0, 1644.0, 742.0, 1658.0, 742.0, 1658.0, 490.0" shape="poly" alt="Ja:Sequence Flow" id="areadiagram_map_S_YIxRaAUEQYthZL_default" href="BPSequenceFlow_i_YIxRaAUEQYthZK.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1644.0, 402.0, 1644.0, 450.0, 1658.0, 450.0, 1658.0, 402.0" coords2="1644.0, 402.0, 1644.0, 450.0, 1658.0, 450.0, 1658.0, 402.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_gYmIxRaAUEQYthaV_default" href="BPSequenceFlow_AYmIxRaAUEQYthaU.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1794.0, 492.0, 1794.0, 755.0, 1791.0, 755.0, 1791.0, 769.0, 1794.0, 769.0, 1794.0, 772.0, 1808.0, 772.0, 1808.0, 769.0, 1952.0, 769.0, 1952.0, 755.0, 1808.0, 755.0, 1808.0, 492.0" coords2="1794.0, 492.0, 1794.0, 755.0, 1791.0, 755.0, 1791.0, 769.0, 1794.0, 769.0, 1794.0, 772.0, 1808.0, 772.0, 1808.0, 769.0, 1952.0, 769.0, 1952.0, 755.0, 1808.0, 755.0, 1808.0, 492.0" shape="poly" alt="Nei:Sequence Flow" id="areadiagram_map_52goxRaAUEQYtiO8_default" href="BPSequenceFlow_p2goxRaAUEQYtiO7.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1820.0, 465.0, 1820.0, 479.0, 1880.0, 479.0, 1880.0, 465.0" coords2="1820.0, 465.0, 1820.0, 479.0, 1880.0, 479.0, 1880.0, 465.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_..ooxRaAUEQYtiPa_default" href="BPSequenceFlow_u_ooxRaAUEQYtiPZ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1644.0, 312.0, 1644.0, 362.0, 1658.0, 362.0, 1658.0, 312.0" coords2="1644.0, 312.0, 1644.0, 362.0, 1658.0, 362.0, 1658.0, 312.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_C6YoxRaAUEQYtiPy_default" href="BPSequenceFlow_s6YoxRaAUEQYtiPx.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1934.0, 292.0, 1934.0, 295.0, 1740.0, 295.0, 1740.0, 309.0, 1934.0, 309.0, 1934.0, 440.0, 1948.0, 440.0, 1948.0, 309.0, 1951.0, 309.0, 1951.0, 295.0, 1948.0, 295.0, 1948.0, 292.0" coords2="1934.0, 292.0, 1934.0, 295.0, 1740.0, 295.0, 1740.0, 309.0, 1934.0, 309.0, 1934.0, 440.0, 1948.0, 440.0, 1948.0, 309.0, 1951.0, 309.0, 1951.0, 295.0, 1948.0, 295.0, 1948.0, 292.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_Af4oxRaAUEQYtiQO_default" href="BPSequenceFlow_vv4oxRaAUEQYtiQN.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1729.0, 465.0, 1729.0, 479.0, 1780.0, 479.0, 1780.0, 465.0" coords2="1729.0, 465.0, 1729.0, 479.0, 1780.0, 479.0, 1780.0, 465.0" shape="poly" alt="Ja:Sequence Flow" id="areadiagram_map_AIkoxRaAUEQYtiQk_default" href="BPSequenceFlow_fwkoxRaAUEQYtiQj.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1485.0, -8.0, 1485.0, -5.0, 1482.0, -5.0, 1482.0, 9.0, 1485.0, 9.0, 1485.0, 854.0, 342.0, 854.0, 342.0, 868.0, 1485.0, 868.0, 1485.0, 871.0, 1499.0, 871.0, 1499.0, 868.0, 1502.0, 868.0, 1502.0, 854.0, 1499.0, 854.0, 1499.0, 9.0, 1775.0, 9.0, 1775.0, 42.0, 1789.0, 42.0, 1789.0, 9.0, 1792.0, 9.0, 1792.0, -5.0, 1789.0, -5.0, 1789.0, -8.0, 1775.0, -8.0, 1775.0, -5.0, 1499.0, -5.0, 1499.0, -8.0" coords2="1485.0, -8.0, 1485.0, -5.0, 1482.0, -5.0, 1482.0, 9.0, 1485.0, 9.0, 1485.0, 854.0, 342.0, 854.0, 342.0, 868.0, 1485.0, 868.0, 1485.0, 871.0, 1499.0, 871.0, 1499.0, 868.0, 1502.0, 868.0, 1502.0, 854.0, 1499.0, 854.0, 1499.0, 9.0, 1775.0, 9.0, 1775.0, 42.0, 1789.0, 42.0, 1789.0, 9.0, 1792.0, 9.0, 1792.0, -5.0, 1789.0, -5.0, 1789.0, -8.0, 1775.0, -8.0, 1775.0, -5.0, 1499.0, -5.0, 1499.0, -8.0" shape="poly" alt=":Association" id="areadiagram_map_zkCYxRaAUEQYtjsf_default" href="BPAssociation_lkCYxRaAUEQYtjse.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="354.0, -8.0, 354.0, -5.0, 351.0, -5.0, 351.0, 9.0, 354.0, 9.0, 354.0, 499.0, 342.0, 499.0, 342.0, 513.0, 354.0, 513.0, 354.0, 516.0, 368.0, 516.0, 368.0, 513.0, 371.0, 513.0, 371.0, 499.0, 368.0, 499.0, 368.0, 9.0, 656.0, 9.0, 656.0, 42.0, 670.0, 42.0, 670.0, 9.0, 673.0, 9.0, 673.0, -5.0, 670.0, -5.0, 670.0, -8.0, 656.0, -8.0, 656.0, -5.0, 368.0, -5.0, 368.0, -8.0" coords2="354.0, -8.0, 354.0, -5.0, 351.0, -5.0, 351.0, 9.0, 354.0, 9.0, 354.0, 499.0, 342.0, 499.0, 342.0, 513.0, 354.0, 513.0, 354.0, 516.0, 368.0, 516.0, 368.0, 513.0, 371.0, 513.0, 371.0, 499.0, 368.0, 499.0, 368.0, 9.0, 656.0, 9.0, 656.0, 42.0, 670.0, 42.0, 670.0, 9.0, 673.0, 9.0, 673.0, -5.0, 670.0, -5.0, 670.0, -8.0, 656.0, -8.0, 656.0, -5.0, 368.0, -5.0, 368.0, -8.0" shape="poly" alt=":Association" id="areadiagram_map_ALaYxRaAUEQYtj4F_default" href="BPAssociation_bzaYxRaAUEQYtj4E.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1223.0, 494.0, 1223.0, 755.0, 1220.0, 755.0, 1220.0, 769.0, 1223.0, 769.0, 1223.0, 772.0, 1237.0, 772.0, 1237.0, 769.0, 1630.0, 769.0, 1630.0, 755.0, 1237.0, 755.0, 1237.0, 494.0" coords2="1223.0, 494.0, 1223.0, 755.0, 1220.0, 755.0, 1220.0, 769.0, 1223.0, 769.0, 1223.0, 772.0, 1237.0, 772.0, 1237.0, 769.0, 1630.0, 769.0, 1630.0, 755.0, 1237.0, 755.0, 1237.0, 494.0" shape="poly" alt="Nei:Sequence Flow" id="areadiagram_map_XgHGHRaGAqAGfFlY_default" href="BPSequenceFlow_ngHGHRaGAqAGfFlX.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="975.0, 371.0, 975.0, 374.0, 972.0, 374.0, 972.0, 388.0, 975.0, 388.0, 975.0, 565.0, 159.0, 565.0, 159.0, 513.0, 162.0, 513.0, 162.0, 499.0, 159.0, 499.0, 159.0, 496.0, 145.0, 496.0, 145.0, 499.0, 93.0, 499.0, 93.0, 513.0, 145.0, 513.0, 145.0, 565.0, 142.0, 565.0, 142.0, 579.0, 145.0, 579.0, 145.0, 582.0, 159.0, 582.0, 159.0, 579.0, 975.0, 579.0, 975.0, 582.0, 989.0, 582.0, 989.0, 579.0, 992.0, 579.0, 992.0, 565.0, 989.0, 565.0, 989.0, 388.0, 1014.0, 388.0, 1014.0, 374.0, 989.0, 374.0, 989.0, 371.0" coords2="975.0, 371.0, 975.0, 374.0, 972.0, 374.0, 972.0, 388.0, 975.0, 388.0, 975.0, 565.0, 159.0, 565.0, 159.0, 513.0, 162.0, 513.0, 162.0, 499.0, 159.0, 499.0, 159.0, 496.0, 145.0, 496.0, 145.0, 499.0, 93.0, 499.0, 93.0, 513.0, 145.0, 513.0, 145.0, 565.0, 142.0, 565.0, 142.0, 579.0, 145.0, 579.0, 145.0, 582.0, 159.0, 582.0, 159.0, 579.0, 975.0, 579.0, 975.0, 582.0, 989.0, 582.0, 989.0, 579.0, 992.0, 579.0, 992.0, 565.0, 989.0, 565.0, 989.0, 388.0, 1014.0, 388.0, 1014.0, 374.0, 989.0, 374.0, 989.0, 371.0" shape="poly" alt=":Association" id="areadiagram_map_OkYmHRaGAqAGfFxE_default" href="BPAssociation_QyKTmRaAUEQYtpTM.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1504.0, 371.0, 1504.0, 374.0, 1501.0, 374.0, 1501.0, 388.0, 1504.0, 388.0, 1504.0, 565.0, 159.0, 565.0, 159.0, 513.0, 162.0, 513.0, 162.0, 499.0, 159.0, 499.0, 159.0, 496.0, 145.0, 496.0, 145.0, 499.0, 93.0, 499.0, 93.0, 513.0, 145.0, 513.0, 145.0, 565.0, 142.0, 565.0, 142.0, 579.0, 145.0, 579.0, 145.0, 582.0, 159.0, 582.0, 159.0, 579.0, 1504.0, 579.0, 1504.0, 582.0, 1518.0, 582.0, 1518.0, 579.0, 1521.0, 579.0, 1521.0, 565.0, 1518.0, 565.0, 1518.0, 388.0, 1560.0, 388.0, 1560.0, 374.0, 1518.0, 374.0, 1518.0, 371.0" coords2="1504.0, 371.0, 1504.0, 374.0, 1501.0, 374.0, 1501.0, 388.0, 1504.0, 388.0, 1504.0, 565.0, 159.0, 565.0, 159.0, 513.0, 162.0, 513.0, 162.0, 499.0, 159.0, 499.0, 159.0, 496.0, 145.0, 496.0, 145.0, 499.0, 93.0, 499.0, 93.0, 513.0, 145.0, 513.0, 145.0, 565.0, 142.0, 565.0, 142.0, 579.0, 145.0, 579.0, 145.0, 582.0, 159.0, 582.0, 159.0, 579.0, 1504.0, 579.0, 1504.0, 582.0, 1518.0, 582.0, 1518.0, 579.0, 1521.0, 579.0, 1521.0, 565.0, 1518.0, 565.0, 1518.0, 388.0, 1560.0, 388.0, 1560.0, 374.0, 1518.0, 374.0, 1518.0, 371.0" shape="poly" alt=":Association" id="areadiagram_map_058mHRaGAqAGfF64_default" href="BPAssociation_Q58mHRaGAqAGfF63.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1780, 452, 1820, 492" coords2="1780, 452, 1820, 492" shape="rect" alt="Er det flere enkeltendringer?:Gateway" id="areadiagram_map_33PIxRaAUEQYtiOf_default" href="BPGateway_33PIxRaAUEQYtiOg.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1880, 440, 2000, 490" coords2="1880, 440, 2000, 490" shape="rect" alt="Se om det er flere enkeltendringer:Task" id="areadiagram_map_FozIxRaAUEQYtiNy_default" href="BPTask_FozIxRaAUEQYtiNz.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1550, 272, 1740, 312" coords2="1550, 272, 1740, 312" shape="rect" alt="Utfør endring på enkelt kilde:Task" id="areadiagram_map_D7BIxRaAUEQYthap_default" href="BPTask_D7BIxRaAUEQYthaq.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1560, 362, 1730, 402" coords2="1560, 362, 1730, 402" shape="rect" alt="Naviger til kilde som skal endres og åpn kilden:Task" id="areadiagram_map_PYcIxRaAUEQYthZy_default" href="BPTask_PYcIxRaAUEQYthZz.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1569, 450, 1729, 490" coords2="1569, 450, 1729, 490" shape="rect" alt="Velge neste enkeltendring:Task" id="areadiagram_map_gQTwxRaAUEQYthXs_default" href="BPTask_gQTwxRaAUEQYthXt.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1530, 42, 2040, 522" coords2="1530, 42, 2040, 522" shape="rect" alt="Enkeltendringer:Sub-Process" id="areadiagram_map_mSHwxRaAUEQYthYN_default" href="BPSubProcess_WSHwxRaAUEQYthYO.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1630, 742, 1670, 782" coords2="1630, 742, 1670, 782" shape="rect" alt="Er det noen enkeltendringer som skal gjøres?:Gateway" id="areadiagram_map_cuNzeRaAUEQYtltD_default" href="BPGateway_muNzeRaAUEQYtltV.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1211, 454, 1251, 494" coords2="1211, 454, 1251, 494" shape="rect" alt="Er det flere endringer for arbeidsliste?:Gateway" id="areadiagram_map_2tijeRaAUEQYtj23_default" href="BPGateway_2tijeRaAUEQYtj24.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="663, 288, 703, 338" coords2="663, 288, 703, 338" shape="rect" alt="Utvalgte kilder som skal rettes:Data Object" id="areadiagram_map_b3s9eRaAUEQYtibR_default" href="BPDataObject_73s9eRaAUEQYtibS.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="464, 372, 643, 412" coords2="464, 372, 643, 412" shape="rect" alt="Velg arbeidsliste fra liste over alle kilder:Task" id="areadiagram_map_EJXdeRaAUEQYtiaF_default" href="BPTask_EJXdeRaAUEQYtiaG.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="734, 90, 913, 130" coords2="734, 90, 913, 130" shape="rect" alt="Utfør endringer over arbeidsliste:Task" id="areadiagram_map_MnpjmRaAUEQYtpO6_default" href="BPTask_MnpjmRaAUEQYtpO7.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="464, 89, 643, 143" coords2="464, 89, 643, 143" shape="rect" alt="Definer en ny verdi for felt med noen få variabler for enkeltverdi felt:Task" id="areadiagram_map_d22jmRaAUEQYtpOa_default" href="BPTask_d22jmRaAUEQYtpOb.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="464, 171, 643, 221" coords2="464, 171, 643, 221" shape="rect" alt="Slett eller legg emneknagger eller andre samlefelt:Task" id="areadiagram_map_oVSjmRaAUEQYtpOI_default" href="BPTask_oVSjmRaAUEQYtpOJ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="667, 455, 707, 495" coords2="667, 455, 707, 495" shape="rect" alt="Er det flere masserdigeringer?:Gateway" id="areadiagram_map_zQDDmRaAUEQYtpBj_default" href="BPGateway_zQDDmRaAUEQYtpBk.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="738, 439, 917, 503" coords2="738, 439, 917, 503" shape="rect" alt="Se om det er flere masseredigeringsoperasjoner:Task" id="areadiagram_map_BNFDmRaAUEQYtpBH_default" href="BPTask_BNFDmRaAUEQYtpBI.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="542, 298, 582, 338" coords2="542, 298, 582, 338" shape="rect" alt="Er det operasjon over emneknagger?:Gateway" id="areadiagram_map_j.CDmRaAUEQYtom7_default" href="BPGateway_j_CDmRaAUEQYtom8.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="464, 455, 643, 504" coords2="464, 455, 643, 504" shape="rect" alt="Velge neste enkelt masseredigering:Task" id="areadiagram_map_47QdmRaAUEQYtokS_default" href="BPTask_E7QdmRaAUEQYtokT.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1306, 448, 1432, 502" coords2="1306, 448, 1432, 502" shape="rect" alt="Se om det er flere endringer for arbeidsliste:Task" id="areadiagram_map_Ex6DeRaAUEQYtjWz_default" href="BPTask_Ex6DeRaAUEQYtjW0.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1035, 170, 1185, 230" coords2="1035, 170, 1185, 230" shape="rect" alt="Gå gjennom arbeidsliste og inføre endringer:Task" id="areadiagram_map_s_QDeRaAUEQYtjU3_default" href="BPTask_s_QDeRaAUEQYtjU4.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1146, 267, 1186, 317" coords2="1146, 267, 1186, 317" shape="rect" alt="Utvalgte kilder som skal rettes:Data Object" id="areadiagram_map_Vcf9eRaAUEQYtjUJ_default" href="BPDataObject_73s9eRaAUEQYtibS.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1014, 362, 1193, 402" coords2="1014, 362, 1193, 402" shape="rect" alt="Velg arbeidsliste fra liste over alle kilder:Task" id="areadiagram_map_pcf9eRaAUEQYtjUG_default" href="BPTask_EJXdeRaAUEQYtiaG.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1014, 454, 1174, 494" coords2="1014, 454, 1174, 494" shape="rect" alt="Velge neste enkelt endring for arbeidsliste:Task" id="areadiagram_map_FAwNeRaAUEQYtiX3_default" href="BPTask_FAwNeRaAUEQYtiX4.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="302, 822, 342, 872" coords2="302, 822, 342, 872" shape="rect" alt="Enkeltendringer:Data Object" id="areadiagram_map_MpIVeRaAUEQYtiR1_default" href="BPDataObject_SpIVeRaAUEQYtiSH.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1002, 42, 1482, 522" coords2="1002, 42, 1482, 522" shape="rect" alt="Endringer for arbeidsliste:Sub-Process" id="areadiagram_map_chINeRaAUEQYtiYH_default" href="BPSubProcess_chINeRaAUEQYtiYI.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="302, 602, 342, 652" coords2="302, 602, 342, 652" shape="rect" alt="Endringer for arbeidsliste:Data Object" id="areadiagram_map_c8SWeRaAUEQYthUe_default" href="BPDataObject_K8SWeRaAUEQYthUw.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1092, 742, 1132, 782" coords2="1092, 742, 1132, 782" shape="rect" alt="Er det noen endringer for arbeidsliste som skal gjøres?:Gateway" id="areadiagram_map_oboNmRaAUEQYtn7b_default" href="BPGateway_oboNmRaAUEQYtn7c.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="533, 742, 573, 782" coords2="533, 742, 573, 782" shape="rect" alt="Er det noen masseredigeringer som skal gjøres?:Gateway" id="areadiagram_map_ToP1mRaAUEQYtn6m_default" href="BPGateway_ToP1mRaAUEQYtn6n.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="302, 482, 342, 532" coords2="302, 482, 342, 532" shape="rect" alt="Masseredigeringer:Data Object" id="areadiagram_map_l1N1mRaAUEQYtn3y_default" href="BPDataObject_l1N1mRaAUEQYtn3z.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="182, 732, 362, 792" coords2="182, 732, 362, 792" shape="rect" alt="Fordele endringer i masseredigeringer, endirnger for areidsliste og enkeltendringer:Task" id="areadiagram_map_Wah1mRaAUEQYtn2i_default" href="BPTask_Wah1mRaAUEQYtn2j.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="53, 612, 93, 662" coords2="53, 612, 93, 662" shape="rect" alt="Nye verdier for kilder:Data Input" id="areadiagram_map_4w4RmRaAUEQYtnpp_default" href="BPDataInput_UGaWmRaAUEQYtlat.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="53, 482, 93, 532" coords2="53, 482, 93, 532" shape="rect" alt="Arbeidsliste:Data Object" id="areadiagram_map_jsQRmRaAUEQYtno1_default" href="BPDataObject_FWlmmRaAUEQYtlXn.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1952, 752, 1972, 772" coords2="1952, 752, 1972, 772" shape="rect" alt=":End Event" id="areadiagram_map_tgVhmRaAUEQYtnnh_default" href="BPEndEvent_dgVhmRaAUEQYtnni.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 752, 22, 772" coords2="2, 752, 22, 772" shape="rect" alt=":Start Event" id="areadiagram_map_BgVhmRaAUEQYtnnM_default" href="BPStartEvent_xgVhmRaAUEQYtnne.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="412, 72, 922, 362" coords2="412, 72, 922, 362" shape="rect" alt="Håndtering av enkelt masseredigering:Group" id="areadiagram_map_HLvDeRaAUEQYtjjH_default" href="BPGroup_HLvDeRaAUEQYtjjI.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="393, 42, 933, 522" coords2="393, 42, 933, 522" shape="rect" alt="Masseredigering:Sub-Process" id="areadiagram_map_wdBtmRaAUEQYtojx_default" href="BPSubProcess_wdBtmRaAUEQYtojy.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<p>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0">
+			<tr>
+				<td>
+<span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;margin-right:0;margin-left:0;">
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Dette er hovedprosess for rollen <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#9XFveRaAUEQYtpTt" name="" onclick="javascript: highlightGridModelSelection('9XFveRaAUEQYtpTt');">operat&#248;r</a>
+    </p>
+  </body></span>				</td>
+			</tr>
+		</table>
+	</p>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="6" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="10%">
+<span class="TableHeaderText">ID</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP01</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsStart.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsStart.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPStartEvent_xgVhmRaAUEQYtnne.html" class="ItemLink">N/A : Start Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP02</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_dgVhmRaAUEQYtnni.html" class="ItemLink">N/A : End Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP05</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_Wah1mRaAUEQYtn2j.html" class="ItemLink">Fordele endringer i masseredigeringer, endirnger for areidsliste og enkeltendringer : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP07</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ArtifactDataObject.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ArtifactDataObject.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPDataObject_l1N1mRaAUEQYtn3z.html" class="ItemLink">Masseredigeringer : Data Object</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP11</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/GatewayExDescMergeDataBased.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/GatewayExDescMergeDataBased.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPGateway_ToP1mRaAUEQYtn6n.html" class="ItemLink">Er det noen masseredigeringer som skal gjøres? : Data-Based Exclusive Decision/Merge (XOR)</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP13</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/GatewayExDescMergeDataBased.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/GatewayExDescMergeDataBased.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPGateway_oboNmRaAUEQYtn7c.html" class="ItemLink">Er det noen endringer for arbeidsliste som skal gjøres? : Data-Based Exclusive Decision/Merge (XOR)</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP17</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitySubProcessColl.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitySubProcessColl.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPSubProcess_wdBtmRaAUEQYtojy.html" class="ItemLink">Masseredigering : Sub-Process</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP17.BP16</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_E7QdmRaAUEQYtokT.html" class="ItemLink">Velge neste enkelt masseredigering : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP17.BP17</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/GatewayExDescMergeDataBased.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/GatewayExDescMergeDataBased.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPGateway_j_CDmRaAUEQYtom8.html" class="ItemLink">Er det operasjon over emneknagger? : Data-Based Exclusive Decision/Merge (XOR)</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP17.BP19</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_BNFDmRaAUEQYtpBI.html" class="ItemLink">Se om det er flere masseredigeringsoperasjoner : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP17.BP20</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/GatewayExDescMergeDataBased.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/GatewayExDescMergeDataBased.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPGateway_zQDDmRaAUEQYtpBk.html" class="ItemLink">Er det flere masserdigeringer? : Data-Based Exclusive Decision/Merge (XOR)</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP17.BP24</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_oVSjmRaAUEQYtpOJ.html" class="ItemLink">Slett eller legg emneknagger eller andre samlefelt : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP17.BP25</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_d22jmRaAUEQYtpOb.html" class="ItemLink">Definer en ny verdi for felt med noen få variabler for enkeltverdi felt : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP17.BP26</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_MnpjmRaAUEQYtpO7.html" class="ItemLink">Utfør endringer over arbeidsliste : Service Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP17.BP32</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_EJXdeRaAUEQYtiaG.html" class="ItemLink">Velg arbeidsliste fra liste over alle kilder : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP17.BP41</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ArtifactDataObject.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ArtifactDataObject.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPDataObject_73s9eRaAUEQYtibS.html" class="ItemLink">Utvalgte kilder som skal rettes : Data Object</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP20</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ArtifactDataObject.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ArtifactDataObject.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPDataObject_K8SWeRaAUEQYthUw.html" class="ItemLink">Endringer for arbeidsliste : Data Object</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP27</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ArtifactDataObject.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ArtifactDataObject.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPDataObject_SpIVeRaAUEQYtiSH.html" class="ItemLink">Enkeltendringer : Data Object</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP34</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitySubProcessColl.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitySubProcessColl.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPSubProcess_chINeRaAUEQYtiYI.html" class="ItemLink">Endringer for arbeidsliste : Sub-Process</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP34.BP33</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_FAwNeRaAUEQYtiX4.html" class="ItemLink">Velge neste enkelt endring for arbeidsliste : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP34.BP35</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_s_QDeRaAUEQYtjU4.html" class="ItemLink">Gå gjennom arbeidsliste og inføre endringer : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP34.BP36</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_Ex6DeRaAUEQYtjW0.html" class="ItemLink">Se om det er flere endringer for arbeidsliste : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP34.BP38</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/GatewayExDescMergeDataBased.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/GatewayExDescMergeDataBased.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPGateway_2tijeRaAUEQYtj24.html" class="ItemLink">Er det flere endringer for arbeidsliste? : Data-Based Exclusive Decision/Merge (XOR)</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP35</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ArtifactGroup.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ArtifactGroup.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPGroup_HLvDeRaAUEQYtjjI.html" class="ItemLink">Håndtering av enkelt masseredigering : Group</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP37</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/GatewayExDescMergeDataBased.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/GatewayExDescMergeDataBased.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPGateway_muNzeRaAUEQYtltV.html" class="ItemLink">Er det noen enkeltendringer som skal gjøres? : Data-Based Exclusive Decision/Merge (XOR)</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP42</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitySubProcessColl.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitySubProcessColl.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPSubProcess_WSHwxRaAUEQYthYO.html" class="ItemLink">Enkeltendringer : Sub-Process</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP42.BP41</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_gQTwxRaAUEQYthXt.html" class="ItemLink">Velge neste enkeltendring : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP42.BP42</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_PYcIxRaAUEQYthZz.html" class="ItemLink">Naviger til kilde som skal endres og åpn kilden : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP42.BP44</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_D7BIxRaAUEQYthaq.html" class="ItemLink">Utfør endring på enkelt kilde : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP42.BP45</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_FozIxRaAUEQYtiNz.html" class="ItemLink">Se om det er flere enkeltendringer : User Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP01.BP20.BP42.BP46</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/GatewayExDescMergeDataBased.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/GatewayExDescMergeDataBased.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPGateway_33PIxRaAUEQYtiOg.html" class="ItemLink">Er det flere enkeltendringer? : Data-Based Exclusive Decision/Merge (XOR)</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP36.BP02</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ArtifactDataObject.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ArtifactDataObject.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPDataObject_FWlmmRaAUEQYtlXn.html" class="ItemLink">Arbeidsliste : Data Object</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP43</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ArtifactDataInput.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ArtifactDataInput.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPDataInput_UGaWmRaAUEQYtlat.html" class="ItemLink">Nye verdier for kilder : Data Input</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		Digitalarkivet som løsning	</div>
+</body>
+</html>

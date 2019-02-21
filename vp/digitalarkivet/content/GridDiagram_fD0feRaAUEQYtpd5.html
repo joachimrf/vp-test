@@ -1,0 +1,730 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Grid - Begrep for META20</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		Digitalarkivet som løsning	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="PageParentTitle">META20 - Det nye grensesnittet for redigering av kildemetadata : Model</a>	</p>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Grid - Begrep for META20		</span>
+<a onclick="javascript: showVpLink('Digitalarkivet som løsning.vpp://diagram/fD0feRaAUEQYtpd5', 'Begrep for META20\nDigitalarkivet som l&#xf8;sning.vpp://diagram/fD0feRaAUEQYtpd5', 'Begrep for META20', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<p>
+	</p>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+Configuration			</td>
+		</tr>
+		<tr>
+			<td class="TableCellSpaceHolder5PxTall">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="25%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Value</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">Model Element</span>			</td>
+			<td>
+			</td>
+			<td>
+				<div class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Term.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Term.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Term</span>				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">Scope</span>			</td>
+			<td>
+			</td>
+			<td>
+<span class="TableContent">Project</span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">Includes Referenced Projects</span>			</td>
+			<td>
+			</td>
+			<td>
+<span class="TableContent">true</span>			</td>
+		</tr>
+	</table>
+	<p>
+	</p>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+Terms			</td>
+		</tr>
+		<tr>
+			<td class="TableCellSpaceHolder5PxTall">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="6" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td width="10%" style="padding: 5px 10px;">
+<span class="TableHeaderText">Name</span>			</td>
+			<td width="73%" style="padding: 5px 10px;">
+<span class="TableHeaderText">Description</span>			</td>
+			<td width="4%" style="padding: 5px 10px;">
+<span class="TableHeaderText">Level 1</span>			</td>
+			<td width="4%" style="padding: 5px 10px;">
+<span class="TableHeaderText">Aliases</span>			</td>
+			<td width="3%" style="padding: 5px 10px;">
+<span class="TableHeaderText">Comments</span>			</td>
+			<td width="3%" style="padding: 5px 10px;">
+<span class="TableHeaderText">Other Forms</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr id="modelSelectionxuYU8JaAUEQYihHi" class="TableRow1">
+			<td style="padding: 5px 10px;">
+<a name="xuYU8JaAUEQYihHi"></a><a href="Glossary_xuYU8JaAUEQYihHi.html" class="TableContent"><span class="TableContent">ad hoc endring</span></a>			</td>
+			<td style="padding: 5px 10px;">
+<a name="xuYU8JaAUEQYihHi"></a><span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;margin-right:0;margin-left:0;">
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Endring av metadata p&#229; en enkelt <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilde</a> 
+      utenfor <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" name="" onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');">arbeidsliste</a>. 
+      Det inkluderer:
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      * Endring av metadata felt
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      * Publisering av <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilde</a>
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      * Avpublisering av <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilde</a>
+    </p>
+  </body></span>			</td>
+			<td style="padding: 5px 10px;">
+<a name="xuYU8JaAUEQYihHi"></a>				<span class="TableContent">
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="ItemLink">META20 - Det nye grensesnittet for redigering av kildemetadata</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="xuYU8JaAUEQYihHi"></a>				<span class="TableContent">
+<a href="Alias_z3qU8JaAUEQYihbf.html" class="ItemLink">ad hoc endringer</a>, <a href="Alias_rJaU8JaAUEQYihbg.html" class="ItemLink">ad hoc endringen</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="xuYU8JaAUEQYihHi"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="xuYU8JaAUEQYihHi"></a>				<span class="TableContent">
+				</span>
+			</td>
+		</tr>
+		<tr id="modelSelectione6nTeRaAUEQYtlOZ" class="TableRow2">
+			<td style="padding: 5px 10px;">
+<a name="e6nTeRaAUEQYtlOZ"></a><a href="Glossary_e6nTeRaAUEQYtlOZ.html" class="TableContent"><span class="TableContent">arbeidsliste</span></a>			</td>
+			<td style="padding: 5px 10px;">
+<a name="e6nTeRaAUEQYtlOZ"></a><span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;margin-right:0;margin-left:0;">
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Subsett av liste av <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a> 
+      som redigeres
+    </p>
+  </body></span>			</td>
+			<td style="padding: 5px 10px;">
+<a name="e6nTeRaAUEQYtlOZ"></a>				<span class="TableContent">
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="ItemLink">META20 - Det nye grensesnittet for redigering av kildemetadata</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="e6nTeRaAUEQYtlOZ"></a>				<span class="TableContent">
+<a href="Alias_doMShxaGAqACZw_q.html" class="ItemLink">arbeidslisten</a>, <a href="Alias_WCsShxaGAqACZw_r.html" class="ItemLink">arbeidslistene</a>, <a href="Alias_2ocShxaGAqACZw_s.html" class="ItemLink">arbeidslister</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="e6nTeRaAUEQYtlOZ"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="e6nTeRaAUEQYtlOZ"></a>				<span class="TableContent">
+				</span>
+			</td>
+		</tr>
+		<tr id="modelSelectionJYTfeRaAUEQYtpmI" class="TableRow1">
+			<td style="padding: 5px 10px;">
+<a name="JYTfeRaAUEQYtpmI"></a><a href="Glossary_JYTfeRaAUEQYtpmI.html" class="TableContent"><span class="TableContent">avpublisere</span></a>			</td>
+			<td style="padding: 5px 10px;">
+<a name="JYTfeRaAUEQYtpmI"></a><span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;margin-right:0;margin-left:0;">
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Gj&#248;re <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a> 
+      ikke tilgjengelige, fjerne de fra s&#248;ket og fra digitalarkivet.no
+    </p>
+  </body></span>			</td>
+			<td style="padding: 5px 10px;">
+<a name="JYTfeRaAUEQYtpmI"></a>				<span class="TableContent">
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="ItemLink">META20 - Det nye grensesnittet for redigering av kildemetadata</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="JYTfeRaAUEQYtpmI"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="JYTfeRaAUEQYtpmI"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="JYTfeRaAUEQYtpmI"></a>				<span class="TableContent">
+				</span>
+			</td>
+		</tr>
+		<tr id="modelSelection60xLeRaAUEQYtl5Z" class="TableRow2">
+			<td style="padding: 5px 10px;">
+<a name="60xLeRaAUEQYtl5Z"></a><a href="Glossary_60xLeRaAUEQYtl5Z.html" class="TableContent"><span class="TableContent">endring for arbeidsliste</span></a>			</td>
+			<td style="padding: 5px 10px;">
+<a name="60xLeRaAUEQYtl5Z"></a><span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;margin-right:0;margin-left:0;">
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Enkelt <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#60xLeRaAUEQYtl5Z" name="" onclick="javascript: highlightGridModelSelection('60xLeRaAUEQYtl5Z');">endring 
+      for arbeidsliste</a> er en endring som kan ikke uttrykkes som <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#1RaLeRaAUEQYtlvP" name="" onclick="javascript: highlightGridModelSelection('1RaLeRaAUEQYtlvP');">masseredigering</a>, 
+      men det er likevel mulig &#229; dra nytte fra &#229; g&#229; gjennom <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" name="" onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');">arbeidslisten</a> 
+      (liste med <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a>). 
+      Denne endringer dreier seg om <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" name="" onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');">arbeidsliste</a> 
+      som h&#248;rer sammen med en oppgave som <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#9XFveRaAUEQYtpTt" name="" onclick="javascript: highlightGridModelSelection('9XFveRaAUEQYtpTt');">operat&#248;r</a> 
+      har
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Eksempel her er:
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      * 9 av 10 <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a> 
+      i listen m&#229; ha geografisk tilh&#248;righet definert og emneknagger rettet, 
+      men alle <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a> 
+      h&#248;rer til forskjellige kommuner og trenger forskjellige emneknagger
+    </p>
+  </body></span>			</td>
+			<td style="padding: 5px 10px;">
+<a name="60xLeRaAUEQYtl5Z"></a>				<span class="TableContent">
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="ItemLink">META20 - Det nye grensesnittet for redigering av kildemetadata</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="60xLeRaAUEQYtl5Z"></a>				<span class="TableContent">
+<a href="Alias_I9VLeRaAUEQYtmC_.html" class="ItemLink">endringer for arbeidsliste</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="60xLeRaAUEQYtl5Z"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="60xLeRaAUEQYtl5Z"></a>				<span class="TableContent">
+				</span>
+			</td>
+		</tr>
+		<tr id="modelSelectionAM.PeRaAUEQYtoGv" class="TableRow1">
+			<td style="padding: 5px 10px;">
+<a name="AM.PeRaAUEQYtoGv"></a><a href="Glossary_AM_PeRaAUEQYtoGv.html" class="TableContent"><span class="TableContent">enkeltendring</span></a>			</td>
+			<td style="padding: 5px 10px;">
+<a name="AM.PeRaAUEQYtoGv"></a><span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;margin-right:0;margin-left:0;">
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#AM.PeRaAUEQYtoGv" name="" onclick="javascript: highlightGridModelSelection('AM.PeRaAUEQYtoGv');">Enkeltendringer</a> 
+      er endringer som er verken <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#1RaLeRaAUEQYtlvP" name="" onclick="javascript: highlightGridModelSelection('1RaLeRaAUEQYtlvP');">masseredigeringer</a> 
+      eller <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#60xLeRaAUEQYtl5Z" name="" onclick="javascript: highlightGridModelSelection('60xLeRaAUEQYtl5Z');">endringer 
+      for arbeidsliste</a>. Dvs det er endringer hvor <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilde</a> 
+      m&#229; behandles individulet
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Eksempel:
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      * Det er en rettelse p&#229; en enkelt <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilde</a> 
+      hvor <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#9XFveRaAUEQYtpTt" name="" onclick="javascript: highlightGridModelSelection('9XFveRaAUEQYtpTt');">operat&#248;r</a> 
+      skal rette tittel
+    </p>
+  </body></span>			</td>
+			<td style="padding: 5px 10px;">
+<a name="AM.PeRaAUEQYtoGv"></a>				<span class="TableContent">
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="ItemLink">META20 - Det nye grensesnittet for redigering av kildemetadata</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="AM.PeRaAUEQYtoGv"></a>				<span class="TableContent">
+<a href="Alias_ZVJveRaAUEQYto6E.html" class="ItemLink">enkeltendringer</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="AM.PeRaAUEQYtoGv"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="AM.PeRaAUEQYtoGv"></a>				<span class="TableContent">
+				</span>
+			</td>
+		</tr>
+		<tr id="modelSelectiontmIzeRaAUEQYtlYc" class="TableRow2">
+			<td style="padding: 5px 10px;">
+<a name="tmIzeRaAUEQYtlYc"></a><a href="Glossary_tmIzeRaAUEQYtlYc.html" class="TableContent"><span class="TableContent">kilde</span></a>			</td>
+			<td style="padding: 5px 10px;">
+<a name="tmIzeRaAUEQYtlYc"></a><span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;margin-right:0;margin-left:0;">
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      En enhet av publisering og h&#229;ndtering av digitalisert materiale i dagens 
+      Digitalarkivet som l&#248;sning
+    </p>
+  </body></span>			</td>
+			<td style="padding: 5px 10px;">
+<a name="tmIzeRaAUEQYtlYc"></a>				<span class="TableContent">
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="ItemLink">META20 - Det nye grensesnittet for redigering av kildemetadata</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="tmIzeRaAUEQYtlYc"></a>				<span class="TableContent">
+<a href="Alias_nQc_eRaAUEQYtp6I.html" class="ItemLink">kilder</a>, <a href="Alias_xg8_eRaAUEQYtp6J.html" class="ItemLink">kildene</a>, <a href="Alias_eIC_eRaAUEQYtp6K.html" class="ItemLink">kilden</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="tmIzeRaAUEQYtlYc"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="tmIzeRaAUEQYtlYc"></a>				<span class="TableContent">
+				</span>
+			</td>
+		</tr>
+		<tr id="modelSelectionWeTU8JaAUEQYihmL" class="TableRow1">
+			<td style="padding: 5px 10px;">
+<a name="WeTU8JaAUEQYihmL"></a><a href="Glossary_WeTU8JaAUEQYihmL.html" class="TableContent"><span class="TableContent">koordinator</span></a>			</td>
+			<td style="padding: 5px 10px;">
+<a name="WeTU8JaAUEQYihmL"></a><span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;margin-right:0;margin-left:0;">
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Leder arbeidet rundt publisering og vedlikehold av digitaliserte <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a>. 
+      Har rettigheter til &#229; administrere brukere og hente ut statistikk i 
+      tillegg til <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#9XFveRaAUEQYtpTt" name="" onclick="javascript: highlightGridModelSelection('9XFveRaAUEQYtpTt');">operat&#248;r</a> 
+      sine funskjoner
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      &nbsp;
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      N&#229;r organisasjon f&#229;r tildelt tilgang til Metadataregistrering for 1. 
+      gang 1 <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#WeTU8JaAUEQYihmL" name="" onclick="javascript: highlightGridModelSelection('WeTU8JaAUEQYihmL');">koordinator</a> 
+      opprettes. Deretter <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#WeTU8JaAUEQYihmL" name="" onclick="javascript: highlightGridModelSelection('WeTU8JaAUEQYihmL');">koordinator</a> 
+      er ansvarlig for &#229; opprette og administrere andre brukerne hos 
+      organisasjonen.
+    </p>
+  </body></span>			</td>
+			<td style="padding: 5px 10px;">
+<a name="WeTU8JaAUEQYihmL"></a>				<span class="TableContent">
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="ItemLink">META20 - Det nye grensesnittet for redigering av kildemetadata</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="WeTU8JaAUEQYihmL"></a>				<span class="TableContent">
+<a href="Alias_wP7U8JaAUEQYihme.html" class="ItemLink">koordinatoren</a>, <a href="Alias_lvHU8JaAUEQYihmf.html" class="ItemLink">koordinatorene</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="WeTU8JaAUEQYihmL"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="WeTU8JaAUEQYihmL"></a>				<span class="TableContent">
+				</span>
+			</td>
+		</tr>
+		<tr id="modelSelection1RaLeRaAUEQYtlvP" class="TableRow2">
+			<td style="padding: 5px 10px;">
+<a name="1RaLeRaAUEQYtlvP"></a><a href="Glossary_1RaLeRaAUEQYtlvP.html" class="TableContent"><span class="TableContent">masseredigering</span></a>			</td>
+			<td style="padding: 5px 10px;">
+<a name="1RaLeRaAUEQYtlvP"></a><span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;margin-right:0;margin-left:0;">
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Enkelt <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#1RaLeRaAUEQYtlvP" name="" onclick="javascript: highlightGridModelSelection('1RaLeRaAUEQYtlvP');">masseredigering</a> 
+      er: Hele eller del av listen med <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a> 
+      skal ha endring i ett eller flere felt. Endringen kan beskrives som <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#39J5hxaGAqACZ4QK" name="" onclick="javascript: highlightGridModelSelection('39J5hxaGAqACZ4QK');">samling</a> 
+      av fast tekst og enkle variabler. Endringer dreier seg om <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" name="" onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');">arbeidsliste</a> 
+      og at endring kan bli uttrykket som <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#1RaLeRaAUEQYtlvP" name="" onclick="javascript: highlightGridModelSelection('1RaLeRaAUEQYtlvP');">masseredigering</a>
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Eksempler:
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      * Titler p&#229; 96 av 124 <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a> 
+      i listen b&#248;r v&#230;re &quot;Haveprotokolloen - $start&#197;r - $slutt&#197;r&quot; hvor $start&#197;r 
+      og $slutt&#197;r er variabler fra tilsvarende felter p&#229; <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilden</a> 
+      og ingen av disse 96 <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a> 
+      b&#248;r v&#230;re markert med emneknagg &quot;2. verdenskrig&quot;
+    </p>
+  </body></span>			</td>
+			<td style="padding: 5px 10px;">
+<a name="1RaLeRaAUEQYtlvP"></a>				<span class="TableContent">
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="ItemLink">META20 - Det nye grensesnittet for redigering av kildemetadata</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="1RaLeRaAUEQYtlvP"></a>				<span class="TableContent">
+<a href="Alias_l_2LeRaAUEQYtlvc.html" class="ItemLink">masseredigeringer</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="1RaLeRaAUEQYtlvP"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="1RaLeRaAUEQYtlvP"></a>				<span class="TableContent">
+				</span>
+			</td>
+		</tr>
+		<tr id="modelSelectionBKW08JaAUEQYihwP" class="TableRow1">
+			<td style="padding: 5px 10px;">
+<a name="BKW08JaAUEQYihwP"></a><a href="Glossary_BKW08JaAUEQYihwP.html" class="TableContent"><span class="TableContent">midlertidig operatør</span></a>			</td>
+			<td style="padding: 5px 10px;">
+<a name="BKW08JaAUEQYihwP"></a><span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;margin-right:0;margin-left:0;">
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Rollen av person som utf&#248;rer kun rettelser innen en <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" name="" onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');">arbeidsliste</a> 
+      som er tildelt.
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Rollen mangler f&#248;lgende muligheter;
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      * Utf&#248;re endringer p&#229; metadata utenfor <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a> 
+      som er tildelt til brukeren og er ikke ferdigbehandlet
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      * <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#CVZfeRaAUEQYtplx" name="" onclick="javascript: highlightGridModelSelection('CVZfeRaAUEQYtplx');">Publisere</a> 
+      eller <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#JYTfeRaAUEQYtpmI" name="" onclick="javascript: highlightGridModelSelection('JYTfeRaAUEQYtpmI');">avpublisere</a>&nbsp;<a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a>
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      &nbsp;
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Eksempel:
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      * Frivilling
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      * Sommervikar
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      * Midlertidig stilling fra arbeidformidling
+    </p>
+  </body></span>			</td>
+			<td style="padding: 5px 10px;">
+<a name="BKW08JaAUEQYihwP"></a>				<span class="TableContent">
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="ItemLink">META20 - Det nye grensesnittet for redigering av kildemetadata</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="BKW08JaAUEQYihwP"></a>				<span class="TableContent">
+<a href="Alias_VoB08JaAUEQYihwi.html" class="ItemLink">midlertidige operatører</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="BKW08JaAUEQYihwP"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="BKW08JaAUEQYihwP"></a>				<span class="TableContent">
+				</span>
+			</td>
+		</tr>
+		<tr id="modelSelection9XFveRaAUEQYtpTt" class="TableRow2">
+			<td style="padding: 5px 10px;">
+<a name="9XFveRaAUEQYtpTt"></a><a href="Glossary_9XFveRaAUEQYtpTt.html" class="TableContent"><span class="TableContent">operatør</span></a>			</td>
+			<td style="padding: 5px 10px;">
+<a name="9XFveRaAUEQYtpTt"></a><span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;margin-right:0;margin-left:0;">
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Person som gj&#248;r selve endringer i metadata p&#229; <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a>. 
+      Hen er ansvarlig for at endringer utf&#248;res kjapp og korrekt.
+    </p>
+  </body></span>			</td>
+			<td style="padding: 5px 10px;">
+<a name="9XFveRaAUEQYtpTt"></a>				<span class="TableContent">
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="ItemLink">META20 - Det nye grensesnittet for redigering av kildemetadata</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="9XFveRaAUEQYtpTt"></a>				<span class="TableContent">
+<a href="Alias_4y1veRaAUEQYtpT3.html" class="ItemLink">operatører</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="9XFveRaAUEQYtpTt"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="9XFveRaAUEQYtpTt"></a>				<span class="TableContent">
+				</span>
+			</td>
+		</tr>
+		<tr id="modelSelectionCVZfeRaAUEQYtplx" class="TableRow1">
+			<td style="padding: 5px 10px;">
+<a name="CVZfeRaAUEQYtplx"></a><a href="Glossary_CVZfeRaAUEQYtplx.html" class="TableContent"><span class="TableContent">publisere</span></a>			</td>
+			<td style="padding: 5px 10px;">
+<a name="CVZfeRaAUEQYtplx"></a><span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;margin-right:0;margin-left:0;">
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Gj&#248;re <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a> 
+      tilgjengelige p&#229; digitalarkivet.no, s&#248;ket og for generell publikum.
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Det er kun <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a> 
+      med digitalisert materiale (skannede bilder) som kan publiseres i META20.
+    </p>
+  </body></span>			</td>
+			<td style="padding: 5px 10px;">
+<a name="CVZfeRaAUEQYtplx"></a>				<span class="TableContent">
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="ItemLink">META20 - Det nye grensesnittet for redigering av kildemetadata</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="CVZfeRaAUEQYtplx"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="CVZfeRaAUEQYtplx"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="CVZfeRaAUEQYtplx"></a>				<span class="TableContent">
+				</span>
+			</td>
+		</tr>
+		<tr id="modelSelection39J5hxaGAqACZ4QK" class="TableRow2">
+			<td style="padding: 5px 10px;">
+<a name="39J5hxaGAqACZ4QK"></a><a href="Glossary_39J5hxaGAqACZ4QK.html" class="TableContent"><span class="TableContent">samling</span></a>			</td>
+			<td style="padding: 5px 10px;">
+<a name="39J5hxaGAqACZ4QK"></a><span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;margin-right:0;margin-left:0;">
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      S&#248;k etter <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a> 
+      (flere s&#248;kekriteria som er satt sammen). Det er ikke det aktuelle 
+      s&#248;keresultatet, men en rekke av sammensatte s&#248;kebetingelser som kan 
+      kj&#248;res ved behov.
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Brukes ved opprettelse av nye <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#e6nTeRaAUEQYtlOZ" name="" onclick="javascript: highlightGridModelSelection('e6nTeRaAUEQYtlOZ');">arbeidslister</a>, 
+      for &#229; spare tid ved inntasting av nye s&#248;k.
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      Eksempel:
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      * Alle <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a> 
+      som mangler &#229;rstall
+    </p>
+    <p style="margin-bottom:.0001pt;margin-right:0pt;margin-left:0pt;margin-top:0pt;">
+      * Alle <a class="ItemLink" href="GridDiagram_fD0feRaAUEQYtpd5.html#tmIzeRaAUEQYtlYc" name="" onclick="javascript: highlightGridModelSelection('tmIzeRaAUEQYtlYc');">kilder</a> 
+      som har emneknagger &quot;Pantebok&quot; og &quot;Folketelling&quot;
+    </p>
+  </body></span>			</td>
+			<td style="padding: 5px 10px;">
+<a name="39J5hxaGAqACZ4QK"></a>				<span class="TableContent">
+<a href="Model_xsSiKRaAUEQYtgyK.html" class="ItemLink">META20 - Det nye grensesnittet for redigering av kildemetadata</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="39J5hxaGAqACZ4QK"></a>				<span class="TableContent">
+<a href="Alias_A_bs8JaAUEQYih60.html" class="ItemLink">samlinger</a>, <a href="Alias_Ah7s8JaAUEQYih61.html" class="ItemLink">samlingen</a>, <a href="Alias_UpHs8JaAUEQYih62.html" class="ItemLink">samlingene</a>				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="39J5hxaGAqACZ4QK"></a>				<span class="TableContent">
+				</span>
+			</td>
+			<td style="padding: 5px 10px;">
+<a name="39J5hxaGAqACZ4QK"></a>				<span class="TableContent">
+				</span>
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<p>
+	</p>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		Digitalarkivet som løsning	</div>
+</body>
+</html>

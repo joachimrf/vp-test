@@ -1,0 +1,414 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>ArchiMate Diagram - Drivere Digitalarkivet</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		Digitalarkivet som løsning	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+<a href="Model_H496DOaAUERkSmTb.html" class="PageParentTitle">ArchiMate - Driver : Model</a>	</p>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			ArchiMate Diagram - Drivere Digitalarkivet		</span>
+<a onclick="javascript: showVpLink('Digitalarkivet som løsning.vpp://diagram/6E96DOaAUERkSmTr', 'Drivere Digitalarkivet\nDigitalarkivet som l&#xf8;sning.vpp://diagram/6E96DOaAUERkSmTr', 'Drivere Digitalarkivet', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|197.0|120.0|240.0|40.0|ArchiMateGoal_tCC55BaAUERkSjdH.html|ArchiMateGoal_tCC55BaAUERkSjdH.html|tCC55BaAUERkSjdG" id="optiontCC55BaAUERkSjdG">Juridisk rammeverk og forvaltningsregime : Goal</option>
+<option value="shape|1078.0|120.0|143.0|40.0|ArchiMateGoal_Vlo55BaAUERkSjc5.html|ArchiMateGoal_Vlo55BaAUERkSjc5.html|Vlo55BaAUERkSjc4" id="optionVlo55BaAUERkSjc4">Skannet materiale : Goal</option>
+<option value="shape|821.0|120.0|139.0|40.0|ArchiMateGoal_72_Z5BaAUERkSjct.html|ArchiMateGoal_72_Z5BaAUERkSjct.html|T2_Z5BaAUERkSjcs" id="optionT2_Z5BaAUERkSjcs">En inngang til arkiver : Goal</option>
+<option value="shape|1168.0|315.0|127.0|40.0|ArchiMateDriver__Kfx5BaAUERkSjYy.html|ArchiMateDriver__Kfx5BaAUERkSjYy.html|OKfx5BaAUERkSjYx" id="optionOKfx5BaAUERkSjYx">Nye brukere : Driver</option>
+<option value="shape|555.0|120.0|148.0|40.0|ArchiMateGoal__ZKy5BaAUERkSjYG.html|ArchiMateGoal__ZKy5BaAUERkSjYG.html|fZKy5BaAUERkSjYF" id="optionfZKy5BaAUERkSjYF">Flere brukere : Goal</option>
+<option value="shape|566.0|2.0|411.0|40.0|ArchiMateOutcome_XX3S5BaAUERkSjXu.html|ArchiMateOutcome_XX3S5BaAUERkSjXu.html|XX3S5BaAUERkSjXt" id="optionXX3S5BaAUERkSjXt">Digitalarkivet som nasjonal publiseringstjeneste : Outcome</option>
+<option value="shape|936.0|315.0|160.0|40.0|ArchiMateDriver_fHn8muaAUERkSgo1.html|ArchiMateDriver_fHn8muaAUERkSgo1.html|PHn8muaAUERkSgo0" id="optionPHn8muaAUERkSgo0">Nye arkiver : Driver</option>
+<option value="shape|703.0|315.0|161.0|40.0|ArchiMateDriver_qEBmDOaAUERkSmWL.html|ArchiMateDriver_qEBmDOaAUERkSmWL.html|SEBmDOaAUERkSmWK" id="optionSEBmDOaAUERkSmWK">Sikkerhet : Driver</option>
+<option value="shape|507.0|316.0|152.0|40.0|ArchiMateDriver_lzKmDOaAUERkSmV1.html|ArchiMateDriver_lzKmDOaAUERkSmV1.html|FzKmDOaAUERkSmV0" id="optionFzKmDOaAUERkSmV0">Effektiv Tilgjengeliggjøring : Driver</option>
+<option value="shape|272.0|315.0|155.0|40.0|ArchiMateDriver_DsMmDOaAUERkSmVn.html|ArchiMateDriver_DsMmDOaAUERkSmVn.html|9sMmDOaAUERkSmVm" id="option9sMmDOaAUERkSmVm">Teknologisk utvikling : Driver</option>
+<option value="shape|16.0|315.0|197.0|40.0|ArchiMateDriver_tjwmDOaAUERkSmVZ.html|ArchiMateDriver_tjwmDOaAUERkSmVZ.html|VjwmDOaAUERkSmVY" id="optionVjwmDOaAUERkSmVY">Tilgang til materiale over tid : Driver</option>
+<option value="shape|2.0|238.0|1316.0|180.0|ArchiMateGrouping_q2HGDOaAUERkSmVT.html|ArchiMateGrouping_q2HGDOaAUERkSmVT.html|g2HGDOaAUERkSmVS" id="optiong2HGDOaAUERkSmVS">Drivere for Digitalarkivet : Grouping</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/Drivere_Digitalarkivet.png" usemap="#diagram_map" class="Image" width="1322" height="422"/>
+					<map name="diagram_map">
+<area imageId="diagram" coords="592.0, 160.0, 592.0, 274.0, 589.0, 274.0, 589.0, 288.0, 592.0, 288.0, 592.0, 291.0, 606.0, 291.0, 606.0, 288.0, 776.0, 288.0, 776.0, 315.0, 790.0, 315.0, 790.0, 288.0, 793.0, 288.0, 793.0, 274.0, 790.0, 274.0, 790.0, 271.0, 776.0, 271.0, 776.0, 274.0, 606.0, 274.0, 606.0, 160.0" coords2="592.0, 160.0, 592.0, 274.0, 589.0, 274.0, 589.0, 288.0, 592.0, 288.0, 592.0, 291.0, 606.0, 291.0, 606.0, 288.0, 776.0, 288.0, 776.0, 315.0, 790.0, 315.0, 790.0, 288.0, 793.0, 288.0, 793.0, 274.0, 790.0, 274.0, 790.0, 271.0, 776.0, 271.0, 776.0, 274.0, 606.0, 274.0, 606.0, 160.0" shape="poly" alt=":Influence" id="areadiagram_map_i0sWDOaAUERkSmY7_default" href="ArchiMateInfluence_Y0sWDOaAUERkSmY6.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="-8.0, 314.0, -8.0, 328.0, 2.0, 328.0, 2.0, 314.0" coords2="-8.0, 314.0, -8.0, 328.0, 2.0, 328.0, 2.0, 314.0" shape="poly" alt=":Aggregation" id="areadiagram_map_bN38muaAUERkSgo7_default" href="ArchiMateAggregation_NN38muaAUERkSgo6.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="-8.0, 314.0, -8.0, 328.0, 2.0, 328.0, 2.0, 314.0" coords2="-8.0, 314.0, -8.0, 328.0, 2.0, 328.0, 2.0, 314.0" shape="poly" alt=":Aggregation" id="areadiagram_map_TcAJ5BaAUERkSjY6_default" href="ArchiMateAggregation_QcAJ5BaAUERkSjY5.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="664.0, 160.0, 664.0, 230.0, 661.0, 230.0, 661.0, 244.0, 664.0, 244.0, 664.0, 247.0, 678.0, 247.0, 678.0, 244.0, 1182.0, 244.0, 1182.0, 315.0, 1196.0, 315.0, 1196.0, 244.0, 1199.0, 244.0, 1199.0, 230.0, 1196.0, 230.0, 1196.0, 227.0, 1182.0, 227.0, 1182.0, 230.0, 678.0, 230.0, 678.0, 160.0" coords2="664.0, 160.0, 664.0, 230.0, 661.0, 230.0, 661.0, 244.0, 664.0, 244.0, 664.0, 247.0, 678.0, 247.0, 678.0, 244.0, 1182.0, 244.0, 1182.0, 315.0, 1196.0, 315.0, 1196.0, 244.0, 1199.0, 244.0, 1199.0, 230.0, 1196.0, 230.0, 1196.0, 227.0, 1182.0, 227.0, 1182.0, 230.0, 678.0, 230.0, 678.0, 160.0" shape="poly" alt=":Influence" id="areadiagram_map_5pGJ5BaAUERkSjbE_default" href="ArchiMateInfluence_GpGJ5BaAUERkSjbD.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="664.0, 42.0, 664.0, 120.0, 678.0, 120.0, 678.0, 42.0" coords2="664.0, 42.0, 664.0, 120.0, 678.0, 120.0, 678.0, 42.0" shape="poly" alt=":Influence" id="areadiagram_map_eQFJ5BaAUERkSjbm_default" href="ArchiMateInfluence_CQFJ5BaAUERkSjbl.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="622.0, 160.0, 622.0, 247.0, 619.0, 247.0, 619.0, 261.0, 622.0, 261.0, 622.0, 264.0, 636.0, 264.0, 636.0, 261.0, 958.0, 261.0, 958.0, 315.0, 972.0, 315.0, 972.0, 261.0, 975.0, 261.0, 975.0, 247.0, 972.0, 247.0, 972.0, 244.0, 958.0, 244.0, 958.0, 247.0, 636.0, 247.0, 636.0, 160.0" coords2="622.0, 160.0, 622.0, 247.0, 619.0, 247.0, 619.0, 261.0, 622.0, 261.0, 622.0, 264.0, 636.0, 264.0, 636.0, 261.0, 958.0, 261.0, 958.0, 315.0, 972.0, 315.0, 972.0, 261.0, 975.0, 261.0, 975.0, 247.0, 972.0, 247.0, 972.0, 244.0, 958.0, 244.0, 958.0, 247.0, 636.0, 247.0, 636.0, 160.0" shape="poly" alt=":Influence" id="areadiagram_map_xGrJ5BaAUERkSjb._default" href="ArchiMateInfluence_OGrJ5BaAUERkSjb9.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="599.0, 42.0, 599.0, 71.0, 360.0, 71.0, 360.0, 68.0, 346.0, 68.0, 346.0, 71.0, 343.0, 71.0, 343.0, 85.0, 346.0, 85.0, 346.0, 120.0, 360.0, 120.0, 360.0, 85.0, 599.0, 85.0, 599.0, 88.0, 613.0, 88.0, 613.0, 85.0, 616.0, 85.0, 616.0, 71.0, 613.0, 71.0, 613.0, 42.0" coords2="599.0, 42.0, 599.0, 71.0, 360.0, 71.0, 360.0, 68.0, 346.0, 68.0, 346.0, 71.0, 343.0, 71.0, 343.0, 85.0, 346.0, 85.0, 346.0, 120.0, 360.0, 120.0, 360.0, 85.0, 599.0, 85.0, 599.0, 88.0, 613.0, 88.0, 613.0, 85.0, 616.0, 85.0, 616.0, 71.0, 613.0, 71.0, 613.0, 42.0" shape="poly" alt=":Influence" id="areadiagram_map_BzN55BaAUERkSjeJ_default" href="ArchiMateInfluence_6zN55BaAUERkSjeI.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="820.0, 42.0, 820.0, 130.0, 821.0, 130.0, 821.0, 120.0, 834.0, 120.0, 834.0, 42.0" coords2="820.0, 42.0, 820.0, 130.0, 821.0, 130.0, 821.0, 120.0, 834.0, 120.0, 834.0, 42.0" shape="poly" alt=":Influence" id="areadiagram_map_BVd55BaAUERkSjeT_default" href="ArchiMateInfluence_WVd55BaAUERkSjeS.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="888.0, 42.0, 888.0, 71.0, 885.0, 71.0, 885.0, 85.0, 888.0, 85.0, 888.0, 88.0, 902.0, 88.0, 902.0, 85.0, 1142.0, 85.0, 1142.0, 120.0, 1156.0, 120.0, 1156.0, 85.0, 1159.0, 85.0, 1159.0, 71.0, 1156.0, 71.0, 1156.0, 68.0, 1142.0, 68.0, 1142.0, 71.0, 902.0, 71.0, 902.0, 42.0" coords2="888.0, 42.0, 888.0, 71.0, 885.0, 71.0, 885.0, 85.0, 888.0, 85.0, 888.0, 88.0, 902.0, 88.0, 902.0, 85.0, 1142.0, 85.0, 1142.0, 120.0, 1156.0, 120.0, 1156.0, 85.0, 1159.0, 85.0, 1159.0, 71.0, 1156.0, 71.0, 1156.0, 68.0, 1142.0, 68.0, 1142.0, 71.0, 902.0, 71.0, 902.0, 42.0" shape="poly" alt=":Influence" id="areadiagram_map_IvD55BaAUERkSjef_default" href="ArchiMateInfluence_nPD55BaAUERkSjee.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="883.0, 160.0, 883.0, 216.0, 880.0, 216.0, 880.0, 230.0, 883.0, 230.0, 883.0, 233.0, 897.0, 233.0, 897.0, 230.0, 1022.0, 230.0, 1022.0, 315.0, 1036.0, 315.0, 1036.0, 230.0, 1039.0, 230.0, 1039.0, 216.0, 1036.0, 216.0, 1036.0, 213.0, 1022.0, 213.0, 1022.0, 216.0, 897.0, 216.0, 897.0, 160.0" coords2="883.0, 160.0, 883.0, 216.0, 880.0, 216.0, 880.0, 230.0, 883.0, 230.0, 883.0, 233.0, 897.0, 233.0, 897.0, 230.0, 1022.0, 230.0, 1022.0, 315.0, 1036.0, 315.0, 1036.0, 230.0, 1039.0, 230.0, 1039.0, 216.0, 1036.0, 216.0, 1036.0, 213.0, 1022.0, 213.0, 1022.0, 216.0, 897.0, 216.0, 897.0, 160.0" shape="poly" alt=":Influence" id="areadiagram_map_4qv55BaAUERkSjfF_default" href="ArchiMateInfluence_3Kv55BaAUERkSjfE.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="906.0, 160.0, 906.0, 191.0, 903.0, 191.0, 903.0, 205.0, 906.0, 205.0, 906.0, 208.0, 920.0, 208.0, 920.0, 205.0, 1223.0, 205.0, 1223.0, 315.0, 1237.0, 315.0, 1237.0, 205.0, 1240.0, 205.0, 1240.0, 191.0, 1237.0, 191.0, 1237.0, 188.0, 1223.0, 188.0, 1223.0, 191.0, 920.0, 191.0, 920.0, 160.0" coords2="906.0, 160.0, 906.0, 191.0, 903.0, 191.0, 903.0, 205.0, 906.0, 205.0, 906.0, 208.0, 920.0, 208.0, 920.0, 205.0, 1223.0, 205.0, 1223.0, 315.0, 1237.0, 315.0, 1237.0, 205.0, 1240.0, 205.0, 1240.0, 191.0, 1237.0, 191.0, 1237.0, 188.0, 1223.0, 188.0, 1223.0, 191.0, 920.0, 191.0, 920.0, 160.0" shape="poly" alt=":Influence" id="areadiagram_map_yLEF5BaAUERkSjfd_default" href="ArchiMateInfluence_wLEF5BaAUERkSjfc.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1170.0, 160.0, 1170.0, 175.0, 1065.0, 175.0, 1065.0, 172.0, 1051.0, 172.0, 1051.0, 175.0, 1048.0, 175.0, 1048.0, 189.0, 1051.0, 189.0, 1051.0, 315.0, 1065.0, 315.0, 1065.0, 189.0, 1170.0, 189.0, 1170.0, 192.0, 1184.0, 192.0, 1184.0, 189.0, 1187.0, 189.0, 1187.0, 175.0, 1184.0, 175.0, 1184.0, 160.0" coords2="1170.0, 160.0, 1170.0, 175.0, 1065.0, 175.0, 1065.0, 172.0, 1051.0, 172.0, 1051.0, 175.0, 1048.0, 175.0, 1048.0, 189.0, 1051.0, 189.0, 1051.0, 315.0, 1065.0, 315.0, 1065.0, 189.0, 1170.0, 189.0, 1170.0, 192.0, 1184.0, 192.0, 1184.0, 189.0, 1187.0, 189.0, 1187.0, 175.0, 1184.0, 175.0, 1184.0, 160.0" shape="poly" alt=":Influence" id="areadiagram_map_LmiF5BaAUERkSjfx_default" href="ArchiMateInfluence_1miF5BaAUERkSjfw.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1131.0, 160.0, 1131.0, 223.0, 596.0, 223.0, 596.0, 220.0, 582.0, 220.0, 582.0, 223.0, 579.0, 223.0, 579.0, 237.0, 582.0, 237.0, 582.0, 316.0, 596.0, 316.0, 596.0, 237.0, 1131.0, 237.0, 1131.0, 240.0, 1145.0, 240.0, 1145.0, 237.0, 1148.0, 237.0, 1148.0, 223.0, 1145.0, 223.0, 1145.0, 160.0" coords2="1131.0, 160.0, 1131.0, 223.0, 596.0, 223.0, 596.0, 220.0, 582.0, 220.0, 582.0, 223.0, 579.0, 223.0, 579.0, 237.0, 582.0, 237.0, 582.0, 316.0, 596.0, 316.0, 596.0, 237.0, 1131.0, 237.0, 1131.0, 240.0, 1145.0, 240.0, 1145.0, 237.0, 1148.0, 237.0, 1148.0, 223.0, 1145.0, 223.0, 1145.0, 160.0" shape="poly" alt=":Influence" id="areadiagram_map_8.mF5BaAUERkSjgD_default" href="ArchiMateInfluence_I_mF5BaAUERkSjgC.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="372.0, 160.0, 372.0, 200.0, 369.0, 200.0, 369.0, 214.0, 372.0, 214.0, 372.0, 217.0, 386.0, 217.0, 386.0, 214.0, 553.0, 214.0, 553.0, 316.0, 567.0, 316.0, 567.0, 214.0, 570.0, 214.0, 570.0, 200.0, 567.0, 200.0, 567.0, 197.0, 553.0, 197.0, 553.0, 200.0, 386.0, 200.0, 386.0, 160.0" coords2="372.0, 160.0, 372.0, 200.0, 369.0, 200.0, 369.0, 214.0, 372.0, 214.0, 372.0, 217.0, 386.0, 217.0, 386.0, 214.0, 553.0, 214.0, 553.0, 316.0, 567.0, 316.0, 567.0, 214.0, 570.0, 214.0, 570.0, 200.0, 567.0, 200.0, 567.0, 197.0, 553.0, 197.0, 553.0, 200.0, 386.0, 200.0, 386.0, 160.0" shape="poly" alt=":Influence" id="areadiagram_map_nL.F5BaAUERkSjgT_default" href="ArchiMateInfluence_TL_F5BaAUERkSjgS.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="867.0, 160.0, 867.0, 208.0, 177.0, 208.0, 177.0, 205.0, 163.0, 205.0, 163.0, 208.0, 160.0, 208.0, 160.0, 222.0, 163.0, 222.0, 163.0, 315.0, 177.0, 315.0, 177.0, 222.0, 867.0, 222.0, 867.0, 225.0, 881.0, 225.0, 881.0, 222.0, 884.0, 222.0, 884.0, 208.0, 881.0, 208.0, 881.0, 160.0" coords2="867.0, 160.0, 867.0, 208.0, 177.0, 208.0, 177.0, 205.0, 163.0, 205.0, 163.0, 208.0, 160.0, 208.0, 160.0, 222.0, 163.0, 222.0, 163.0, 315.0, 177.0, 315.0, 177.0, 222.0, 867.0, 222.0, 867.0, 225.0, 881.0, 225.0, 881.0, 222.0, 884.0, 222.0, 884.0, 208.0, 881.0, 208.0, 881.0, 160.0" shape="poly" alt=":Influence" id="areadiagram_map_zApV5BaAUERkSjgl_default" href="ArchiMateInfluence_JApV5BaAUERkSjgk.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="843.0, 160.0, 843.0, 184.0, 356.0, 184.0, 356.0, 181.0, 342.0, 181.0, 342.0, 184.0, 339.0, 184.0, 339.0, 198.0, 342.0, 198.0, 342.0, 315.0, 356.0, 315.0, 356.0, 198.0, 843.0, 198.0, 843.0, 201.0, 857.0, 201.0, 857.0, 198.0, 860.0, 198.0, 860.0, 184.0, 857.0, 184.0, 857.0, 160.0" coords2="843.0, 160.0, 843.0, 184.0, 356.0, 184.0, 356.0, 181.0, 342.0, 181.0, 342.0, 184.0, 339.0, 184.0, 339.0, 198.0, 342.0, 198.0, 342.0, 315.0, 356.0, 315.0, 356.0, 198.0, 843.0, 198.0, 843.0, 201.0, 857.0, 201.0, 857.0, 198.0, 860.0, 198.0, 860.0, 184.0, 857.0, 184.0, 857.0, 160.0" shape="poly" alt=":Influence" id="areadiagram_map_o8tV5BaAUERkSjg9_default" href="ArchiMateInfluence_nctV5BaAUERkSjg8.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="197, 120, 437, 160" coords2="197, 120, 437, 160" shape="rect" alt="Juridisk rammeverk og forvaltningsregime:Goal" id="areadiagram_map_tCC55BaAUERkSjdG_default" href="ArchiMateGoal_tCC55BaAUERkSjdH.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1078, 120, 1221, 160" coords2="1078, 120, 1221, 160" shape="rect" alt="Skannet materiale:Goal" id="areadiagram_map_Vlo55BaAUERkSjc4_default" href="ArchiMateGoal_Vlo55BaAUERkSjc5.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="821, 120, 960, 160" coords2="821, 120, 960, 160" shape="rect" alt="En inngang til arkiver:Goal" id="areadiagram_map_T2_Z5BaAUERkSjcs_default" href="ArchiMateGoal_72_Z5BaAUERkSjct.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1168, 315, 1295, 355" coords2="1168, 315, 1295, 355" shape="rect" alt="Nye brukere:Driver" id="areadiagram_map_OKfx5BaAUERkSjYx_default" href="ArchiMateDriver__Kfx5BaAUERkSjYy.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="555, 120, 703, 160" coords2="555, 120, 703, 160" shape="rect" alt="Flere brukere:Goal" id="areadiagram_map_fZKy5BaAUERkSjYF_default" href="ArchiMateGoal__ZKy5BaAUERkSjYG.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="566, 2, 977, 42" coords2="566, 2, 977, 42" shape="rect" alt="Digitalarkivet som nasjonal publiseringstjeneste:Outcome" id="areadiagram_map_XX3S5BaAUERkSjXt_default" href="ArchiMateOutcome_XX3S5BaAUERkSjXu.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="936, 315, 1096, 355" coords2="936, 315, 1096, 355" shape="rect" alt="Nye arkiver:Driver" id="areadiagram_map_PHn8muaAUERkSgo0_default" href="ArchiMateDriver_fHn8muaAUERkSgo1.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="703, 315, 864, 355" coords2="703, 315, 864, 355" shape="rect" alt="Sikkerhet:Driver" id="areadiagram_map_SEBmDOaAUERkSmWK_default" href="ArchiMateDriver_qEBmDOaAUERkSmWL.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="507, 316, 659, 356" coords2="507, 316, 659, 356" shape="rect" alt="Effektiv Tilgjengeliggjøring:Driver" id="areadiagram_map_FzKmDOaAUERkSmV0_default" href="ArchiMateDriver_lzKmDOaAUERkSmV1.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="272, 315, 427, 355" coords2="272, 315, 427, 355" shape="rect" alt="Teknologisk utvikling:Driver" id="areadiagram_map_9sMmDOaAUERkSmVm_default" href="ArchiMateDriver_DsMmDOaAUERkSmVn.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="16, 315, 213, 355" coords2="16, 315, 213, 355" shape="rect" alt="Tilgang til materiale over tid:Driver" id="areadiagram_map_VjwmDOaAUERkSmVY_default" href="ArchiMateDriver_tjwmDOaAUERkSmVZ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 238, 1318, 418" coords2="2, 238, 1318, 418" shape="rect" alt="Drivere for Digitalarkivet:Grouping" id="areadiagram_map_g2HGDOaAUERkSmVS_default" href="ArchiMateGrouping_q2HGDOaAUERkSmVT.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Goal.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Goal.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateGoal_tCC55BaAUERkSjdH.html" class="ItemLink">Juridisk rammeverk og forvaltningsregime : Goal</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Goal.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Goal.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateGoal_Vlo55BaAUERkSjc5.html" class="ItemLink">Skannet materiale : Goal</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Goal.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Goal.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateGoal_72_Z5BaAUERkSjct.html" class="ItemLink">En inngang til arkiver : Goal</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Driver.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Driver.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateDriver__Kfx5BaAUERkSjYy.html" class="ItemLink">Nye brukere : Driver</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Goal.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Goal.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateGoal__ZKy5BaAUERkSjYG.html" class="ItemLink">Flere brukere : Goal</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Outcome.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Outcome.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateOutcome_XX3S5BaAUERkSjXu.html" class="ItemLink">Digitalarkivet som nasjonal publiseringstjeneste : Outcome</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Driver.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Driver.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateDriver_fHn8muaAUERkSgo1.html" class="ItemLink">Nye arkiver : Driver</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Driver.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Driver.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateDriver_qEBmDOaAUERkSmWL.html" class="ItemLink">Sikkerhet : Driver</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Driver.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Driver.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateDriver_lzKmDOaAUERkSmV1.html" class="ItemLink">Effektiv Tilgjengeliggjøring : Driver</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Driver.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Driver.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateDriver_DsMmDOaAUERkSmVn.html" class="ItemLink">Teknologisk utvikling : Driver</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Driver.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Driver.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateDriver_tjwmDOaAUERkSmVZ.html" class="ItemLink">Tilgang til materiale over tid : Driver</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Grouping.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Grouping.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateGrouping_q2HGDOaAUERkSmVT.html" class="ItemLink">Drivere for Digitalarkivet : Grouping</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		Digitalarkivet som løsning	</div>
+</body>
+</html>
