@@ -1,70 +1,46 @@
- <!DOCTYPE html>
-            <html>
-            <head>
-            <title>Page Title</title>
-            <script type="text/javascript">
-            $('li').click(function(e){
-            e.stopPropagation();
-            if(this.getElementsByTagName("ul")[0].style.display =="block")
-                    $(this).find("ul").slideUp();
-                else
-                    $(this).children(":first").slideDown();
-            });
-            </script>
-            <style>
-            ul>li>ul {
-                display: none;
-            }
-            </style>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>jsTree test</title>
+  <!-- 2 load the theme CSS file -->
+  <link rel="stylesheet" href="dist/themes/default/style.min.css" />
+</head>
+<body>
+  <!-- 3 setup a container element -->
+  <div id="jstree">
+    <!-- in this example the tree is populated from inline HTML -->
+    <ul>
+      <li>Root node 1
+        <ul>
+          <li id="child_node_1">Child node 1</li>
+          <li>Child node 2</li>
+        </ul>
+      </li>
+      <li>Root node 2</li>
+    </ul>
+  </div>
+  <button>demo button</button>
 
-
-            </head>
-            <body>
-
-            <div id="output"></div>
-            <script>
-
-            var input = [
-              "A\\A1\\A2\\A3",
-              "A\\B\\B1\\B2",
-              "A\\B\\B4\\B5\\B5",
-              "A\\C\\C1\\C2"
-            ];
-            // Converts your input data into an object:
-            var convert = function(input) {
-            var output = {};
-            // iterate through each path in the input array:
-            input.forEach(function(path) {
-            var folders = path.split("\\"); // convert this path into an array of folder names
-            // "parent" serves as a marker in the output object pointing to the current folder
-            var parent = output; // the topmost folder will be a child of the output root
-            folders.forEach(function(f) {
-            parent[f] = parent[f] || {}; // add a folder object if there isn't one already
-            parent = parent[f]; // the next part of the path will be a child of this part
-            });
-            });
-            return (output);
-            }
-
-            // Draws nested lists for the folder structure
-            var drawFolders = function(input) {
-
-            var output = "<ul>";
-            Object.keys(input).forEach(function(k) { 
-            output += "<li>" + k; // draw this folder
-                if (Object.keys(input[k]).length) {
-                  output += drawFolders(input[k]); // recurse for child folders
-                }
-                output += "</li>";
-              });
-              output += "</ul>";
-              return output;
-            }
-
-            document.getElementById("output").innerHTML = drawFolders(convert(input));
-
-            </script>
-
-
-            </body>
-            </html>
+  <!-- 4 include the jQuery library -->
+  <script src="dist/libs/jquery.js"></script>
+  <!-- 5 include the minified jstree source -->
+  <script src="dist/jstree.min.js"></script>
+  <script>
+  $(function () {
+    // 6 create an instance when the DOM is ready
+    $('#jstree').jstree();
+    // 7 bind to events triggered on the tree
+    $('#jstree').on("changed.jstree", function (e, data) {
+      console.log(data.selected);
+    });
+    // 8 interact with the tree - either way is OK
+    $('button').on('click', function () {
+      $('#jstree').jstree(true).select_node('child_node_1');
+      $('#jstree').jstree('select_node', 'child_node_1');
+      $.jstree.reference('#jstree').select_node('child_node_1');
+    });
+  });
+  </script>
+</body>
+</html>
